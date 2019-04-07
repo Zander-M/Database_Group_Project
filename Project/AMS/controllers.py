@@ -7,6 +7,22 @@
 from flask import session
 import models as M 
 
+def loginAuth(username, password):
+    """
+    Test if the login is valid. If it is, go to user dashboard, if not, return
+    error value.
+    
+    Args:
+        username: username
+        password: password
+    
+    Returns:
+        retval: return value. Return true if login is valid, else false.
+        error: error message.
+    """
+    
+    pass
+    
 def regAuth(username, password):
     """
     Test if registration is valid. If valid, register the user, update relevant 
