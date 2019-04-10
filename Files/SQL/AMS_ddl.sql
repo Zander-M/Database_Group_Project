@@ -20,7 +20,7 @@ CREATE TABLE staff (
 );
 
 CREATE TABLE staff_phone (
-    phone_number NUMERIC(15,0) PRIMARY KEY,
+    phone_number NUMERIC(15 , 0 ) PRIMARY KEY,
     username VARCHAR(10),
     FOREIGN KEY (username)
         REFERENCES staff (username)
@@ -35,7 +35,7 @@ CREATE TABLE airplane (
     FOREIGN KEY (airline)
         REFERENCES airline (name)
         ON DELETE CASCADE,
-	KEY (airplane_id)
+    KEY (airplane_id)
 );
 
 CREATE TABLE airport (
@@ -47,13 +47,13 @@ CREATE TABLE flight (
     flight_id INT UNSIGNED AUTO_INCREMENT,
     airline VARCHAR(20),
     airplane_id INT UNSIGNED,
-    base_price INT, 
+    base_price INT,
     flight_status INT, # 0 as on-time, 1 as delayed
     dept_time DATETIME,
     arrv_time DATETIME,
     dept_airport CHAR(3),
     arrv_airport CHAR(3),
-    KEY(flight_id),
+    KEY (flight_id),
     PRIMARY KEY (airline , flight_id),
     FOREIGN KEY (airline , airplane_id)
         REFERENCES airplane (airline , airplane_id)
@@ -85,7 +85,7 @@ CREATE TABLE customer (
 );
 
 CREATE TABLE customer_phone (
-    phone_number NUMERIC(15,0) PRIMARY KEY,
+    phone_number NUMERIC(15 , 0 ) PRIMARY KEY,
     email VARCHAR(30),
     FOREIGN KEY (email)
         REFERENCES customer (email)
@@ -100,7 +100,7 @@ CREATE TABLE ticket (
     booking_agent_id INT UNSIGNED,
     sold_price INT,
     payment_method INT, # 0 as credit, 1 as debit
-    card_number numeric(20,0),
+    card_number NUMERIC(20 , 0 ),
     name_on_card VARCHAR(20),
     expiration_date DATE,
     purchase_date_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
