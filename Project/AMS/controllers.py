@@ -20,6 +20,8 @@ def loginAuth(username, password):
         retval: return value. Return true if login is valid, else false.
         error: error message.
     """
+    csr = M.conndb()
+    
     
     pass
     

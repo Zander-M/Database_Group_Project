@@ -48,6 +48,7 @@ def reg():
     
     error = None # error info
     if request.method == 'POST':
+    
         retval, error = C.regAuth(
             request.form['username'],
             request.form['password']
@@ -71,7 +72,7 @@ def login():
     
     """
     
-    error = None # error info
+    error = ''# error info
     if request.method == 'POST':
         retval, error = C.loginAuth(
             request.form['username'],
@@ -80,8 +81,7 @@ def login():
         if retval:
             C.loginUser(request.form['username'])
             redirect('/dashboard')
-    return render_template('login.html', error = error)
-
+    return render_template('login.html', error = error, usr = request.form['username'], pw = request.form['password'])
 #logout function
 @app.route('/logout')
 def logout():
