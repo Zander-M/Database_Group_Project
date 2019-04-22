@@ -8,21 +8,20 @@ import pymysql
 
 def conndb():
     """
-    Connect Database.
+    Connect to database, return cursor
     
     Args:
-        None.
+        param: None 
     
     Returns:
-        A cursor object for connection
+        cursor.
     """
-    
     conn = pymysql.connect(
         host = 'localhost',
         port = 3306,
         user = 'root',
         password = '',
-        db = 'dfp'
+        db = 'ams'
     )
     return conn.cursor()
 

@@ -7,12 +7,13 @@
 from flask import session
 import models as M 
 
-def loginAuth(username, password):
+def loginAuth(role, username, password):
     """
     Test if the login is valid. If it is, go to user dashboard, if not, return
     error value.
     
     Args:
+        role: role of the user
         username: username
         password: password
     
@@ -25,12 +26,13 @@ def loginAuth(username, password):
     
     pass
     
-def regAuth(username, password):
+def regAuth(role, username, password):
     """
     Test if registration is valid. If valid, register the user, update relevant 
     info in database, if not, return error.
     
     Args:
+        role: role of the user.
         username: username.
         password: password.
     

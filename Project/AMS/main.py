@@ -31,44 +31,57 @@ def index():
     return render_template('index.html')
 
 # registration page
-@app.route('/reg',methods=['GET','POST'])
-def reg():
-    """ 
-    Registration Page. If requested by GET method, return the register page,
-    if requested by POST method, check if the registration info is valid, and
-    perform registration.
+
+@app.route('/reg', methods = ['GET', 'POST'])
+@app.route('/reg/<role>', methods = ['GET', 'POST'])
+def reg(role='user'):
+    """
+    Register in the system. Based on different roles in the system, return
+    different register page.
     
     Args:
-        None.
+        role: Role of the user. Default is user.
     
     Returns:
-    Rendered page if registration unsuccessful, redirect to login page if
-    registered Successfully.
+        If requested by get, return rendered register page.
+        If requested by post, redirect to login page if registered successfully,
+        else return error msg.
     """
-    
-    error = None # error info
-    if request.method == 'POST':
-    
-        retval, error = C.regAuth(
-            request.form['username'],
-            request.form['password']
-        )
-        if retval:
-            redirect("/login")
-    return render_template('register.html', error = error)
+    error = ''
+    if request.method == "POST":
+        if role == 'as':
+            retval, error = C.regAuth_AS(
+                request.form['username'],
+                request.form['password']
+            )
+        elif role == 'ba':
+            retval, error = C.regAuth_BA(
+                request.form['username'],
+                request.form['password']
+            )
+        else:
+            role = 'user'
+            retval, error = C.regAuth_user(
+                request.form['username'],
+                request.form['password']
+            )
+    return render_template('reg_{}.html'.format(role), error = error, role = role)
 
 # login page
-@app.route('/login', methods = ['GET','POST'])
-def login():
+
+@app.route('/login/', methods = ['GET','POST'])
+@app.route('/login/<role>', methods = ['GET','POST'])
+def login(role='user'):
     """
     Login page. If request method is POST, test if the login infomation is
     correct. Redirect to personal front page if succeeded. Else return error info.
     
     Args:
-        None.
+        role: role of the user
     
     Returns:
-        None.
+        If login unsuccessful, render error msg and return the page, else
+        redirect to the main page.
     
     """
     
@@ -81,7 +94,9 @@ def login():
         if retval:
             C.loginUser(request.form['username'])
             redirect('/dashboard')
-    return render_template('login.html', error = error, usr = request.form['username'], pw = request.form['password'])
+        return render_template('login.html', error = error, usr = request.form['username'], pw = request.form['password'])
+    return render_template('login_{}.html'.format(role), error = error, role = role)
+
 #logout function
 @app.route('/logout')
 def logout():
