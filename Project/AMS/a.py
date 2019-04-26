@@ -11,4 +11,6 @@ from flask import (
 
 from AMS.db import get_db
 
-bp = Blueprint('a_s',__name__, url_prefix="/a_s")
+role = 'a' # declare current role
+
+bp = Blueprint('a',__name__, url_prefix="/a")

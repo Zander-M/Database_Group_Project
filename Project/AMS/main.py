@@ -32,7 +32,6 @@ def index():
 
 # registration page
 
-@app.route('/reg', methods = ['GET', 'POST'])
 @app.route('/reg/<role>', methods = ['GET', 'POST'])
 def reg(role='user'):
     """

@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*- #
 # Author: Zander_M
 # Time: April, 25, 2019
-# Title: User Blueprint 
+# Title: Customer Blueprint 
 
 import functools
 
@@ -11,4 +11,4 @@ from flask import (
 
 from AMS.db import get_db
 
-bp = Blueprint('user',__name__)
+bp = Blueprint('customer',__name__)

@@ -54,17 +54,17 @@ def create_app(test_config=None):
     from . import auth
     app.register_blueprint(auth.bp)
 
-    # register user blueprint
-    from . import user
-    app.register_blueprint(user.bp)
+    # register customer blueprint
+    from . import c 
+    app.register_blueprint(c.bp)
 
     # register airline staff blueprint
-    from . import a_s 
-    app.register_blueprint(a_s.bp)
+    from . import a 
+    app.register_blueprint(a.bp)
 
     # register booking agent blueprint
-    from . import b_a
-    app.register_blueprint(b_a.bp)
+    from . import b 
+    app.register_blueprint(b.bp)
 
     return app
     

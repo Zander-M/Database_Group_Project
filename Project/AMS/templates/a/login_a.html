@@ -1,11 +1,12 @@
 {%extends "login.html"%}
-{%block header %} Booking Agent Login {%endblock%}
+{%block header %} Airline Staff Login {%endblock%}
 {%block content%}
-<form action="/login" method="POST">
+<form action="/auth/login" method="POST">
     Username: <input type="text" name="username" required><br>
     Password: <input type="password" name="password" required><br>
     <button type="submit" value="Login">Login</button>
     <a href="/reg/{{role}}"><button type="button" value="Register">Register</button>
+    <a href="">Forget Password?</a>
     <div>{{error}}</div><br>
     <div>{{usr}}</div><br>
     <div>{{pw}}</div><br>

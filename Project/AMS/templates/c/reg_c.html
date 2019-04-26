@@ -1,0 +1,23 @@
+{%extends 'reg.html'%}
+{%block header%}Customer Registration{%endblock%}
+{%block content%}
+    <form>
+        Username: <input type="text" name="username"><br>
+        Email: <input type="email" name="email"><br>
+        Password: <input type="password" name="password"><br>
+        Confirm password:<input type="password_c" name="password_c"><br>
+        <h3>Address:</h3> <br>
+        Building #: <input type="text" name="building#"><br>
+        Street: <input type="text" name="street"><br>
+        State: <input type="text" name="state"><br>
+        <h3>Basic Info:</h3> <br>
+        Phone: <input type="number" name="phone"><br>
+        Passport: <input type="text" name="passport"><br>
+        Passport Expiration Date: <input type="date" name="passport_exp"><br>
+        Passport Country: <input type="text" name="passport_country"><br>
+        Date of Birth: <input type="date" name="b_day"><br>
+        <input type="submit" name="submit" value="Submit">
+        <a href="/login/{{role}}"><button type="button" value="back">Back to Login</button></a>
+    </form>
+
+{%endblock%}
