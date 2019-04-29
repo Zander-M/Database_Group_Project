@@ -80,13 +80,13 @@ def register(role='c'):
                 error = 'Airline Staff {} already exists.'.format(username)
             elif error is None:
                 try:
-                    cursor.execute('INSERT INTO staff (username, pwd, first_name, last_name, date_of_birth, airline) values("%s","%s","%s","%s","%s","%s",)',(username,generate_password_hash(password), fname, lname, bday, airline))
-                    cursor.execute('INSERT INTO staff_phone values ("%s","%s")',(phone, username))
+                    cursor.execute('INSERT INTO staff (username, pwd, first_name, last_name, date_of_birth, airline) values(%s,%s,%s,%s,%s,%s)',(username,generate_password_hash(password), fname, lname, bday, airline))
+                    cursor.execute('INSERT INTO staff_phone (phone_number, username) values (%s,%s)',(phone, username))
                     db.commit()
-                    redirect(url_for('auth.reg_confirm', role = role))
+                    return redirect(url_for('auth.reg_confirm', role = role))
                 except:
                     db.rollback() # if register not successful then rollback
-                    error = 'Register Error'
+                    error = 'Registration Error'
             flash(error)
             
         # Booking Agent Register
@@ -111,10 +111,11 @@ def register(role='c'):
                 try:
                     cursor.execute("INSERT INTO booking_agent (email, pwd, BAID) values (%s,%s,%s)",(email, generate_password_hash(password), BAID))
                     db.commit()
-                    redirect(url_for('auth.register_confirm', role = role, BAID = BAID))
+                    return redirect(url_for('auth.register_confirm', role = role, BAID = BAID))
+
                 except:
                     db.rollback()
-                    error = 'Register Error'
+                    error = 'DBError?'
             flash(error)
 
         # Customer Register.
@@ -163,7 +164,7 @@ def register(role='c'):
                     cursor.execute("INSERT INTO customer (email, name, pwd, building_number street, city, state, passport_number, passport_expiration_date, passport_country, date_of_birth) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',)",(email, username, generate_password_hash(password), building, street, state, passport, passport_exp, passport_country, bday))
                     cursor.execute("INSERT INTO customer_phone values ('%s', '%s')", (phone, email)) 
                     db.commit()
-                    redirect(url_for('auth.register_confirm', role = role))
+                    return redirect(url_for('auth.register_confirm', role = role))
                 except:
                     db.rollback()
                     error = 'Register Error'
@@ -177,7 +178,7 @@ def register(role='c'):
     # Booking Agent & Customer Login
     return render_template('reg_{}.html'.format(role), error = error, role = role)
 
-@bp.route('/register/confirm')
+@bp.route('/register/confirm/<role>/<BAID>')
 def register_confirm(role, BAID = None):
     return render_template('reg_confirm.html', role = role, BAID = BAID)
 

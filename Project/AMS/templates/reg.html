@@ -9,6 +9,7 @@
     <form action="#" method="POST">
         {%block header%}{%endblock%} <br>
         {%block content%}{%endblock%}
+    </form>
         {% with messages = get_flashed_messages() %}
             {% if messages %}
     <ul class=flashes>
