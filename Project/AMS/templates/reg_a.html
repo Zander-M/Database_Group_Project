@@ -13,7 +13,7 @@
         <!-- for now only one. Can add more later -->
         Airline: <select name="airline" id="airline">
             {%for i in airlines %}
-            <option value={{i}}>{{i}}</option>
+            <option value="{{i}}">{{i}}</option>
             {%endfor%}
         </select>
         <input type="submit" name="submit" value="Submit">

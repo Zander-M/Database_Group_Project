@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Your registration is successful.</h1><br>
-    {% if BAID %}
+    {% if role == 'b' %}
         <h2>Your Booking Agent ID is {{BAID}}.</h2><br>
     {% endif %}
     <a href="/auth/login/{{role}}">Back to Login</a>

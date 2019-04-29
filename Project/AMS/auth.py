@@ -9,6 +9,7 @@
 
 import functools
 import uuid
+import pymysql
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
@@ -33,7 +34,7 @@ def reg_index():
     return render_template('reg_index.html')
 
 @bp.route('/register/<role>', methods=('GET', 'POST'))
-def register(role='c'):
+def register(role):
     """
     Register in the system. Based on different roles in the system, return
     different register page.
@@ -50,6 +51,7 @@ def register(role='c'):
     db = get_db()
     cursor = db.cursor()
     if request.method == "POST": # from register form submit, verify if register is successful.
+        BAID = 'success' # by default, Booking Agent ID is some random content.
 
         # Airline Staff Register
         if role == 'a': # a for Airline Staff
@@ -59,7 +61,7 @@ def register(role='c'):
             fname = request.form['fname'] # first name
             lname = request.form['lname'] # last name
             bday = request.form['bday'] # birthday
-            airline = request.form['airline'] # birthday
+            airline = request.form['airline'] # airline name 
             phone = request.form['phone']
             cursor.execute("SELECT * from `staff` WHERE `username` = %s",(username,)) # query database to check if the username is used
             if not username:
@@ -80,13 +82,14 @@ def register(role='c'):
                 error = 'Airline Staff {} already exists.'.format(username)
             elif error is None:
                 try:
-                    cursor.execute('INSERT INTO staff (username, pwd, first_name, last_name, date_of_birth, airline) values(%s,%s,%s,%s,%s,%s)',(username,generate_password_hash(password), fname, lname, bday, airline))
+                    cursor.execute("INSERT INTO staff (username, pwd, first_name, last_name, date_of_birth, airline) values(%s,%s,%s,%s,%s,%s)",(username,generate_password_hash(password), fname, lname, bday, airline))
+                    db.commit()
                     cursor.execute('INSERT INTO staff_phone (phone_number, username) values (%s,%s)',(phone, username))
                     db.commit()
-                    return redirect(url_for('auth.reg_confirm', role = role))
-                except:
+                    return redirect(url_for('auth.register_confirm', role = role, BAID = BAID))
+                except pymysql.Error as e:
                     db.rollback() # if register not successful then rollback
-                    error = 'Registration Error'
+                    error = e.args[1]
             flash(error)
             
         # Booking Agent Register
@@ -115,7 +118,7 @@ def register(role='c'):
 
                 except:
                     db.rollback()
-                    error = 'DBError?'
+                    error = 'DBError'
             flash(error)
 
         # Customer Register.
@@ -126,13 +129,14 @@ def register(role='c'):
             password_c = request.form['password_c']
             building = request.form['building']
             street = request.form['street']
+            city = request.form['city']
             state = request.form['state']
             phone = request.form['phone']
             passport = request.form['passport']
             passport_exp= request.form['passport_exp'] # Passport Expiration Date
             passport_country = request.form['passport_country']
             bday = request.form['bday'] # Date of birth
-            cursor.execute('SELECT * FROM customer where email = "%s"', email)
+            cursor.execute('SELECT * FROM customer where email = %s', email)
             if not username:
                 error = "Username is required"
             elif not email:
@@ -145,6 +149,8 @@ def register(role='c'):
                 error = "Building is required"
             elif not street:
                 error = "Street is required"
+            elif not city:
+                error = "City is required"
             elif not state:
                 error = "State is required"
             elif not passport:
@@ -161,13 +167,14 @@ def register(role='c'):
                 error = "This Email is already registered."
             elif error is None:
                 try:
-                    cursor.execute("INSERT INTO customer (email, name, pwd, building_number street, city, state, passport_number, passport_expiration_date, passport_country, date_of_birth) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',)",(email, username, generate_password_hash(password), building, street, state, passport, passport_exp, passport_country, bday))
-                    cursor.execute("INSERT INTO customer_phone values ('%s', '%s')", (phone, email)) 
+                    cursor.execute("INSERT INTO customer (email, name, pwd, building_number, street, city, state, passport_number, passport_expiration_date, passport_country, date_of_birth) values (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",(email, username, generate_password_hash(password), building, street, city, state, passport, passport_exp, passport_country, bday))
                     db.commit()
-                    return redirect(url_for('auth.register_confirm', role = role))
-                except:
+                    cursor.execute("INSERT INTO customer_phone (phone, email) values (%s, %s)", (phone, email)) 
+                    db.commit()
+                    return redirect(url_for('auth.register_confirm', role= role, BAID = BAID))
+                except pymysql.Error as e:
                     db.rollback()
-                    error = 'Register Error'
+                    error = e.args[1]
             flash(error)
             # redirect(url_for('auth.login'), role = role)
 
@@ -179,8 +186,19 @@ def register(role='c'):
     return render_template('reg_{}.html'.format(role), error = error, role = role)
 
 @bp.route('/register/confirm/<role>/<BAID>')
-def register_confirm(role, BAID = None):
-    return render_template('reg_confirm.html', role = role, BAID = BAID)
+def register_confirm(role, BAID):
+    """
+    Registration Confirm Page.
+    
+    Args:
+        BAID: Booking Agent ID, if a booking agent registered.
+        role: role of the user who tries to register
+    
+    Returns:
+        Confirm Page
+    """
+    
+    return render_template('reg_confirm.html', role=role, BAID=BAID)
 
 @bp.route('/login/')
 def login_index():
@@ -207,14 +225,69 @@ def login(role):
         Redirect to index if login successful. Error message otherwise.
     """
     if request.method == 'POST':
-
+        # requested by POST
+        error = None
+        db = get_db()
+        cursor = db.cursor()
         # airline staff
         if role == 'a':
-            pass
+            username = request.form['username']
+            password= request.form['password']
+            cursor.execute('SELECT * from staff WHERE username = %s', (username,)) # Fetch user info 
+            user = cursor.fetchone()
+            if user is None:
+                error = "Incorrect Username"
+            elif not check_password_hash(user[1], password):
+                error = "Incorrect Password"
+            
+            if error is None:
+                session.clear()
+                session['username'] = username
+                return redirect(url_for('a.index'))
+            
+            flash(error)
+            return render_template('login_a.html')
+            
+        #booking agent
         if role == 'b':
-            pass
+            email = request.form['email']
+            BAID = request.form['BAID']
+            password = request.form['password']
+            cursor.execute('SELECT * FROM booking_agent WHERE BAID = %s',(BAID,))
+            user = cursor.fetchone()
+            if user is None:
+                error = "Incorrect BAID"
+            elif user[0] != email:
+                error = "Incorrect Email"
+            elif not check_password_hash(user[1], password) :
+                error = "Incorrect Password"
+            
+            if error is None:
+                session.clear()
+                session['BAID'] = BAID
+                return redirect(url_for('b.index'))
+
+            flash(error)
+            return render_template('login_b.html')
+
+        #customer
         if role == 'c':
-            pass
+            email = request.form['email']
+            password = request.form['password']
+            cursor.execute("SELECT * FROM customer WHERE email = %s", (email,))
+            user = cursor.fetchone()
+            if user is None:
+                error = 'Incorrect Email'
+            elif not check_password_hash(user[2], password):
+                error = 'Incorrect Password'
+            
+            if error is None:
+                session.clear()
+                session['email'] = email
+                session['name'] = user[1]
+                redirect(url_for('c.index'))
+            flash(error)
+            return render_template('login_c.html')
     
     # Requested by GET, the user is trying to login
     if role == 'a':
