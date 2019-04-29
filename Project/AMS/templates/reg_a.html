@@ -1,5 +1,6 @@
 {%extends 'reg.html'%}
 {%block header%}Airline Staff Registration{%endblock%}
+<br>
 {%block content%}
         Username: <input type="text" name="username"><br>
         Password: <input type="password" name="password"><br>
@@ -12,7 +13,7 @@
         <!-- for now only one. Can add more later -->
         Airline: <select name="airline" id="airline">
             {%for i in airlines %}
-            <option value="i"></option>
+            <option value={{i}}>{{i}}</option>
             {%endfor%}
         </select>
         <input type="submit" name="submit" value="Submit">

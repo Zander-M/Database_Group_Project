@@ -85,16 +85,17 @@ def init_db_command():
     init_db()
     click.echo('Database Initialized')
     
-def close_db():
+def close_db(e=None):
     """
     Close database connection.
     
     Args:
-        None.    
+        e: event. Default none.    
     Returns:
         None
     """
-    if 'db' in g:
-        g.db.close()
+    db = g.pop('db',None)
+    if db is not None:
+        db.close()
 
     

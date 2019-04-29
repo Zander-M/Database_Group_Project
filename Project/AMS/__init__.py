@@ -6,16 +6,14 @@
 This file initialize most of the packages.
 '''
 
-from flask import Flask
+from flask import Flask, render_template
 import os
 import pymysql
-# create project
-app = Flask(__name__)
-# read settings from setting.py
-app.config.from_object('setting')
-app.config.from_envvar('FLASKR_SETTINGS')
 
-# connect database, create cursor
+# read settings from setting.py
+# app.config.from_object('setting')
+# app.config.from_envvar('FLASKR_SETTINGS')
+
 
 def create_app(test_config=None):
     """
@@ -66,6 +64,9 @@ def create_app(test_config=None):
     from . import b 
     app.register_blueprint(b.bp)
 
+    @app.route('/test')
+    def test():
+        return 'Hello There.'
     return app
     
     

@@ -11,4 +11,8 @@ from flask import (
 
 from AMS.db import get_db
 
-bp = Blueprint('b_a',__name__, url_prefix="/b_a")
+bp = Blueprint('b',__name__, url_prefix="/b")
+
+@bp.route('/confirm')
+def reg_confirm(uuid):
+    return render_template('b_confirm.html', uuid=uuid)
