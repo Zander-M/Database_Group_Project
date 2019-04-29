@@ -2,7 +2,8 @@
 {%block header %} Booking Agent Login {%endblock%}
 {%block content%}
 <form action="/auth/login" method="POST">
-    Username: <input type="text" name="username" required><br>
+    Booking Agent ID: <input type="text" name="BAID" required><br>
+    Email: <input type="email" name="email" required><br>
     Password: <input type="password" name="password" required><br>
     <button type="submit" value="Login">Login</button>
     <a href="/reg/{{role}}"><button type="button" value="Register">Register</button>

@@ -6,6 +6,10 @@
     <title>Booking Agent Registration Confirm</title>
 </head>
 <body>
-    <h1>Congratulations! Your registration is successful, and your Booking Agent ID is {{uuid}}. Please remember it for login.</h1>
+    <h1>Your registration is successful.</h1><br>
+    {%if role == 'b'%}
+    <h1>Your Booking Agent ID is {{BAID}}.</h1><br>
+    {%endif%}
+    <a href="/auth/login/{{role}}"></a>
 </body>
 </html>

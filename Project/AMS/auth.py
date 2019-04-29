@@ -1,7 +1,11 @@
 # -*- coding: UTF-8 -*- #
 # Author: Zander_M
 # Time: April, 25, 2019
-# Title: Authentication File
+# Title: Authentications
+
+'''
+    This file contains all the functions related to account management, such as register, login, logout, change password, etc.
+'''
 
 import functools
 import uuid
@@ -39,7 +43,7 @@ def register(role='c'):
     
     Returns:
         If requested by get, return rendered register page.
-        If requested by post, redirect to login page if registered successfully,
+        If requested by post, redirect to reg_confirm page if registered successfully,
         else return error msg.
     """
     error = None
@@ -79,10 +83,11 @@ def register(role='c'):
                     cursor.execute('INSERT INTO staff (username, pwd, first_name, last_name, date_of_birth, airline) values("%s","%s","%s","%s","%s","%s",)',(username,generate_password_hash(password), fname, lname, bday, airline))
                     cursor.execute('INSERT INTO staff_phone values ("%s","%s")',(phone, username))
                     db.commit()
-                    return redirect(url_for('auth.login',role = role))
+                    redirect(url_for('auth.reg_confirm', role = role))
                 except:
                     db.rollback() # if register not successful then rollback
                     error = 'Register Error'
+            flash(error)
             
         # Booking Agent Register
         elif role == 'b': # b for Booking Agent
@@ -103,12 +108,14 @@ def register(role='c'):
                 cursor.execute("SELECT * FROM booking_agent where BAID = %s", (BAID,))
                 if cursor.fetchone() is not None:
                     BAID = str(uuid.uuid4())[:8] # generate Booking Agent ID
-            try:
-                cursor.execute("INSERT INTO booking_agent (email, pwd, BAID) values (%s,%s,%s)",(email, generate_password_hash(password), BAID))
-                db.commit()
-            except:
-                db.rollback()
-            return redirect(url_for('auth.reg_confirm'))
+                try:
+                    cursor.execute("INSERT INTO booking_agent (email, pwd, BAID) values (%s,%s,%s)",(email, generate_password_hash(password), BAID))
+                    db.commit()
+                    redirect(url_for('auth.register_confirm', role = role, BAID = BAID))
+                except:
+                    db.rollback()
+                    error = 'Register Error'
+            flash(error)
 
         # Customer Register.
         elif role == 'c':
@@ -156,30 +163,37 @@ def register(role='c'):
                     cursor.execute("INSERT INTO customer (email, name, pwd, building_number street, city, state, passport_number, passport_expiration_date, passport_country, date_of_birth) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s',)",(email, username, generate_password_hash(password), building, street, state, passport, passport_exp, passport_country, bday))
                     cursor.execute("INSERT INTO customer_phone values ('%s', '%s')", (phone, email)) 
                     db.commit()
+                    redirect(url_for('auth.register_confirm', role = role))
                 except:
                     db.rollback()
+                    error = 'Register Error'
             flash(error)
             # redirect(url_for('auth.login'), role = role)
-            redirect(url_for('auth.login'))
 
     if role == 'a': # fetch all airline names if visiting airline staff registration page
         cursor.execute("SELECT * from airline")
         airlines = cursor.fetchall()[0]
         return render_template('reg_a.html', error = error, role = role, airlines = airlines)
-    flash(error)
+    # Booking Agent & Customer Login
     return render_template('reg_{}.html'.format(role), error = error, role = role)
+
+@bp.route('/register/confirm')
+def register_confirm(role, BAID = None):
+    return render_template('reg_confirm.html', role = role, BAID = BAID)
 
 @bp.route('/login/')
 def login_index():
     """
-    Login Index Page.
+    Return Login Index page.
     
     Args:
         None.    
     Returns:
-        Login index page.
+        The Login index page.
     """
-    
+
+    return render_template('login_index.html')
+
 @bp.route('/login/<role>', methods=('GET', 'POST'))
 def login(role):
     """
@@ -200,5 +214,11 @@ def login(role):
             pass
         if role == 'c':
             pass
-        return render_template('reg_{}.html'.format(role))
-    return 'Hello! Registration Successful!'
+    
+    # Requested by GET, the user is trying to login
+    if role == 'a':
+        return render_template('login_a.html')
+    if role == 'b':
+        return render_template('login_b.html')
+    if role == 'c':
+        return render_template('login_c.html')
