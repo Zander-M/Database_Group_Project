@@ -242,6 +242,7 @@ def login(role):
             
             if error is None:
                 session.clear()
+                session['role'] = 'a'
                 session['username'] = username
                 return redirect(url_for('a.index'))
             
@@ -265,6 +266,7 @@ def login(role):
             if error is None:
                 session.clear()
                 session['BAID'] = BAID
+                session['role'] = 'b'
                 return redirect(url_for('b.index'))
 
             flash(error)
@@ -280,12 +282,11 @@ def login(role):
                 error = 'Incorrect Email'
             elif not check_password_hash(user[2], password):
                 error = 'Incorrect Password'
-            
             if error is None:
                 session.clear()
                 session['email'] = email
-                session['name'] = user[1]
-                redirect(url_for('c.index'))
+                session['role'] = 'c'
+                return redirect(url_for('c.index'))
             flash(error)
             return render_template('login_c.html')
     
@@ -296,3 +297,78 @@ def login(role):
         return render_template('login_b.html')
     if role == 'c':
         return render_template('login_c.html')
+
+@bp.before_app_request
+def load_logged_in_user():
+    """
+    If logged in and session hasn't expired, user doesn't need to login again.
+    By default, all identity information is stored in g.user
+    
+    Args:
+        None    
+    Returns:
+        None
+    """
+    
+    role = session.get('role')
+    if role == 'a':
+        username = session.get('username')
+        if username is None:
+            g.user = None 
+        else:
+            cursor = get_cursor()
+            cursor.execute("SELECT * FROM staff WHERE username = %s"\
+                ,(username,))
+            g.user = cursor.fetchone()
+            g.username = username
+            g.role = role
+    elif role == 'b':
+        BAID = session.get('BAID')
+        if BAID is None:
+            g.user = None 
+        else:
+            cursor= get_cursor()
+            cursor.execute("SELECT * FROM booking_agent WHERE BAID = %s",(BAID,))
+            g.user = cursor.fetchone()
+            g.username = BAID # Booking Agent ID 
+            g.role = role
+    elif role == 'c':
+        email = session.get('email')
+        name = session.get('name')
+        if email is None:
+            g.user = None 
+            g.role = role
+        else:
+            cursor = get_cursor()
+            cursor.execute("SELECT * FROM customer WHERE email = %s",(email,))
+            g.user = cursor.fetchone()
+            g.username = g.user[1] # username column
+    else:
+        g.user = None
+
+@bp.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('index'))
+
+def login_required(view):
+    """
+    For index pages for users, login is required. If not logged in, redirect to 
+    login index page. Also, check if the page matches the user's role. Every page
+    must first start with the 
+    
+    Args:
+        view: View that requires login.
+    
+    Returns:
+        wrapped_view: view that wrapped with login check.
+    """
+    
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        
+        if g.user is None:
+            return redirect(url_for('auth.login_index'))
+        return view(**kwargs)
+
+    return wrapped_view

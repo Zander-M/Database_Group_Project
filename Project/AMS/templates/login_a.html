@@ -1,14 +1,9 @@
 {%extends "login.html"%}
 {%block header %} Airline Staff Login {%endblock%}
-{%block content%}
-<form action="/auth/login" method="POST">
+{% block form %}
     Username: <input type="text" name="username" required><br>
     Password: <input type="password" name="password" required><br>
     <button type="submit" value="Login">Login</button>
-    <a href="/auth/register/{{role}}"><button type="button" value="Register">Register</button>
+    <a href="/auth/register/a"><button type="button" value="Register">Register</button>
     <a href="">Forget Password?</a>
-    <div>{{error}}</div><br>
-    <div>{{usr}}</div><br>
-    <div>{{pw}}</div><br>
-</form>
-{%endblock%}
+{% endblock %}

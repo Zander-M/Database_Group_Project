@@ -64,9 +64,9 @@ def create_app(test_config=None):
     from . import b 
     app.register_blueprint(b.bp)
 
-    @app.route('/test')
-    def test():
-        return 'Hello There.'
+    @app.route('/')
+    def index():
+        return render_template('index.html')
     return app
     
     

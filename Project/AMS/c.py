@@ -11,4 +11,21 @@ from flask import (
 
 from AMS.db import get_db
 
-bp = Blueprint('customer',__name__)
+bp = Blueprint('c',__name__,url_prefix='/c')
+
+@bp.route('/')
+def index():
+    """
+    Return Airline Staff index page.
+    
+    Args:
+        None
+    
+    Returns:
+        Customer index page
+    """
+    
+    return render_template('index_c.html')
+
+
+#TODO: a login required function is needed for the page (check g.role)

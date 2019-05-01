@@ -6,12 +6,19 @@
     <title>Index Page</title>
 </head>
 <body>
-    this is the index page. <br>
-    <a href="/login">Login</a>
-    <a href="/login/as">Login as Airline Staff</a>
-    <a href="/login/ba">Login as Booking Agent </a>
-    <a href="/reg">Register</a>
-    <a href="/reg/as">Register as Airline Staff</a>
-    <a href="/reg/ba">Register as Booking Agent </a>
+    {% if g.user %}
+    <nav><a href="">{{g.username}}</a><a href="{{url_for('auth.logout')}}">Log Out</a></nav>
+    {% else %}
+    <a href="/auth/login/a">Login as Airline Staff</a>
+    <a href="/auth/login/b">Login as Booking Agent</a>
+    <a href="/auth/login/c">Login as Customer</a><br>
+    <a href="/auth/register/a">Register as Airline Staff</a>
+    <a href="/auth/register/b">Register as Booking Agent</a>
+    <a href="/auth/register/c">Register as Customer</a>
+    {% endif %}
+    {% block content %}
+    {% endblock %}
+    {% block footer%}
+    {% endblock %}
 </body>
 </html>

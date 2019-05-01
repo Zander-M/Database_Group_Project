@@ -13,6 +13,19 @@ from AMS.db import get_db
 
 bp = Blueprint('b',__name__, url_prefix="/b")
 
-@bp.route('/confirm')
-def reg_confirm(uuid):
-    return render_template('b_confirm.html', uuid=uuid)
+@bp.route('/')
+def index():
+    """
+    Return Booking Agent index page.
+    
+    Args:
+        None
+    
+    Returns:
+        Booking Agent index page
+    """
+    
+    return render_template('index_b.html')
+
+
+#TODO: a login required function is needed for the page (check g.role)
