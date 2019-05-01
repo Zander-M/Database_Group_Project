@@ -20,6 +20,19 @@ from AMS.db import get_db, get_cursor
 
 bp = Blueprint('auth',__name__, url_prefix="/auth")
 
+@bp.route('/')
+def auth_index():
+    """
+    Authentication index page. User can register, login, logout from this page
+    
+    Args:
+        param: param description.
+    
+    Returns:
+        The return value.
+    """
+    
+    return render_template('auth_index.html')
 @bp.route('/register/')
 def reg_index():
     """
