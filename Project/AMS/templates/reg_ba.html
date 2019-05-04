@@ -1,0 +1,31 @@
+{%extends "reg.html"%}
+{%block banner %} <div class="">
+    Booking Agent Register
+</div> {%endblock%}
+{%block content%}
+<div class="col-lg-4">
+
+</div>
+<div class="col-lg-4">
+    <p class="text-muted">Login Information</p>
+    <div class="form-group">
+        <label for="email">Email</label>
+        <input type="text" id="email" name="email" required class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="pwd">Password</label>
+        <input type="password" id="pwd" name="password" required class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="confirm_pwd">Confirm Password</label>
+        <input type="password" id="confirm_pwd" required class="form-control">
+    </div>
+    <p class="text-muted">Agent Information</p>
+    <div class="form-group">
+        <label for="agent">Agent ID</label>
+        <input type="text" id="agent" name="agent" required class="form-control">
+    </div>
+</div>
+<br>
+<div>{{error}}</div><br>
+{%endblock%}

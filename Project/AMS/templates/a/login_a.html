@@ -1,4 +1,5 @@
 {%extends "login.html"%}
+<<<<<<< HEAD:Project/AMS/templates/a/login_a.html
 {%block header %} Airline Staff Login {%endblock%}
 {% block form %}
     Username: <input type="text" name="username" required><br>
@@ -7,3 +8,29 @@
     <a href="/auth/register/a"><button type="button" value="Register">Register</button>
     <a href="">Forget Password?</a>
 {% endblock %}
+=======
+{%block header %} <div>
+    Airline Staff Login
+</div> {%endblock%}
+{%block content%}
+<form action="/login" method="POST">
+
+    <div class="form-group">
+        <label for="un">User Name</label>
+        <input type="text" id="un" name="username" required class="form-control" placeholder="Enter User Name">
+    </div>
+    <div class="form-group">
+            <label for="pwd">Password</label>
+            <input type="password" id="pwd" name="password" required class="form-control" placeholder="Password">
+    </div>
+    <button type="submit" value="Login" class="btn btn-primary">Login</button>
+    <br>
+    <br>
+    <p style="text-align:center">Not in our system? <a href="/reg/{{role}}">Register Now!</a></p>
+    <div>{{error}}</div><br>
+    <div>{{usr}}</div><br>
+    <div>{{pw}}</div><br>
+
+</form>
+{%endblock%}
+>>>>>>> 1a04d5bdb2b1e00721cce5b84d2d74d3a35537b5:Project/AMS/templates/login_as.html

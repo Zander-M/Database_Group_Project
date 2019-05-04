@@ -1,0 +1,25 @@
+{%extends "login.html"%}
+{%block header %} <div class="">
+    User Login
+</div> {%endblock%}
+{%block content%}
+<form action="/login" method="POST">
+
+    <div class="form-group">
+        <label for="un">Email</label>
+        <input type="text" id="un" name="username" required class="form-control" placeholder="Enter Email Address">
+    </div>
+    <div class="form-group">
+            <label for="pwd">Password</label>
+            <input type="password" id="pwd" name="password" required class="form-control" placeholder="Password">
+    </div>
+    <button type="submit" value="Login" class="btn btn-primary">Login</button>
+    <br>
+    <br>
+    <p style="text-align:center">Not a member? <a href="/reg/{{role}}">Register Now!</a></p>
+    <div>{{error}}</div><br>
+    <div>{{usr}}</div><br>
+    <div>{{pw}}</div><br>
+
+</form>
+{%endblock%}

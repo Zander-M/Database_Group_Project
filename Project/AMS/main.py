@@ -32,6 +32,7 @@ def index():
 
 # registration page
 
+@app.route('/reg/', methods = ['GET', 'POST'])
 @app.route('/reg/<role>', methods = ['GET', 'POST'])
 def reg(role='user'):
     """
@@ -123,7 +124,7 @@ def dashboard():
         None.
     """
     
-    pass
+    return render_template('dashboard_{}.html'.format('user'), username = 'testuser', role = 'user')
 
 # 
 # Error page
@@ -136,4 +137,4 @@ def test():
     return "Hello"
 
 if __name__ == "__main__":
-    app.run()
+    app.run(debug = True)

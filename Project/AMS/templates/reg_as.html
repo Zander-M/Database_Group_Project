@@ -1,0 +1,53 @@
+{%extends "reg.html"%}
+{%block banner %} <div class="">
+    Airline Staff Register
+</div> {%endblock%}
+{%block content%}
+
+<div class="col-lg-4">
+    <p class="text-muted">Login Information</p>
+    <div class="form-group">
+        <label for="un">User Name</label>
+        <input type="text" id="un" name="un" required class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="pwd">Password</label>
+        <input type="password" id="pwd" name="password" required class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="confirm_pwd">Confirm Password</label>
+        <input type="password" id="confirm_pwd" required class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="airline">Airline</label>
+        <input type="text" id="airline" name="airline" required class="form-control">
+    </div>
+</div>
+<div class="col-lg-4">
+    <p class="text-muted">Personal Information</p>
+    <div class="form-group">
+        <label for="first">First Name</label>
+        <input type="text" id="first" name="first" required class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="last">Last Name</label>
+        <input type="text" id="last" name="last" required class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="birthday">Date of Birth</label>
+        <input type="text" id="birthday" name="birthday" required class="form-control">
+        <script>
+            $('#birthday').datepicker({
+                autoclose: true,
+            });
+        </script>
+    </div>
+    <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="text" id="phone" name="phone" required class="form-control">
+        <small id="phonehelp" class="form-text text-muted">Separate multiple phone numbers with comma</small>
+    </div>
+</div>
+<br>
+<div>{{error}}</div><br>
+{%endblock%}
