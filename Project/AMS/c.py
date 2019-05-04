@@ -241,7 +241,7 @@ def purchase_success():
     
     return render_template('c/purchase_success.html')
 
-@bp.route('/bill')
+@bp.route('/bill', method=["GET", "POST"])
 @login_required
 def bill():
     """
@@ -253,5 +253,16 @@ def bill():
     Returns:
         Customer index page
     """
+    if request.method == "POST":
+        pass
     
-    return render_template('c/bill.html')
+    cursor = get_cursor()    
+    cursor.execute("SELECT SUM(sold_price) from ticket where YEAR(purchase_date_time) = YEAR(CURDATE()) - 1 AND customer_email = %s GROUP BY customer_email", (g.user[0],))
+    past_year_spent = cursor.fetchone()
+    past_six_month_spent = []
+    for i in range(6, -1):
+        cursor.execute("SELECT SUM(sold_price) from ticket where MONTH(purchase_date_time) = MONTH(CURDATE()) %s - 1 AND customer_email = %s GROUP BY customer_email", (i, g.user[0],))
+        past_six_month_spent.append(cursor.fetchone())
+    return render_template('c/bill.html', past_year_spent = past_year_spent, past_six_month_spent = past_six_month_spent)
+
+# TODO: front end needs to handle the data
