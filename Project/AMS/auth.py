@@ -194,9 +194,9 @@ def register(role):
     if role == 'a': # fetch all airline names if visiting airline staff registration page
         cursor.execute("SELECT * from airline")
         airlines = cursor.fetchall()[0]
-        return render_template('reg_a.html', error = error, role = role, airlines = airlines)
+        return render_template('a/reg_a.html', error = error, role = role, airlines = airlines)
     # Booking Agent & Customer Login
-    return render_template('reg_{}.html'.format(role), error = error, role = role)
+    return render_template('{}/reg_{}.html'.format(role,role), error = error, role = role)
 
 @bp.route('/register/confirm/<role>/<BAID>')
 def register_confirm(role, BAID):
@@ -260,7 +260,7 @@ def login(role):
                 return redirect(url_for('a.index'))
             
             flash(error)
-            return render_template('login_a.html')
+            return render_template('a/login_a.html')
             
         #booking agent
         if role == 'b':
@@ -283,7 +283,7 @@ def login(role):
                 return redirect(url_for('b.index'))
 
             flash(error)
-            return render_template('login_b.html')
+            return render_template('b/login_b.html')
 
         #customer
         if role == 'c':
@@ -301,15 +301,15 @@ def login(role):
                 session['role'] = 'c'
                 return redirect(url_for('c.index'))
             flash(error)
-            return render_template('login_c.html')
+            return render_template('c/login_c.html')
     
     # Requested by GET, the user is trying to login
     if role == 'a':
-        return render_template('login_a.html')
+        return render_template('a/login_a.html')
     if role == 'b':
-        return render_template('login_b.html')
+        return render_template('b/login_b.html')
     if role == 'c':
-        return render_template('login_c.html')
+        return render_template('c/login_c.html')
 
 @bp.before_app_request
 def load_logged_in_user():
@@ -356,6 +356,7 @@ def load_logged_in_user():
             cursor.execute("SELECT * FROM customer WHERE email = %s",(email,))
             g.user = cursor.fetchone()
             g.username = g.user[1] # username column
+            g.role = role
     else:
         g.user = None
 

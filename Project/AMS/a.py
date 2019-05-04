@@ -53,4 +53,139 @@ def index():
         Airline Staff index page
     """
     
-    return render_template('index_a.html')
+    return render_template('a/index_a.html')
+
+@bp.route('/flights')
+@login_required
+def flights():
+    """
+    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
+    
+    Args:
+        None
+    
+    Returns:
+        Airline Staff index page
+    """
+    
+    return render_template('a/flights.html')
+
+@bp.route('/addflights')
+@login_required
+def addflights():
+    """
+    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
+    
+    Args:
+        None
+    
+    Returns:
+        Airline Staff index page
+    """
+    
+    return render_template('a/addflights.html')
+
+@bp.route('/addplane')
+@login_required
+def addplane():
+    """
+    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
+    
+    Args:
+        None
+    
+    Returns:
+        Airline Staff index page
+    """
+    
+    return render_template('a/addplane.html')
+
+@bp.route('/addairport')
+@login_required
+def addairport():
+    """
+    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
+    
+    Args:
+        None
+    
+    Returns:
+        Airline Staff index page
+    """
+    
+    return render_template('a/addairport.html')
+
+@bp.route('/ba')
+@login_required
+def booking_agent():
+    """
+    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
+    
+    Args:
+        None
+    
+    Returns:
+        Airline Staff index page
+    """
+    
+    return render_template('a/ba.html')
+
+@bp.route('/customer')
+@login_required
+def customer():
+    """
+    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
+    
+    Args:
+        None
+    
+    Returns:
+        Airline Staff index page
+    """
+    
+    return render_template('a/customer.html')
+
+@bp.route('/reports')
+@login_required
+def reports():
+    """
+    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
+    
+    Args:
+        None
+    
+    Returns:
+        Airline Staff index page
+    """
+    
+    return render_template('a/reports.html')
+
+@bp.route('/revenue')
+@login_required
+def revenue():
+    """
+    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
+    
+    Args:
+        None
+    
+    Returns:
+        Airline Staff index page
+    """
+    
+    return render_template('a/revenue.html')
+
+@bp.route('/topdest')
+@login_required
+def topdest():
+    """
+    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
+    
+    Args:
+        None
+    
+    Returns:
+        Airline Staff index page
+    """
+    
+    return render_template('a/topdest.html')

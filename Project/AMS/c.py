@@ -49,4 +49,4 @@ def index():
         Customer index page
     """
     
-    return render_template('index_c.html')
+    return render_template('c/index_c.html')

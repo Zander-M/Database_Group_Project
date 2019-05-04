@@ -48,4 +48,4 @@ def index():
         Booking Agent index page
     """
     
-    return render_template('index_b.html')
+    return render_template('b/index_b.html')
