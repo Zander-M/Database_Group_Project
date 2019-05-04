@@ -8,7 +8,7 @@ This is the group project for Databases class.
 
 2019-04-29-12-48-52: Changed pwd fields for all accounts into varchar(20) (sha256). Rename booking_agent_id to BAID. Change BAID to varchar(8) (UUID length).
 
-2019-05-01-16-20-33: Tested Register/ Login functions. Worked well. Should be finished by May 3rd.
+2019-05-01-16-20-33: Tested Register/ Login functions. Worked well. Should be finished by May 3rd.  
 TODO:  
 
 1) Verify if the user is logged in and the index pages matches the role of the users.  
