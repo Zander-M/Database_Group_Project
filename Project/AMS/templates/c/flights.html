@@ -1,7 +1,24 @@
 {% extends "index.html"%}
 {% block content%}
- <h1>Customer Index</h1>
- <a href="/c/flights">My Flights</a>
- <a href="/c/search">Search Flights</a>
- <a href="/c/bill">My Spending</a>
+ <h1>My Flights</h1>
+ {% if flights %}
+ <table> <tr>
+     <th>Airline</th>
+     <th>Departure Time</th>
+     <th>Departure Airport</th>
+     <th>Arrive Time</th>
+     <th>Arrive Airport</th>
+     <th>Flight Status</th>
+    </tr>
+    {% for items in flights %}
+    <tr>
+        {% for item in items %}
+        <td>{{item}}</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </table>
+ {% else %}
+ <h2>You haven't ordered any flight</h2>
+ {% endif%}
  {% endblock %}

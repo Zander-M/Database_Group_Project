@@ -59,13 +59,13 @@ def index():
 @login_required
 def flights():
     """
-    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
-    
+    Return Airline staff flights page. By default it displays the flights in 30 days. By POST query it returns the date within certain time range.
+
     Args:
         None
     
     Returns:
-        Airline Staff index page
+        Airline Staff flights page
     """
     
     return render_template('a/flights.html')
@@ -74,13 +74,13 @@ def flights():
 @login_required
 def addflights():
     """
-    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
-    
+    Return add flights page. Airline staffs can add flights for their company.
+
     Args:
         None
     
     Returns:
-        Airline Staff index page
+        Airline Staff add flights page
     """
     
     return render_template('a/addflights.html')
@@ -89,13 +89,13 @@ def addflights():
 @login_required
 def addplane():
     """
-    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
-    
+    Return add plane page. Airline staffs can add planes for their company.
+
     Args:
         None
     
     Returns:
-        Airline Staff index page
+        Airline Staff add flights page
     """
     
     return render_template('a/addplane.html')
@@ -104,13 +104,13 @@ def addplane():
 @login_required
 def addairport():
     """
-    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
+    Return add airport page. Airline staffs can add airports for their company.
     
     Args:
         None
     
     Returns:
-        Airline Staff index page
+        Airline Staff add airport page
     """
     
     return render_template('a/addairport.html')
@@ -119,13 +119,12 @@ def addairport():
 @login_required
 def booking_agent():
     """
-    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
-    
+    Return booking agent page. Includes top 5 ticket sell in the last year and the last month
     Args:
         None
     
     Returns:
-        Airline Staff index page
+        Airline Staff booking agent page
     """
     
     return render_template('a/ba.html')
@@ -134,13 +133,13 @@ def booking_agent():
 @login_required
 def customer():
     """
-    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
     
+    Return customer page. Includes most frequent customer last year. Also, Airline staff can also see all the boarding records of a customer.
     Args:
         None
     
     Returns:
-        Airline Staff index page
+        Airline Staff customer page
     """
     
     return render_template('a/customer.html')
@@ -149,13 +148,12 @@ def customer():
 @login_required
 def reports():
     """
-    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
-    
+    Ticket info in the past month/year based on time range.    
     Args:
         None
     
     Returns:
-        Airline Staff index page
+        Airline Staff report page
     """
     
     return render_template('a/reports.html')
@@ -164,13 +162,12 @@ def reports():
 @login_required
 def revenue():
     """
-    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
-    
+    Revenue from the last month/year from direct sell/indirect sell    
     Args:
         None
     
     Returns:
-        Airline Staff index page
+        Airline Staff revenue page
     """
     
     return render_template('a/revenue.html')
@@ -179,13 +176,12 @@ def revenue():
 @login_required
 def topdest():
     """
-    Return Flights page. For airline staff, it contains flights in the future 30 days of the airline company the staff works for. Or by specifying range it shows all the flights within the time range.
-    
+    Top destination    
     Args:
         None
     
     Returns:
-        Airline Staff index page
+        Airline Staff top destination page
     """
     
     return render_template('a/topdest.html')

@@ -9,7 +9,7 @@ from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for 
 )
 
-from AMS.db import get_db
+from AMS.db import get_db, get_cursor
 
 bp = Blueprint('b',__name__, url_prefix="/b")
 
@@ -49,3 +49,62 @@ def index():
     """
     
     return render_template('b/index_b.html')
+
+@bp.route('/flights')
+@login_required
+def flights():
+    """
+    View all the flights the agent purchased representing a customer.
+
+    Args:
+        None
+    
+    Returns:
+        Booking Agent index page
+    """
+    
+    return render_template('b/flights.html')
+
+@bp.route('/search')
+@login_required
+def search():
+    """
+    Search future flights    
+
+    Args:
+        None
+    
+    Returns:
+        Booking Agent index page
+    """
+    
+    return render_template('b/search.html')
+
+@bp.route('/commission')
+@login_required
+def commission():
+    """
+     View total amount of commission received in the past 30 days and the average commission he/she received per ticket booked in the past 30 days and total number of tickets sold by him in the past 30 days. Specifing time range is also allowed.
+    
+    Args:
+        None
+    
+    Returns:
+        Booking Agent commission page
+    """
+    
+    return render_template('b/commission.html')
+
+@bp.route('/customer')
+@login_required
+def customer():
+    """
+    Show top 5 customer based on tickets purchased in last 6 months, and top 5 customer based on commissions received last year.    
+    Args:
+        None
+    
+    Returns:
+        Booking Agent index page
+    """
+    
+    return render_template('b/customer.html')

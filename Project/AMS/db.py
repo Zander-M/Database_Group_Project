@@ -53,7 +53,8 @@ def get_cursor():
     
     if 'db' not in g:
         db = get_db()
-    return db.cursor()
+        return db.cursor()
+    return g.db.cursor()
     
 # create cursor
 
