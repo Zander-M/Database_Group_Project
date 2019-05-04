@@ -1,7 +1,63 @@
 {% extends "index.html"%}
 {% block content%}
- <h1>Customer Index</h1>
- <a href="/c/flights">My Flights</a>
- <a href="/c/search">Search Flights</a>
- <a href="/c/bill">My Spending</a>
- {% endblock %}
+<h1>Search</h1>
+<form action="" method="POST">
+     From:<select name="dept_airport" id="">
+         {% for airport in dept_airport%}
+            <option value="{{airport[0]}}">{{airport[0]}}</option>
+         {% endfor %}
+     </select>
+     To:<select name="arrv_airport" id="">
+         {% for airport in arrv_airport%}
+            <option value="{{airport[0]}}">{{airport[0]}}</option>
+         {% endfor %}
+     </select>
+     At: <input type="date" name="dept_time">
+     <input type="radio" name="trip" value="oneway">One way
+     <input type="radio" name="trip" value="twoway">Two way
+     <input type="submit" value="Search">
+</form>
+{% if result == 'e'%}
+{% elif result %}
+<table>
+    <tr>
+        <th>Airline</th>
+        <th>Departure Time</th>
+        <th>Arrive Time</th>
+        <th>Price</th>
+    </tr>
+    {% for item in result %}
+        <tr>
+            {% for i in item[:4] %}
+                <td>{{i}}</td>
+            {% endfor %}
+            {% if item[3] != "Sold Out"%}
+            <td><form action="{{url_for('c.confirm_order')}}" method="POST">
+                <input type="radio" value="{{item[4]}}" name="flight_id" checked style="visibility:hidden">
+                <input type="radio" value="search" name="type" checked style="visibility:hidden">
+                <input type="submit" name="submit" value="Order"></form></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+</table>
+{% else %}
+<h2>Sorry, no matching flights.</h2>
+{% endif %}
+{% if back %}
+<h2>Back</h2><br>
+    {% for item in back%}
+        <tr>
+            {% for i in item[:4] %}
+                <td>{{i}}</td>
+            {% endfor %}
+            {% if item[3] != "Sold Out"%}
+            <td><form action="{{url_for('c.confirm_order')}}" method="POST">
+                <input type="radio" value="{{item[4]}}" name="flight_id" checked style="visibility:hidden">
+                <input type="radio" value="search" name="type" checked style="visibility:hidden">
+                <input type="submit" name="submit" value="Order"></form></td>
+            {% endif %}
+        </tr>
+    {% endfor %}
+{% endif %}
+<table></table>
+{% endblock %}

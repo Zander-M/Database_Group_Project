@@ -4,6 +4,9 @@
 # Title: Customer Blueprint 
 
 import functools
+from werkzeug.security import check_password_hash
+
+import pymysql
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
@@ -66,16 +69,17 @@ def flights():
     cursor = get_cursor()
     cursor.execute("SELECT airline, dept_time, dept_airport, arrv_time, arrv_airport, flight_status FROM flight NATURAL JOIN ticket WHERE customer_email = %s", (g.user[0],))
     flights = list(cursor.fetchall())
+    n_flights = [] # store them in a new list to change the status
     for row in flights:
         row = list(row)
         if row[-1] == 0: # 0 for on time
             row[-1] = 'On time'
         elif row[-1] == 1: # 1 for delay
             row[-1] = 'Delay'
-        assert row
-    return render_template('c/flights.html', flights = flights)
+        n_flights.append(row)
+    return render_template('c/flights.html', flights = n_flights)
 
-@bp.route('/search')
+@bp.route('/search', methods=["GET","POST"])
 @login_required
 def search():
     """
@@ -87,14 +91,161 @@ def search():
     Returns:
         Customer index page
     """
+    n_flights = 'e' 
+    db = get_db()
+    cursor = db.cursor()
+    cursor.execute("SELECT distinct dept_airport from flight")
+    dept_airport = cursor.fetchall()
+    cursor.execute("SELECT distinct arrv_airport from flight")
+    arrv_airport = cursor.fetchall()
+    b_n_flights = None
+    if request.method == "POST": # from search form submit
+
+        f_dept_airport = request.form['dept_airport'] # search form names
+        f_dept_time = request.form['dept_time']
+
+        f_arrv_airport= request.form['arrv_airport']
+        cursor.execute("SELECT * from `flight` WHERE dept_airport= %s AND arrv_airport = %s and DATE(dept_time) = %s",(f_dept_airport, f_arrv_airport,f_dept_time))     
+        flights = cursor.fetchall() # all the planes that matches the result
+        n_flights = []
+        for flight in flights:
+            flight = list(flight)
+            base_price = flight[3]
+            # find out how many tickets are sold
+            cursor.execute("SELECT * FROM ticket WHERE flight_id = %s", flight[0])
+            ticket_sold = len(cursor.fetchall())
+            # find out how many seats are available
+            cursor.execute("SELECT seat FROM airplane where airplane_id = %s",(flight[2]))
+            seat = cursor.fetchone()[0]
+            if ticket_sold == seat:
+                price = 'Sold Out'
+            elif ticket_sold / seat >= 0.7:
+                price = int(base_price * 1.2)  # when 70% of tickets are sold, raise the price
+            else:
+                price = base_price
+            flight = [flight[1], flight[5], flight[6], price, flight[0]] # airline, dept_time, arrv_time, price, flight_id
+            n_flights.append(flight)
+        # if comming back
+        if request.form['trip'] == 'twoway':
+            f_back_time = request.form['back_time']
+            cursor.execute("SELECT * from `flight` WHERE dept_airport= %s AND arrv_airport = %s and DATE(dept_time) = %s",(f_arrv_airport, f_dept_airport,f_back_time))     
+            b_flights = cursor.fetchall() # all the planes that matches the result
+            b_n_flights = []
+            for b_flight in b_flights:
+                b_flight = list(b_flight)
+                base_price = b_flight[3]
+                # find out how many tickets are sold
+                cursor.execute("SELECT * FROM ticket WHERE flight_id = %s", b_flight[0])
+                ticket_sold = len(cursor.fetchall())
+                # find out how many seats are available
+                cursor.execute("SELECT seat FROM airplane where airplane_id = %s",(flight[2]))
+                seat = cursor.fetchone()[0]
+                if ticket_sold == seat:
+                    price = 'Sold Out'
+                elif ticket_sold / seat >= 0.7:
+                    price = int(base_price * 1.2)  # when 70% of tickets are sold, raise the price
+                else:
+                    price = base_price
+                b_flight = [b_flight[1], b_flight[5], b_flight[6], price, b_flight[0]] # airline, dept_time, arrv_time, price, flight_id
+                b_n_flights.append(flight)
+    return render_template('c/search.html', dept_airport = dept_airport, arrv_airport = arrv_airport, result= n_flights, back = b_n_flights)
+
+@bp.route('/confirm_order', methods=["POST"])
+@login_required
+def confirm_order():
+    """
+    Confirm order
     
-    return render_template('c/search.html')
+    Args:
+        None
+    
+    Returns:
+        Customer index page
+    """
+    db = get_db()
+    cursor = db.cursor()
+    # check ticket price
+    
+    if request.form['type'] == 'search':
+        g.flight_id = request.form['flight_id']
+        cursor.execute("SELECT * FROM flight WHERE flight_id = %s", (g.flight_id,))
+        flight = list(cursor.fetchone())
+        base_price = flight[3]
+        # find out how many tickets are sold
+        cursor.execute("SELECT * FROM ticket WHERE flight_id = %s", flight[0])
+        ticket_sold = len(cursor.fetchall())
+        # find out how many seats are available
+        cursor.execute("SELECT seat FROM airplane where airplane_id = %s",(flight[2]))
+        seat = cursor.fetchone()[0]
+        if ticket_sold / seat >= 0.7:
+            price = int(base_price * 1.2)  # when 70% of tickets are sold, raise the price
+        else:
+            price = base_price
+            result = [flight[1], flight[7], flight[5], flight[8], flight[6], price, flight[0]]
+
+    elif request.form['type'] == 'confirm':
+        error = None
+        flight_id = request.form['flight_id']
+        payment = request.form['payment']
+        card_number = request.form['card_number']
+        name_on_card = request.form['name_on_card']
+        exp_date = request.form['exp_date']
+        pwd = request.form['pwd']
+        cursor.execute("SELECT * FROM flight WHERE flight_id = %s", (flight_id,))
+        flight = cursor.fetchone()
+        base_price = flight[3]
+        # find out how many tickets are sold
+        cursor.execute("SELECT * FROM ticket WHERE flight_id = %s", flight[0])
+        ticket_sold = len(cursor.fetchall())
+        # find out how many seats are available
+        cursor.execute("SELECT seat FROM airplane where airplane_id = %s",(flight[2]))
+        seat = cursor.fetchone()[0]
+        if ticket_sold / seat >= 0.7:
+            price = int(base_price * 1.2)  # when 70% of tickets are sold, raise the price
+        else:
+            price = base_price
+        result = [flight[1], flight[7], flight[5], flight[8], flight[6], price, flight[0]]
+        if not check_password_hash(g.user[2], pwd):
+            error = "Sorry, wrong password"
+        if error is None:
+            try:
+                cursor.execute("INSERT INTO ticket (flight_id, airline, customer_email, sold_price, payment_method, card_number, name_on_card, expiration_date, purchase_date_time) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,CURTIME())", (flight[0], flight[1],g.user[0], price, payment, card_number, name_on_card, exp_date))
+                cursor.execute("SELECT * FROM ticket WHERE flight_id = %s", flight[0])
+                ticket_sold = len(cursor.fetchall())
+                # find out how many seats are available
+                cursor.execute("SELECT seat FROM airplane where airplane_id = %s",(flight[2]))
+                seat = cursor.fetchone()[0]
+                if seat < ticket_sold:
+                    db.rollback()
+                    error = "Sorry, the ticket sold out."
+                else:
+                    db.commit()
+                    return redirect(url_for('c.purchase_success'))
+            except pymysql.Error as e:
+                error = e 
+        flash(error)
+    return render_template('c/confirm_order.html', result = result)
+
+@bp.route('/purchase_success')
+@login_required
+def purchase_success():
+    """
+    Return purchase success page.
+    
+    Args:
+        None
+    
+    Returns:
+        Customer index page
+    """
+    
+    return render_template('c/purchase_success.html')
 
 @bp.route('/bill')
 @login_required
 def bill():
     """
-    Return Airline Staff index page.
+    Return Past year bill.
     
     Args:
         None
