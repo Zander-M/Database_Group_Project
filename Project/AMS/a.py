@@ -4,12 +4,14 @@
 # Title: Airline Staff File
 
 import functools
+import pymysql
 
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, session, url_for
 )
 
 from AMS.db import get_db, get_cursor
+
 
 # import AMS.auth as auth # import authentication functions
 
@@ -124,11 +126,34 @@ def addflights():
     Returns:
         Airline Staff add flights page
     """
-    
-    return render_template('a/addflights.html')
-
-   
-
+    if request.method == "POST":
+        error = None
+        airline = g.user[5]
+        airplane_id = request.form['airplane_id']
+        base_price = request.form['base_price']
+        flight_status = request.form['flight_status']
+        dept_time = request.form['dept_date'] +' ' + request.form['dept_time']
+        arrv_time = request.form['arrv_date'] +' ' + request.form['arrv_time']
+        dept_airport = request.form['dept_airport']
+        arrv_airport = request.form['arrv_airport']
+        try:
+            db = get_db()
+            cursor = db.cursor()
+            cursor.execute("INSERT INTO flight (airline, airplane_id, base_price, flight_status, dept_time, arrv_time, dept_airport, arrv_airport) values (%s,%s,%s,%s,%s,%s,%s,%s)", (airline, airplane_id, base_price, flight_status, dept_time, arrv_time, dept_airport, arrv_airport))
+            db.commit()
+            return redirect(url_for('a.confirm', action = "Add Flight"))
+        except pymysql.Error as e:
+            flash(e)
+            db.rollback()
+        
+    cursor = get_cursor()
+    # select all airplane of the company
+    cursor.execute("SELECT airplane_id FROM airplane WHERE airline = %s",(g.user[5]))
+    airplanes = cursor.fetchall()
+    # select all airports 
+    cursor.execute("SELECT name FROM airport")
+    airports = cursor.fetchall()
+    return render_template('a/addflights.html', airplanes = airplanes, airports = airports)
 
 @bp.route('/addplane')
 @login_required
@@ -230,3 +255,17 @@ def topdest():
     """
     
     return render_template('a/topdest.html')
+
+@bp.route('/confirm/<action>')
+@login_required
+def confirm(action):
+    """
+    Top destination    
+    Args:
+        None
+    
+    Returns:
+        Airline Staff top destination page
+    """
+    
+    return render_template('a/confirm.html', action = action)
