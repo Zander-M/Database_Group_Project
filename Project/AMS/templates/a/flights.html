@@ -1,14 +1,39 @@
 {% extends "index.html"%}
 {% block content%}
- <h1> Airline Staff Index </h1>
- <a href="/a/flights">My Flights</a>
- <a href="/a/addflights">Add Flights</a>
- <a href="/a/addplane">Add Plane</a>
- <a href="/a/addairport">Add Airport</a>
- <a href="/a/ba">Booking Agents</a>
- <a href="/a/customer">Frequent Customer</a>
- <a href="/a/reports">Reports</a>
- <a href="/a/revenue">Revenues</a>
- <a href="/a/topdest">Top Destinations</a>
- {% endblock %}
+<h1> Flights</h1>
+<form action="{{url_for('a.flights')}}" method="POST">
+    Start Date: <input type="date" name="start_date" required>
+    End Date: <input type="date" name="end_date" required>
+    <input type="submit" value="Submit">
+</form>
+{% if flights %}
+<table>
+    <tr>
+        <th>Departure Airport</th>
+        <th>Arrive Airport</th>
+        <th>Departure Time</th>
+        <th>Arrive Time</th>
+        <th>Status</th>
+        <th>Base Price</th>
+        <th>Info</th>
+    </tr>
+{% for flight in flights %}
+    <tr>
+    {% for item in flight[:6] %}
+        <td>{{item}}</td>
+    {% endfor %}
+    <td>
+    <form action="{{url_for('a.flight_info')}}">
+        <input type="radio" name="flight_id" style="visibility:hidden" value="{{flight[6]}}">
+        <input type="submit" value="More Info">
+    </form>
+    </td>
+
+    </tr>    
+{% endfor %}
+{% else %}
+<h2>No data</h2>
+{% endif %}
+</table>
+{% endblock %}
     

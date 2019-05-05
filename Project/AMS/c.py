@@ -43,7 +43,7 @@ def login_required(view):
 @login_required
 def index():
     """
-    Return Airline Staff index page.
+    Return Customer index page.
     
     Args:
         None
@@ -241,7 +241,7 @@ def purchase_success():
     
     return render_template('c/purchase_success.html')
 
-@bp.route('/bill', method=["GET", "POST"])
+@bp.route('/bill', methods=["GET", "POST"])
 @login_required
 def bill():
     """

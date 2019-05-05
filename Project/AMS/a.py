@@ -55,7 +55,7 @@ def index():
     
     return render_template('a/index_a.html')
 
-@bp.route('/flights')
+@bp.route('/flights', methods=["GET", "POST"])
 @login_required
 def flights():
     """
@@ -67,10 +67,52 @@ def flights():
     Returns:
         Airline Staff flights page
     """
-    
-    return render_template('a/flights.html')
+    cursor = get_cursor()
+    if request.method == "POST":
+        start_date = request.form['start_date']
+        end_date = request.form['end_date']
+        cursor.execute('SELECT dept_airport, arrv_airport, DATE_FORMAT(dept_time, "%%Y %%M %%D %%T"), DATE_FORMAT(dept_time, "%%Y %%M %%D %%T"), flight_status, base_price, flight_id FROM flight WHERE airline = %s AND DATE(dept_time) BETWEEN DATE(%s) AND DATE(%s)', (g.user[5], start_date, end_date))
+        flights = cursor.fetchall()
+        n_flights = []
+        for flight in flights:
+            flight = list(flight)
+            if flight[4] == 0:
+                flight[4] = "On Time"
+            elif flight[4] == 1:
+                flight[4] = "Delay"
+            n_flights.append(flight)
+    else:
+        # get flights in the following 30 days
+        cursor.execute('SELECT dept_airport, arrv_airport, DATE_FORMAT(dept_time, "%%Y %%M %%D %%T"), DATE_FORMAT(dept_time, "%%Y %%M %%D %%T"), flight_status, base_price, flight_id FROM flight WHERE airline = %s AND DATE(dept_time) BETWEEN CURDATE() AND DATE_ADD(CURDATE(), INTERVAL 30 DAY)',(g.user[5]))
+        flights = cursor.fetchall()
+        n_flights = []
+        for flight in flights:
+            flight = list(flight)
+            if flight[4] == 0:
+                flight[4] = "On Time"
+            elif flight[4] == 1:
+                flight[4] = "Delay"
+            n_flights.append(flight)
+    return render_template('a/flights.html', flights = n_flights)
 
-@bp.route('/addflights')
+@bp.route('/flights/info', methods=["POST"])
+@login_required
+def flight_info():
+    """
+    Return certain flight info. Displaying all the passengers.
+    Args:
+        None
+    
+    Returns:
+        Airline Staff flights page
+    """
+    flight_id = request.form['flight_id']
+    cursor = get_cursor()
+    cursor.execute("SELECT email, name FROM customer JOIN ticket ON email = customer_email WHERE airline = %s AND flight_id = %s",(g.user[5], flight_id,))
+    customers = cursor.fetchall()
+    return render_template("a/flight_info.html", customers = customers)
+ 
+@bp.route('/addflights', methods=["GET", "POST"])
 @login_required
 def addflights():
     """
@@ -84,6 +126,9 @@ def addflights():
     """
     
     return render_template('a/addflights.html')
+
+   
+
 
 @bp.route('/addplane')
 @login_required
