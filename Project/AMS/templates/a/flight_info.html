@@ -1,6 +1,14 @@
 {% extends "index.html"%}
 {% block content%}
- <h1>Flight Info</h1>
+ <h1>Info for Flight {{flight_id}}</h1>
+ <form action="#" method="POST">
+     <input type="radio" style="visibility:hidden" name="flight_id" value="{{flight_id}}" checked>
+     <select name="status" id="">
+         <option value=0>On Time</option>
+         <option value=1>Delay</option>
+     </select>
+     <input type="submit" value="Submit">
+ </form>
  {% if customers %}
     <table>
         <tr>
@@ -20,5 +28,13 @@
  {% else %}
     <h2>No Data</h2>
  {% endif %}
- {% endblock %}
-    
+{% with messages = get_flashed_messages() %}
+  {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  {% endwith %}
+{% endblock %}

@@ -1,7 +1,7 @@
 {% extends "index.html"%}
 {% block content%}
 <h1> Flights</h1>
-<form action="{{url_for('a.flights')}}" method="POST">
+<form action="#" method="POST">
     Start Date: <input type="date" name="start_date" required>
     End Date: <input type="date" name="end_date" required>
     <input type="submit" value="Submit">
@@ -23,9 +23,9 @@
         <td>{{item}}</td>
     {% endfor %}
     <td>
-    <form action="{{url_for('a.flight_info')}}">
+    <form action="{{url_for('a.flight_info', flight_id = flight[6])}}" method="GET">
         <input type="radio" name="flight_id" style="visibility:hidden" value="{{flight[6]}}">
-        <input type="submit" value="More Info">
+        <input type="submit" value="More Info & Edit Status">
     </form>
     </td>
 

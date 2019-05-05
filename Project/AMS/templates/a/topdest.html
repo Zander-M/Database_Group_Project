@@ -1,13 +1,13 @@
 {% extends "index.html"%}
 {% block content%}
-<form action="{{url_for('c.flight_info')}}">
-    Start Date: <input type="date" name="start_date">
-    End Date: <input type="date" name="end_date">
-    <input type="submit" value="Search">
-</form>
-<h2>Flights</h2>
-{% for item in flights%}
-
+<h1>Top Destinations</h1>
+<h2>Last Three Months</h2>
+{% for item in last_three_months%}
+<ul><li>{{item[0]}}</li></ul>
 {% endfor %}
- {% endblock %}
+<h2>Last Year</h2>
+{% for item in last_year%}
+<ul><li>{{item[0]}}</li></ul>
+{% endfor %}
+{% endblock %}
     

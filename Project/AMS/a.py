@@ -97,9 +97,9 @@ def flights():
             n_flights.append(flight)
     return render_template('a/flights.html', flights = n_flights)
 
-@bp.route('/flights/info', methods=["POST"])
+@bp.route('/flights/info/<flight_id>', methods=["GET","POST"])
 @login_required
-def flight_info():
+def flight_info(flight_id):
     """
     Return certain flight info. Displaying all the passengers.
     Args:
@@ -108,11 +108,24 @@ def flight_info():
     Returns:
         Airline Staff flights page
     """
-    flight_id = request.form['flight_id']
+    if request.method == "POST":
+        error = None
+        flight_id = request.form["flight_id"]
+        status = request.form["status"]
+        db = get_db()
+        cursor = db.cursor()
+        try:
+            cursor.execute("UPDATE flight SET flight_status=%s WHERE flight_id = %s",(status, flight_id))
+            db.commit()
+            return redirect(url_for('a.confirm', action = "Change Status"))
+        except pymysql.Error as e:
+            db.rollback()
+            flash(e)
+
     cursor = get_cursor()
     cursor.execute("SELECT email, name FROM customer JOIN ticket ON email = customer_email WHERE airline = %s AND flight_id = %s",(g.user[5], flight_id,))
     customers = cursor.fetchall()
-    return render_template("a/flight_info.html", customers = customers)
+    return render_template("a/flight_info.html", flight_id = flight_id, customers = customers)
  
 @bp.route('/addflights', methods=["GET", "POST"])
 @login_required
@@ -155,7 +168,7 @@ def addflights():
     airports = cursor.fetchall()
     return render_template('a/addflights.html', airplanes = airplanes, airports = airports)
 
-@bp.route('/addplane')
+@bp.route('/addplane', methods=["GET", "POST"])
 @login_required
 def addplane():
     """
@@ -167,10 +180,20 @@ def addplane():
     Returns:
         Airline Staff add flights page
     """
-    
+    if request.method == "POST":
+        seat = request.form['seat']
+        db = get_db()
+        cursor = get_cursor()
+        try:
+            cursor.execute("INSERT INTO airplane (airline, seat) values (%s, %s)", (g.user[5], seat))
+            db.commit()
+            return redirect(url_for('a.confirm', action="Add airplane"))
+        except pymysql.Error as e:
+            db.rollback()
+            flash(e)
     return render_template('a/addplane.html')
 
-@bp.route('/addairport')
+@bp.route('/addairport', methods=["GET", "POST"])
 @login_required
 def addairport():
     """
@@ -183,6 +206,23 @@ def addairport():
         Airline Staff add airport page
     """
     
+    if request.method == "POST":
+        error = None
+        name = request.form['name']
+        city = request.form['city']
+        db = get_db()
+        cursor = get_cursor()
+        cursor.execute("SELECT * FROM airport WHERE name = %s", (name,))
+        if cursor.fetchone() is not None:
+            error = "The airport is already in the system" 
+        try:
+            cursor.execute("INSERT INTO airport (name, city) values (%s, %s)", (name, city))
+            db.commit()
+            return redirect(url_for('a.confirm', action = "Add airport"))
+        except pymysql.Error as e:
+            db.rollback()
+            flash(e)
+        flash(error)
     return render_template('a/addairport.html')
 
 @bp.route('/ba')
@@ -197,7 +237,7 @@ def booking_agent():
         Airline Staff booking agent page
     """
     
-    return render_template('a/ba.html')
+    return render_template('a/ba.html', booking_agent = booking_agent)
 
 @bp.route('/customer')
 @login_required
@@ -253,8 +293,12 @@ def topdest():
     Returns:
         Airline Staff top destination page
     """
-    
-    return render_template('a/topdest.html')
+    cursor = get_cursor()
+    cursor.execute("SELECT * from (SELECT arrv_airport FROM flight WHERE airline = %s AND dept_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND CURDATE() GROUP BY arrv_airport ORDER BY COUNT(arrv_airport) DESC) as T LIMIT 3 ", (g.user[5]))
+    last_three_months = cursor.fetchall()
+    cursor.execute("SELECT * from (SELECT arrv_airport FROM flight WHERE flight.airline = %s AND dept_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE() GROUP BY arrv_airport ORDER BY COUNT(arrv_airport) DESC) as T LIMIT 3 ",g.user[5])
+    last_year= cursor.fetchall()
+    return render_template('a/topdest.html', last_three_months = last_three_months, last_year = last_year )
 
 @bp.route('/confirm/<action>')
 @login_required
