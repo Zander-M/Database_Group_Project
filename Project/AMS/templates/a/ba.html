@@ -1,14 +1,112 @@
 {% extends "index.html"%}
+{% block head %}
+<script>
+    $(function(){
+        $('#default').attr('checked',
+        true);
+        $('input[name=display_select]').on('change', function(){
+            var n = $(this).val();
+            switch(n){
+                case '1':
+                    $('#1').css('display','block');
+                    $('#2').css('display','none');
+                    $('#3').css('display','none');
+                    break;
+                case '2':
+                    $('#2').css('display','block');
+                    $('#1').css('display','none');
+                    $('#3').css('display','none');
+                    break;
+                case '3':
+                    $('#3').css('display','block');
+                    $('#1').css('display','none');
+                    $('#2').css('display','none');
+                    break;
+            }
+        })
+    })
+</script>
+{% endblock%}
 {% block content%}
- <h1> Airline Staff Index </h1>
- <a href="/a/flights">My Flights</a>
- <a href="/a/addflights">Add Flights</a>
- <a href="/a/addplane">Add Plane</a>
- <a href="/a/addairport">Add Airport</a>
- <a href="/a/ba">Booking Agents</a>
- <a href="/a/customer">Frequent Customer</a>
- <a href="/a/reports">Reports</a>
- <a href="/a/revenue">Revenues</a>
- <a href="/a/topdest">Top Destinations</a>
+<h1>Booking Agents</h1>
+All<input type="radio" name="display_select" id="default" value="3" checked>
+Top 5 based on commission fee<input type="radio" name="display_select" value="1">
+Top 5 based on number<input type="radio" name="display_select" value="2">
+<div id="1" style="display:none">
+    Last 3 Months:<br>
+    <table>
+        <tr>
+            <th>Booking Agent ID</th>
+            <th>Last 3 Months Commission Fee</th>
+        </tr>
+        {% for agent in last_three_months_c %}
+        <tr>
+            {% for item in agent %}
+            <td>{{item}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    Last Year: <br>
+    <table>
+        <tr>
+            <th>Booking Agent ID</th>
+            <th>Last 3 Months Commission Fee</th>
+        </tr>
+        {% for agent in last_year_c %}
+        <tr>
+            {% for item in agent %}
+            <td>{{item}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+</div>
+<div id="2" style="display:none">
+    Last 3 Months:<br>
+    <table>
+        <tr>
+            <th>Booking Agent ID</th>
+            <th>Total Order Number</th>
+        </tr>
+        {% for agent in last_three_months_n %}
+        <tr>
+            {% for item in agent %}
+            <td>{{item}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+    Last Year: <br>
+    <table>
+        <tr>
+            <th>Booking Agent ID</th>
+            <th>Total Order Number</th>
+        </tr>
+        {% for agent in last_year_n %}
+        <tr>
+            {% for item in agent %}
+            <td>{{item}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+<div id="3" style="display:block">
+    <table>
+        <tr>
+            <th>Booking Agent ID</th>
+            <th>Total Order Number</th>
+        </tr>
+        {% for agent in all_agents %}
+        <tr>
+            {% for item in agent %}
+            <td>{{item}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+</div>
  {% endblock %}
     
