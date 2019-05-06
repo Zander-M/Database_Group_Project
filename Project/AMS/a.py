@@ -229,15 +229,16 @@ def addairport():
         cursor.execute("SELECT * FROM airport WHERE name = %s", (name,))
         if cursor.fetchone() is not None:
             error = "The airport is already in the system"
-        try:
-            cursor.execute(
-                "INSERT INTO airport (name, city) values (%s, %s)", (name, city))
-            db.commit()
-            return redirect(url_for('a.confirm', action="Add airport"))
-        except pymysql.Error as e:
-            db.rollback()
-            flash(e)
-        flash(error)
+            flash(error)
+        else:
+            try:
+                cursor.execute(
+                    "INSERT INTO airport (name, city) values (%s, %s)", (name, city))
+                db.commit()
+                return redirect(url_for('a.confirm', action="Add airport"))
+            except pymysql.Error as e:
+                db.rollback()
+                flash(e)
     return render_template('a/addairport.html')
 
 

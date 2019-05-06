@@ -18,3 +18,5 @@ TODO:
 3) Front-end DEV!
 
 4) Start building search/order/check functions
+
+2019-05-06-11-38-10: Customer functions almost finished. Chart.js under exploration (for customer bar chart, etc). Airline staff functions 80% done. Test required.
