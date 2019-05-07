@@ -3,7 +3,7 @@
     Airline Staff Login
 </div> {%endblock%}
 {%block content%}
-<form action="/auth/login/a" method="POST">
+<form action="#" method="POST">
 
     <div class="form-group">
         <label for="un">User Name</label>
@@ -11,12 +11,12 @@
     </div>
     <div class="form-group">
             <label for="pwd">Password</label>
-            <input type="password" id="pwd" name="password" required class="form-control" placeholder="Password">
+            <input type="password" id="pass" name="password" required class="form-control" placeholder="Password">
     </div>
     <button type="submit" value="Login" class="btn btn-primary">Login</button>
     <br>
     <br>
-    <p style="text-align:center">Not in our system? <a href="/reg/{{role}}">Register Now!</a></p>
+    <p style="text-align:center">Not in our system? <a href="/auth/register/c">Register Now!</a></p>
     <div>{{error}}</div><br>
     <div>{{usr}}</div><br>
     <div>{{pw}}</div><br>

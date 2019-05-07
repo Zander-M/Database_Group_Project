@@ -1,11 +1,24 @@
 {%extends "login.html"%}
-{%block header %} Booking Agent Login {%endblock%}
-{% block form %}
-    Booking Agent ID: <input type="text" name="BAID" required><br>
-    Email: <input type="email" name="email" required><br>
-    Password: <input type="password" name="password" required><br>
-    <button type="submit" value="Login">Login</button>
-    <a href="/auth/register/b"><button type="button" value="Register">Register</button>
-    <a href="">Forget Password?</a>
-    <a href="">Forget BAID?</a>
-{% endblock %}
+{%block header %} <div class="">
+    Booking Agent Login
+</div> {%endblock%}
+{%block content%}
+<form action="#" method="POST">
+    <div class="form-group">
+        <label for="ba">Booking Agent ID</label>
+        <input type="text" id="ba" name="BAID" required class="form-control" placeholder="Booking Agent ID">
+    </div>
+    <div class="form-group">
+        <label for="un">Email</label>
+        <input type="email" id="un" name="email" required class="form-control" placeholder="Enter Email Address">
+    </div>
+    <div class="form-group">
+        <label for="pwd">Password</label>
+        <input type="password" id="pwd" name="password" required class="form-control" placeholder="Password">
+    </div>
+    <button type="submit" value="Login" class="btn btn-primary">Login</button>
+    <br>
+    <br>
+    <p style="text-align:center">Not our partner? <a href="/auth/register/b">Register Now!</a></p>
+</form>
+{%endblock%}
