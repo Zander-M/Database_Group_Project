@@ -266,3 +266,44 @@ def bill():
     return render_template('c/bill.html', past_year_spent = past_year_spent, past_six_month_spent = past_six_month_spent)
 
 # TODO: front end needs to handle the data
+
+@bp.route('/settings', methods=["GET", "POST"])
+@login_required
+def settings():
+    """
+    Customer Settings Page. Can add phone number. 
+    
+    Args:
+        None.
+    
+    Returns:
+        Airline Staff settings page
+    """
+    db = get_db()
+    cursor = db.cursor()
+    error = None
+    if request.method == "POST":
+        phone_number = request.form["phone_number"]
+        cursor.execute("SELECT * FROM customer_phone WHERE phone= %s", (phone_number))
+        if cursor.fetchone() is not None:
+            error = "Phone number already in system"
+        if error is None:
+            try:
+                cursor.execute("INSERT INTO customer_phone (phone, email) values (%s, %s)", (phone_number, g.user[0]))
+                db.commit()
+            except pymysql.Error as e:
+                db.rollback()
+        flash(error)
+    email = g.user[0]
+    name = g.user[1]
+    building_number = g.user[3]
+    street = g.user[4]
+    city = g.user[5]
+    state = g.user[6]
+    passport_number = g.user[7]
+    passport_exp = g.user[8]
+    passport_country = g.user[9]
+    bday = g.user[10]
+    cursor.execute("SELECT phone FROM customer_phone WHERE email = %s", (g.user[0]))
+    phones = cursor.fetchall()
+    return render_template("c/settings.html", phones = phones, email = email, name = name , building_number = building_number, street = street, city = city, state = state, passport_number = passport_number, passport_country = passport_country, passport_exp = passport_exp, bday = bday)
