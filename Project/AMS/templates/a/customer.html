@@ -1,14 +1,52 @@
 {% extends "index.html"%}
 {% block content%}
- <h1> Airline Staff Index </h1>
- <a href="/a/flights">My Flights</a>
- <a href="/a/addflights">Add Flights</a>
- <a href="/a/addplane">Add Plane</a>
- <a href="/a/addairport">Add Airport</a>
- <a href="/a/ba">Booking Agents</a>
- <a href="/a/customer">Frequent Customer</a>
- <a href="/a/reports">Reports</a>
- <a href="/a/revenue">Revenues</a>
- <a href="/a/topdest">Top Destinations</a>
- {% endblock %}
+<h1>Customer Data:</h1>
+<h2>Search Customer History</h2>
+<form action="#" method="POST">
+    Customer Email:<input type="text" name="customer_email">
+    <input type="submit" value="Submit">
+</form>
+{% if customer_info %}
+   
+   {% if customer_info == "e" %}
+   <h3>No Data</h3>
+   {% else %}
+   <h3>Flight History</h3> 
+   <table>
+       <tr>
+           <th>Flight ID</th>
+           <th>Departure Airport</th>
+           <th>Departure Time</th>
+           <th>Arrive Airport</th>
+           <th>Arrive Time</th>
+       </tr>
+   {% for flight in customer_info %}
+       <tr>
+           {% for item in flight%}
+            <td>{{item}}</td>
+           {% endfor %}
+       </tr>
+   {% endfor %}
+   </table>
+   
+   {% endif %}
+{% endif %}
+<h2>Top Customer in One Year</h2> 
+{% if top_customer %}
+<table>
+    <tr>
+        <th>Username</th>
+        <th>User Email</th>
+        <th>Order Time</th>
+    </tr>
+    <tr>
+        {% for item in top_customer%}
+            <td>{{item}}</td>
+        {% endfor %}
+    </tr>
+</table>
+{% else %}
+<h2>No data</h2>
+{% endif %}
+{% endblock %}
     

@@ -1,8 +1,42 @@
 {% extends "index.html"%}
 {% block content%}
- <h1>Booking Agent Index</h1>
- <a href="/b/flights">My Flights</a>
- <a href="/b/search">Flight Search</a>
- <a href="/b/commission">My Commissions</a>
- <a href="/b/customer">My Customers</a>
+ <h1>Customer Data</h1>
+ <h2>Traveled Most Last 6 Month</h2>
+ {% if six_months_cnt %}
+ <table>
+     <tr>
+         <th>Customer Name</th>
+         <th>Customer Email</th>
+         <th>Ticket Purchased</th>
+     </tr>
+ {% for customer in six_months_cnt %}
+     <tr>
+         {% for item in customer %}
+         <td>{{item}}</td>
+         {% endfor %}
+     </tr>
+ {% endfor %}
+ </table>
+ {% else %}
+ <h2>No data</h2>
+ {% endif %}
+ <h2>Past Year Commission</h2>
+ {% if one_year_commission %}
+ <table>
+     <tr>
+         <th>Customer Name</th>
+         <th>Customer Email</th>
+         <th>Commissions</th>
+     </tr>
+ {% for customer in one_year_commission %}
+     <tr>
+         {% for item in customer %}
+         <td>{{item}}</td>
+         {% endfor %}
+     </tr>
+ {% endfor %}
+ </table>
+ {% else %}
+ <h2>No data</h2>
+ {% endif %}
  {% endblock %}

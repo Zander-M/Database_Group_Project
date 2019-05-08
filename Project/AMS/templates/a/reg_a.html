@@ -23,7 +23,7 @@
         <!-- <input type="text" id="airline" name="airline" required class="form-control"> -->
         <select name="airline" id="airline" class="form-control">
             {%for i in airlines %}
-            <option value="{{i}}">{{i}}</option>
+            <option value="{{i[0]}}">{{i[0]}}</option>
             {%endfor%}
         </select>
     </div>

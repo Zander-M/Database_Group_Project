@@ -1,0 +1,41 @@
+{% extends "index.html"%}
+{% block content%}
+ <h1>Confirm Order</h1>
+ <table>
+     <tr>
+         <th>Airline</th>
+         <th>Departure Airport</th>
+         <th>Departure Time</th>
+         <th>Arrive Airport</th>
+         <th>Arrive Time</th>
+         <th>Price</th>
+     </tr>
+     <tr>
+{% for i in result[:6] %} 
+        <td>{{i}}</td>
+{% endfor %}
+     </tr>
+ </table>
+ <form action="#" method="POST">
+     Customer Email:<input type="email" name="customer_email" required>
+     <input type="radio" name="type" value="confirm" style="display:none" checked> 
+     <input type="radio" name="flight_id" value="{{result[6]}}" style="visibility:hidden" checked> 
+     Payment
+     <input type="radio" name="payment" value="credit"> Credit Card
+     <input type="radio" name="payment" value="debit"> Debit Card
+     Card #<input type="int" name="card_number" required>
+     Name on card<input type="text" name="name_on_card" required>
+     Card Expire Date<input type="date" name="exp_date" required>
+     Password<input type="password" name="pwd" required>
+     <input type="submit" value="Confirm">
+ </form>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+      <li>{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+  {% endwith %}
+ {% endblock %}

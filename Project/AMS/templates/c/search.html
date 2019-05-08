@@ -124,7 +124,7 @@
                 <div class="col-lg-3" style="background-color:#7579ad">
                     <br>
                     <p style="color: white">FROM</p>
-                    <select name="dept_airport" id="" class="form-control">
+                    <select name="dept_airport" id="" class="form-control" required>
                         {% for airport in dept_airport%}
                         <option value="{{airport[0]}}">{{airport[0]}}</option>
                         {% endfor %}
@@ -135,7 +135,7 @@
                 <div class="col-lg-3" style="background-color: #295f9e">
                     <br>
                     <p style="color:white">TO</p>
-                    <select name="arrv_airport" id="" class="form-control">
+                    <select name="arrv_airport" id="" class="form-control" required>
                         {% for airport in arrv_airport%}
                         <option value="{{airport[0]}}">{{airport[0]}}</option>
                         {% endfor %}
@@ -149,12 +149,12 @@
                     <br>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="trip" id="optionsRadios1" value="twoway" checked
+                            <input type="radio" name="trip" id="optionsRadios1" value="twoway" checked required
                                 onclick="getValue(this);"> Return
                             &nbsp;&nbsp;&nbsp;
                         </label>
                         <label>
-                            <input type="radio" name="trip" id="optionsRadios2" value="oneway"
+                            <input type="radio" name="trip" id="optionsRadios2" value="oneway" required
                                 onclick="getValue(this);"> One Way
                         </label>
                     </div>

@@ -1,14 +1,24 @@
 {% extends "index.html"%}
 {% block content%}
- <h1> Airline Staff Index </h1>
- <a href="/a/flights">My Flights</a>
- <a href="/a/addflights">Add Flights</a>
- <a href="/a/addplane">Add Plane</a>
- <a href="/a/addairport">Add Airport</a>
- <a href="/a/ba">Booking Agents</a>
- <a href="/a/customer">Frequent Customer</a>
- <a href="/a/reports">Reports</a>
- <a href="/a/revenue">Revenues</a>
- <a href="/a/topdest">Top Destinations</a>
- {% endblock %}
+<h1> Reports</h1>
+   <form action="#" method="POST">
+       Start Date: <input type="date" name="start_date"><br>
+       End Date: <input type="date" name="end_date"><br>
+       <input type="submit" value="Search">
+   </form>
+{% if search_result %}
+    Ticket Sold between {{start_date}} and {{end_date}}: {{search_result[0]}} 
+{% endif %}
+<h2>Past One Month</h2>
+{% for i in last_month %}
+   Customer {{i[0]}}
+   Customer Email {{i[1]}} 
+   Purchase Time {{i[2]}}<br>
+{% endfor %}
+<h2>Past One Year</h2>
+{% for i in last_year %}
+   Month {{i[0]}}
+   Sold {{i[1]}} <br>
+{% endfor %}
+{% endblock %}
     

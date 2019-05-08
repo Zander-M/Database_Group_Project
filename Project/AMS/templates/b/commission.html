@@ -1,8 +1,20 @@
 {% extends "index.html"%}
 {% block content%}
- <h1>Booking Agent Index</h1>
- <a href="/b/flights">My Flights</a>
- <a href="/b/search">Flight Search</a>
- <a href="/b/commission">My Commissions</a>
- <a href="/b/customer">My Customers</a>
- {% endblock %}
+<h1>Commission Status</h1>
+<h2>Search</h2>
+<form action="#" method="POST">
+    Start Date:<input type="date">
+    End Date:<input type="date">
+    <input type="submit" value="Search">
+</form>
+{% if search_commission %}
+    Commission: {{search_commission[0]}}
+{% endif %}
+{% if search_cnt %}
+    Total ticket purchased: {{search_cnt[0]}}
+{% endif %}
+<h2>Last 30 Day Data</h2>
+Commission :{{thirty_day_commission[0]}} <br>
+Average :{{thirty_day_avg[0]}} <br>
+Number of tickets sold:{{thirty_day_cnt[0]}} <br>
+{% endblock %}
