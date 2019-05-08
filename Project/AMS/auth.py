@@ -366,7 +366,7 @@ def load_logged_in_user():
             cursor.execute(
                 "SELECT * FROM booking_agent WHERE BAID = %s", (BAID,))
             g.user = cursor.fetchone()
-            g.username = BAID  # Booking Agent ID
+            g.BAID = BAID  # Booking Agent ID
             g.role = role
     elif role == 'c':
         email = session.get('email')

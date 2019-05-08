@@ -1,7 +1,7 @@
 # -*- coding: UTF-8 -*- #
 # Author: Zander_M
 # Time: April, 25, 2019
-# Title: Airline Staff File
+# Title: Airline Staff Blueprint 
 
 import functools
 import pymysql
