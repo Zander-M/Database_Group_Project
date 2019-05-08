@@ -26,7 +26,7 @@
 </li>
 <li class="nav-item">
     <a class="nav-link" id="stats-tab" href="/a/reports" role="tab" aria-controls="stats"
-        aria-selected="false">Reports</a>
+        aria-selected="false">Sales Report</a>
 </li>
 <li class="nav-item">
     <a class="nav-link" id="stats-tab" href="/a/revenue" role="tab" aria-controls="stats"
@@ -40,11 +40,11 @@
 
 {%block panel%}
 
-<div class="container-fluid" style="padding:0px">
+<div class="container" style="padding:0px">
     <div class="row">
         <!-- Filter -->
         <div class="col-lg-3">
-            <div class="card" style="background-color:#30aab8; color: white; padding: 0px">
+            <div class="card shadow-lg" style="background-color:#30aab8; color: white; padding: 0px">
                 <h5 class="card-header">Time Filter</h5>
                 <div class="card-body">
                     <form action="#" method="POST">
@@ -77,9 +77,8 @@
             </div>
             <br>
         </div>
-
         <div class="col-lg">
-            <div class="card" style="border-color:#30aab8; border-width: 2px; padding: 0px">
+            <div class="card shadow p-3 mb-5 bg-white rounded" style="border-color:#30aab8; border-width: 1px; padding: 0px">
                 <div class="card-body" style="padding:0">
                     {% if flights %}
                     <div class="table-responsive">
@@ -121,7 +120,6 @@
             </div>
         </div>
     </div>
-</div>
 
 <style>
     .table-striped>tbody>tr:nth-child(odd)>td,

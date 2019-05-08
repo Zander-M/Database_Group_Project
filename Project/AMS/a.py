@@ -85,7 +85,7 @@ def flights():
             if flight[4] == 0:
                 flight[4] = "On Time"
             elif flight[4] == 1:
-                flight[4] = "Delay"
+                flight[4] = "Delayed"
             n_flights.append(flight)
     else:
         # get flights in the following 30 days
@@ -98,7 +98,7 @@ def flights():
             if flight[4] == 0:
                 flight[4] = "On Time"
             elif flight[4] == 1:
-                flight[4] = "Delay"
+                flight[4] = "Delayed"
             n_flights.append(flight)
     return render_template('a/flights.html', flights=n_flights)
 

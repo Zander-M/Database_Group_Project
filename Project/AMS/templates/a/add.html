@@ -6,7 +6,7 @@
 </li>
 <li class="nav-item">
 
-    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+    <a class="nav-link active dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
         aria-expanded="false">Add</a>
     <div class="dropdown-menu">
         <a class="dropdown-item" href="/a/addflights">Add Flights</a>
@@ -21,7 +21,7 @@
         Agent</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link active" href="/a/customer" role="tab" aria-controls="stats"
+    <a class="nav-link" href="/a/customer" role="tab" aria-controls="stats"
         aria-selected="false">Frequent Customer</a>
 </li>
 <li class="nav-item">
@@ -41,57 +41,9 @@
 {%block panel%}
 
 <div class="container" style="padding:0px">
-    
-        <h1>Customer Data:</h1>
-<h2>Search Customer History</h2>
-<form action="#" method="POST">
-    Customer Email:<input type="text" name="customer_email">
-    <input type="submit" value="Submit">
-</form>
-{% if customer_info %}
-   
-   {% if customer_info == "e" %}
-   <h3>No Data</h3>
-   {% else %}
-   <h3>Flight History</h3> 
-   <table>
-       <tr>
-           <th>Flight ID</th>
-           <th>Departure Airport</th>
-           <th>Departure Time</th>
-           <th>Arrive Airport</th>
-           <th>Arrive Time</th>
-       </tr>
-   {% for flight in customer_info %}
-       <tr>
-           {% for item in flight%}
-            <td>{{item}}</td>
-           {% endfor %}
-       </tr>
-   {% endfor %}
-   </table>
-   
-   {% endif %}
-{% endif %}
-<h2>Top Customer in One Year</h2> 
-{% if top_customer %}
-<table>
-    <tr>
-        <th>Username</th>
-        <th>User Email</th>
-        <th>Order Time</th>
-    </tr>
-    <tr>
-        {% for item in top_customer%}
-            <td>{{item}}</td>
-        {% endfor %}
-    </tr>
-</table>
-{% else %}
-<h2>No data</h2>
-{% endif %}
-
+    {%block content%}{%endblock%}
 </div>
+
 <style>
     .table-striped>tbody>tr:nth-child(odd)>td,
     .table-striped>tbody>tr:nth-child(odd)>th {
@@ -99,4 +51,3 @@
     }
 </style>
 {%endblock%}
-    

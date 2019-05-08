@@ -1,39 +1,72 @@
-{% extends "index.html"%}
+{% extends "a/add.html"%}
 {% block content%}
-<h1> Add Flights for {{g.user[5]}}</h1>
-<form action="#" method="POST">
-    Airplane #:<select name="airplane_id" id="" required>
-        {% for airplane in airplanes %}
+
+<div class="container-fluid" style="padding:0px">
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg">
+            <div class="card shadow p-3 mb-5 bg-white rounded" style="padding:15px">
+                <h5 class="card-title" style="color:#30aab8">Add Flight for {{g.user[5]}}</h5><br>
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <div style="text-align:center !important; width: 100%;">
+                    {% for message in messages %}
+                    <p class="text-danger">{{ message }}</p>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                {% endwith %}
+
+
+
+
+
+
+
+            </div>
+        </div>
+        <div class="col-lg-2"></div>
+    </div>
+
+
+
+    <form action="#" method="POST">
+        Airplane #:<select name="airplane_id" id="" required>
+            {% for airplane in airplanes %}
             <option value="{{airplane[0]}}">{{airplane[0]}}</option>
-        {% endfor%}
-    </select> <br>
-    Base price<input type="number" name="base_price" required><br>
-    Flight Status <select name="flight_status" id="" required>
-        <option value=0>On Time</option>
-        <option value=1>Delay</option>
-    </select>
-    Departure Time: <input type="date" name="dept_date" id="" required> <input type="time" name="dept_time" required><br>
-    Arrive Time: <input type="date" name="arrv_date" id="" required> <input type="time" name="arrv_time" required><br>
-    Departure Airport: <select name="dept_airport" id="" required>
-        {% for airport in airports %}
+            {% endfor%}
+        </select> <br>
+        Base price<input type="number" name="base_price" required><br>
+        Flight Status <select name="flight_status" id="" required>
+            <option value=0>On Time</option>
+            <option value=1>Delay</option>
+        </select>
+        Departure Time: <input type="date" name="dept_date" id="" required> <input type="time" name="dept_time"
+            required><br>
+        Arrive Time: <input type="date" name="arrv_date" id="" required> <input type="time" name="arrv_time"
+            required><br>
+        Departure Airport: <select name="dept_airport" id="" required>
+            {% for airport in airports %}
             <option value="{{airport[0]}}">{{airport[0]}}</option>
-        {% endfor %}
-    </select>
-    Arrive Airport: <select name="arrv_airport" id="" required>
-        {% for airport in airports %}
+            {% endfor %}
+        </select>
+        Arrive Airport: <select name="arrv_airport" id="" required>
+            {% for airport in airports %}
             <option value="{{airport[0]}}">{{airport[0]}}</option>
-        {% endfor %}
-    </select>
-    <input type="submit" value="Submit">
-</form>
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
+            {% endfor %}
+        </select>
+        <input type="submit" value="Submit">
+    </form>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
     <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
     </ul>
-  {% endif %}
-  {% endwith %}
-{% endblock %}
-    
+    {% endif %}
+    {% endwith %}
+
+
+
+    {% endblock %}

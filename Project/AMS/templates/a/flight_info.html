@@ -1,7 +1,7 @@
 {%extends "dashboard.html"%}
 {%block tab%}
 <script>
-  document.getElementById("banner").style.backgroundImage = "url('../../../static/journey.jpg')"
+    document.getElementById("banner").style.backgroundImage = "url('../../../static/journey.jpg')"
 </script>
 <li class="nav-item">
     <a class="nav-link active" id="history-tab" href="/a/flights" role="tab" aria-controls="history"
@@ -20,23 +20,20 @@
     </div>
 </li>
 <li class="nav-item">
-    <a class="nav-link" id="stats-tab" href="/a/ba" role="tab" aria-controls="stats" aria-selected="false">Booking
+    <a class="nav-link" href="/a/ba" role="tab" aria-controls="stats" aria-selected="false">Booking
         Agent</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" id="stats-tab" href="/a/customer" role="tab" aria-controls="stats"
-        aria-selected="false">Frequent Customer</a>
+    <a class="nav-link" href="/a/customer" role="tab" aria-controls="stats" aria-selected="false">Frequent Customer</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" id="stats-tab" href="/a/reports" role="tab" aria-controls="stats"
-        aria-selected="false">Reports</a>
+    <a class="nav-link" href="/a/reports" role="tab" aria-controls="stats" aria-selected="false">Sales Report</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" id="stats-tab" href="/a/revenue" role="tab" aria-controls="stats"
-        aria-selected="false">Revenue</a>
+    <a class="nav-link" href="/a/revenue" role="tab" aria-controls="stats" aria-selected="false">Revenue</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" id="stats-tab" href="/a/topdest" role="tab" aria-controls="stats" aria-selected="false">Top
+    <a class="nav-link" href="/a/topdest" role="tab" aria-controls="stats" aria-selected="false">Top
         Destination</a>
 </li>
 {%endblock%}
@@ -45,133 +42,92 @@
 
 <div class="container-fluid" style="padding:0px">
     <div class="row">
-        <!-- Filter -->
-        <div class="col-lg-3">
-            <div class="card" style="background-color:#30aab8; color: white; padding: 0px">
-                <h5 class="card-header">Time Filter</h5>
-                <div class="card-body">
-                    <form action="#" method="POST">
-                        <div class="form-group">
-                            <label for="start">Start Date</label>
-                            <input type="text" class="form-control" id="start" name="start_date"
-                                placeholder="YYYY-MM-DD" required>
+        <div class="col-lg-2"></div>
+
+        <div class="col-lg">
+            <div class="card shadow p-3 mb-5 bg-white rounded" style="padding:15px">
+                <h5 class="card-title" style="color:#30aab8">Info for Flight {{flight_id}}</h5><br>
+                <div class="row">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                        <div class="card" style="border-color:#30aab8; border-width: 2px">
+                            <div class="card-body" style="padding:0">
+                                {% if customers %}
+                                <div class="table-responsive">
+                                    <table class="table table-striped" style="margin:0">
+                                        <thead>
+                                            <tr>
+                                                <th>Customer Email</th>
+                                                <th>Customer Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for customer in customers %}
+                                            <tr>
+                                                {% for item in customer %}
+                                                <td>
+                                                    {{item}}
+                                                </td>
+                                                {% endfor%}
+                                            </tr>
+                                            {% endfor%}
+                                        </tbody>
+                                    </table>
+                                    {% else %}
+                                    <h2 class="text-center" style="padding:2vw">No data, please specify time range</h2>
+                                </div>
+                                {% endif%}
+                            </div>
                         </div>
-                        <div class="form-group">
-                            <label for="end">End Date</label>
-                            <input type="text" class="form-control" id="end" name="end_date" placeholder="YYYY-MM-DD"
-                                required>
-                        </div>
-                        <script>
-                            $('#start').datepicker({
-                                autoclose: true,
-                                todayHighlight: true,
-                                format: 'yyyy-mm-dd'
-                            });
-                            $('#end').datepicker({
-                                autoclose: true,
-                                todayHighlight: true,
-                                format: 'yyyy-mm-dd'
-                            });
-                        </script>
-                        <button type="submit" value="Submit" id="searchhis" class="btn btn-outline-light btn-block"
-                            style="margin-top:35px"><i class="fas fa-search"></i> Search Flights</button>
-                    </form>
+                    </div>
+                    <div class="col-lg-2"></div>
                 </div>
             </div>
             <br>
-        </div>
-
-        <div class="col-lg">
-            <div class="card" style="border-color:#30aab8; border-width: 2px; padding: 0px">
-                <div class="card-body" style="padding:0">
-                    {% if flights %}
-                    <div class="table-responsive">
-                        <table class="table table-striped" style="margin:0">
-                            <thead>
-                                <tr>
-                                    <th>Departure Airport</th>
-                                    <th>Arrive Airport</th>
-                                    <th>Departure Time</th>
-                                    <th>Arrive Time</th>
-                                    <th>Status</th>
-                                    <th>Base Price</th>
-                                    <th>Info</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for flight in flights %}
-                                <tr>
-                                    {% for item in flight[:6] %}
-                                    <td>{{item}}</td>
-                                    {% endfor %}
-                                    <td>
-                                        <form action="{{url_for('a.flight_info', flight_id = flight[6])}}" method="GET">
-                                            <input type="radio" name="flight_id" style="display: none"
-                                                value="{{flight[6]}}">
-                                            <input class="btn btn-success" type="submit"
-                                                value="More Info & Edit Status">
-                                        </form>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                        {% else %}
-                        <h2>No data, please specify time range</h2>
+            <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8">
+                    <div style="text-align:center !important; width: 100%;">
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                        {% for message in messages %}
+                        <p class="text-danger">{{ message }}</p>
+                        {% endfor %}
+                        {% endif %}
+                        {% endwith %}
                     </div>
-                    {% endif%}
+                    <form action="#" method="POST" class="form-inline">
+                        <input class="form-check-input" type="radio" style="display: none" name="flight_id"
+                            value="{{flight_id}}" checked>
+                        <div class="input-group mb-2 mr-sm-2">
+                            <label class=" mb-2 mr-sm-2" for="status">
+                                Change Flight Status:
+                            </label>
+                            <select name="status" id="status" class="form-control">
+                                <option value=0>On Time</option>
+                                <option value=1>Delayed</option>
+                            </select>
+                        </div>
+                        <button type="submit" value="Submit" class="btn btn-success btn-block mb-2"
+                            style="width:40%">Submit</button>
+                    </form>
                 </div>
+                <div class="col-lg-2"></div>
             </div>
         </div>
     </div>
+
+    <div class="col-lg-2"></div>
 </div>
-
-
-
- <h1>Info for Flight {{flight_id}}</h1>
- <form action="#" method="POST">
-     <input type="radio" style="visibility:hidden" name="flight_id" value="{{flight_id}}" checked>
-     <select name="status" id="">
-         <option value=0>On Time</option>
-         <option value=1>Delayed</option>
-     </select>
-     <input type="submit" value="Submit">
- </form>
- {% if customers %}
-    <table>
-        <tr>
-            <th>Customer Email</th>
-            <th>Customer Name</th>
-        </tr>
-    {% for customer in customers %}
-        <tr>
-        {% for item in customer %}
-        <td>
-            {{item}}
-        </td>
-        {% endfor%}
-        </tr>
-    {% endfor%}
-    </table>
- {% else %}
-    <h2>No Data</h2>
- {% endif %}
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-  {% endwith %}
-
-
-
+</div>
 <style>
     .table-striped>tbody>tr:nth-child(odd)>td,
     .table-striped>tbody>tr:nth-child(odd)>th {
         background-color: #bfeef3;
+    }
+
+    #footer-back {
+        background-image: url('../../../static/footer.jpg') !important;
     }
 </style>
 {%endblock%}

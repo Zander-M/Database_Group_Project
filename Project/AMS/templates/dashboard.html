@@ -22,7 +22,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js">
     </script>
     <link rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" />
+        href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css">
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0/dist/Chart.min.js"></script>
     <style>
@@ -45,10 +45,10 @@
                     data-fa-transform="rotate--45"></i></a>
             {% elif g.role == 'b' %}
             <a class="navbar-brand" href="/b/search">con<strong>trails</strong>&nbsp;<i class="fas fa-plane"
-                data-fa-transform="rotate--45"></i></a>
+                    data-fa-transform="rotate--45"></i></a>
             {% else %}
             <a class="navbar-brand" href="/">con<strong>trails</strong>&nbsp;<i class="fas fa-plane"
-                data-fa-transform="rotate--45"></i></a>
+                    data-fa-transform="rotate--45"></i></a>
             {% endif %}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -104,7 +104,6 @@
             {%block panel%}{%endblock%}
         </div>
     </div>
-    <br>
 </body>
 
 </html>
