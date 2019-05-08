@@ -2,7 +2,7 @@
 {% block content%}
 <h1> Add Flights for {{g.user[5]}}</h1>
 <form action="#" method="POST">
-    Airplane<select name="airplane_id" id="" required>
+    Airplane #:<select name="airplane_id" id="" required>
         {% for airplane in airplanes %}
             <option value="{{airplane[0]}}">{{airplane[0]}}</option>
         {% endfor%}

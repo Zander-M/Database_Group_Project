@@ -30,8 +30,9 @@
    </table>
    
    {% endif %}
-{% endif%}
+{% endif %}
 <h2>Top Customer in One Year</h2> 
+{% if top_customer %}
 <table>
     <tr>
         <th>Username</th>
@@ -44,5 +45,8 @@
         {% endfor %}
     </tr>
 </table>
+{% else %}
+<h2>No data</h2>
+{% endif %}
 {% endblock %}
     

@@ -209,7 +209,7 @@ def register(role):
 
     if role == 'a':  # fetch all airline names if visiting airline staff registration page
         cursor.execute("SELECT * from airline")
-        airlines = cursor.fetchall()[0]
+        airlines = cursor.fetchall()
         return render_template('a/reg_a.html', error=error, role=role, airlines=airlines)
     # Booking Agent & Customer Login
     return render_template('{}/reg_{}.html'.format(role, role), error=error, role=role)

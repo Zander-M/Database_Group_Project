@@ -289,9 +289,9 @@ def customer():
     """
     cursor = get_cursor()
     # 6 months number
-    cursor.execute("SELECT name, email, COUNT(email) FROM customer RIGHT JOIN ticket on customer.email = ticket.customer_email WHERE purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 6 MONTH) AND CURDATE() GROUP BY(email) ORDER BY COUNT(email) DESC LIMIT 5 ")
-    six_months_cnt = cursor.fetchone()
+    cursor.execute("SELECT name, email, COUNT(email) FROM customer RIGHT JOIN ticket on customer.email = ticket.customer_email WHERE BAID=%s  AND purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 6 MONTH) AND NOW() GROUP BY(email) ORDER BY COUNT(email) DESC LIMIT 5 ", (g.BAID))
+    six_months_cnt = cursor.fetchall()
     # one year commission
-    cursor.execute("SELECT name, email, SUM(sold_price)*0.1 FROM customer RIGHT JOIN ticket on customer.email = ticket.customer_email WHERE purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE() GROUP BY(email) ORDER BY SUM(sold_price) DESC LIMIT 5 ")
-    one_year_commission = cursor.fetchone()
+    cursor.execute("SELECT name, email, SUM(sold_price)*0.1 FROM customer RIGHT JOIN ticket on customer.email = ticket.customer_email WHERE BAID = %s AND purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND NOW() GROUP BY(email) ORDER BY SUM(sold_price) DESC LIMIT 5 ", (g.BAID))
+    one_year_commission = cursor.fetchall()
     return render_template('b/customer.html', six_months_cnt = six_months_cnt, one_year_commission = one_year_commission)
