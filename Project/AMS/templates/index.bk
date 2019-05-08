@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Error | Contrails</title>
+    <title>Welcome | Contrails</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -24,22 +24,34 @@
         integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous">
     </script>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <script>
+        function getValue(obj) {
+            var value = obj.value;
+            if (value != "return") {
+                document.getElementById("retu").value = "Not Applicable";
+                document.getElementById("retu").disabled = "disabled";
+            } else {
+                document.getElementById("retu").value = "";
+                document.getElementById("retu").removeAttribute('disabled');
+            }
+        }
+    </script>
 </head>
 
 <body>
-    {% block success %}{%endblock%}
     <div class="container">
-        <!-- NAVBAR -->
+
+        <!--Navigator Bar-->
         <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #048998;">
             {% if g.role == 'c' %}
             <a class="navbar-brand" href="/c/search">con<strong>trails</strong>&nbsp;<i class="fas fa-plane"
                     data-fa-transform="rotate--45"></i></a>
             {% elif g.role == 'b' %}
             <a class="navbar-brand" href="/b/search">con<strong>trails</strong>&nbsp;<i class="fas fa-plane"
-                    data-fa-transform="rotate--45"></i></a>
+                data-fa-transform="rotate--45"></i></a>
             {% else %}
             <a class="navbar-brand" href="/">con<strong>trails</strong>&nbsp;<i class="fas fa-plane"
-                    data-fa-transform="rotate--45"></i></a>
+                data-fa-transform="rotate--45"></i></a>
             {% endif %}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -105,62 +117,103 @@
             </div>
         </nav>
 
-        <!-- Banner -->
+        <!--Banner-->
         <div class="row">
+
             <div class="col">
                 <div
                     style="color: white; background-image: url('../static/journey.jpg'); background-size: 100%; font-size: 3vw; padding-left: 2vw;padding-bottom: 1vh">
-                    You are not authorized to view this page<br><br></div>
+                    start your journey<br>
+                    with<br>con<strong>trails</strong>&nbsp;<i class="fas fa-plane"
+                        data-fa-transform="rotate--45"></i><br></div>
             </div>
         </div>
-        <br>
-        <br>
-        <div class="row">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-4">
-                <div class="card shadow p-3 mb-5 bg-white rounded" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title" style="text-align:center">Role Error</h5>
-                        <p class="card-text" style="text-align:center">You will be redirected to previous page in
-                            <strong id="second_show">5</strong>
-                            seconds.</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4"></div>
 
-        </div>
-        <br>
-        <!-- Footer -->
-        <div class="flex-grow-1" id="footer-back"
-            style="background-image: url('../../../static/footer.jpg'); background-size: cover; background-repeat: 0; height: 35vh">
-            <footer class="fixed-bottom">
-                <div class="row">
-                    <div class="col" style="text-align: center; color: white">
-                        Copyright © 2019 Zander Mao & Helium Liu<br>
-                        All rights reserved.
-                        <br>
-                        <br>
+        <!--Flight Search-->
+        <form action="/search" method="POST">
+            <div class="row" style="padding-left: 15px; padding-right: 15px; color: white">
+
+                <div class="col-lg-3" style="background-color:#7579ad">
+                    <br>
+                    <p style="color: white">FROM</p>
+                    <input type="text" class="form-control" id="from" placeholder="Airport / City">
+                    <br>
+                    <br>
+                </div>
+                <div class="col-lg-3" style="background-color: #295f9e">
+                    <br>
+                    <p style="color:white">TO</p>
+                    <input type="text" class="form-control" id="to" placeholder="Airport / City">
+                    <br>
+                </div>
+                <div class="col-lg-3" style="background-color:#eb7756">
+                    <br>
+                    <p style="color:white">DEPART</p>
+                    <input ID="dept" class="form-control" placeholder="YYYY-MM-DD" />
+                    <br>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="return" checked
+                                onclick="getValue(this);"> Return
+                            &nbsp;&nbsp;&nbsp;
+                        </label>
+                        <label>
+                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="oneway"
+                                onclick="getValue(this);"> One Way
+                        </label>
+                    </div>
+                    <br>
+                    <script>
+                        $('#dept').datepicker({
+                            autoclose: true,
+                            todayHighlight: true,
+                            format: 'yyyy-mm-dd'
+                        });
+                    </script>
+                </div>
+                <div class="col-lg-3" style="background-color:#bf5859">
+                    <br>
+                    <p style="color:white">RETURN</p>
+                    <input ID="retu" class="form-control" placeholder="YYYY-MM-DD" />
+                    <br>
+                    <script>
+                        $('#retu').datepicker({
+                            autoclose: true,
+                            todayHighlight: true,
+                            format: 'yyyy-mm-dd'
+                        });
+                    </script>
+                </div>
+            </div>
+
+            <br>
+
+            <!-- Search button & footer -->
+            <div class="flex-grow-1"
+                style="background-image: url('../static/footer.jpg'); background-size: cover; background-repeat: 0; height: 34.5vh">
+                <!--Search Button-->
+                <div class="row" style="height: 15vh; padding-top: 3vh; padding-bottom: 3vh; margin: 0">
+                    <div class="col-lg-9"></div>
+                    <div class="col-lg-3" style="text-align:center">
+                        <button type="submit" class="btn btn-success" href="Searchdisplay();"
+                            style="width: 80%; height: 80%; font-size: 120%">Search Flight &nbsp;<i
+                                class="fas fa-plane-departure"></i></button>
                     </div>
                 </div>
-            </footer>
-        </div>
+                <!--Footer-->
+                <footer class="fixed-bottom">
+                    <div class="row">
+                        <div class="col" style="text-align: center; color: white">
+                            Copyright © 2019 Zander Mao & Helium Liu<br>
+                            All rights reserved.
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </form>
     </div>
-    <script type="text/javascript">
-        var timeout = 5;
-
-        function showError() {
-            document.getElementById("second_show").innerHTML = timeout;
-            timeout--;
-            if (timeout == 0) {
-                history.back();
-            } else {
-                setTimeout("showError()", 1000);
-            }
-        }
-
-        showError();
-    </script>
 </body>
 
 </html>

@@ -1,40 +1,133 @@
-{% extends "index.html"%}
-{% block content%}
- <h1>Info for Flight {{flight_id}}</h1>
- <form action="#" method="POST">
-     <input type="radio" style="visibility:hidden" name="flight_id" value="{{flight_id}}" checked>
-     <select name="status" id="">
-         <option value=0>On Time</option>
-         <option value=1>Delay</option>
-     </select>
-     <input type="submit" value="Submit">
- </form>
- {% if customers %}
-    <table>
-        <tr>
-            <th>Customer Email</th>
-            <th>Customer Name</th>
-        </tr>
-    {% for customer in customers %}
-        <tr>
-        {% for item in customer %}
-        <td>
-            {{item}}
-        </td>
-        {% endfor%}
-        </tr>
-    {% endfor%}
-    </table>
- {% else %}
-    <h2>No Data</h2>
- {% endif %}
-{% with messages = get_flashed_messages() %}
-  {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-      <li>{{ message }}</li>
-    {% endfor %}
-    </ul>
-  {% endif %}
-  {% endwith %}
-{% endblock %}
+{%extends "dashboard.html"%}
+{%block tab%}
+<script>
+    document.getElementById("banner").style.backgroundImage = "url('../../../static/journey.jpg')"
+</script>
+<li class="nav-item">
+    <a class="nav-link active" id="history-tab" href="/a/flights" role="tab" aria-controls="history"
+        aria-selected="true">Current Flights</a>
+</li>
+<li class="nav-item">
+
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+        aria-expanded="false">Add</a>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="/a/addflights">Add Flights</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="/a/addplane">Add Plane</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="/a/addairport">Add Airport</a>
+    </div>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/a/ba" role="tab" aria-controls="stats" aria-selected="false">Booking
+        Agent</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/a/customer" role="tab" aria-controls="stats" aria-selected="false">Frequent Customer</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/a/reports" role="tab" aria-controls="stats" aria-selected="false">Sales Report</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/a/revenue" role="tab" aria-controls="stats" aria-selected="false">Revenue</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/a/topdest" role="tab" aria-controls="stats" aria-selected="false">Top
+        Destination</a>
+</li>
+{%endblock%}
+
+{%block panel%}
+
+<div class="container-fluid" style="padding:0px">
+    <div class="row">
+        <div class="col-lg-2"></div>
+
+        <div class="col-lg">
+            <div class="card shadow p-3 mb-5 bg-white rounded" style="padding:15px">
+                <h5 class="card-title" style="color:#30aab8">Info for Flight {{flight_id}}</h5><br>
+                <div class="row">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-8">
+                        <div class="card" style="border-color:#30aab8; border-width: 2px">
+                            <div class="card-body" style="padding:0">
+                                {% if customers %}
+                                <div class="table-responsive">
+                                    <table class="table table-striped" style="margin:0">
+                                        <thead>
+                                            <tr>
+                                                <th>Customer Email</th>
+                                                <th>Customer Name</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for customer in customers %}
+                                            <tr>
+                                                {% for item in customer %}
+                                                <td>
+                                                    {{item}}
+                                                </td>
+                                                {% endfor%}
+                                            </tr>
+                                            {% endfor%}
+                                        </tbody>
+                                    </table>
+                                    {% else %}
+                                    <h2 class="text-center" style="padding:2vw">No data, please specify time range</h2>
+                                </div>
+                                {% endif%}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2"></div>
+                </div>
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-lg-2"></div>
+                <div class="col-lg-8">
+                    <div style="text-align:center !important; width: 100%;">
+                        {% with messages = get_flashed_messages() %}
+                        {% if messages %}
+                        {% for message in messages %}
+                        <p class="text-danger">{{ message }}</p>
+                        {% endfor %}
+                        {% endif %}
+                        {% endwith %}
+                    </div>
+                    <form action="#" method="POST" class="form-inline">
+                        <input class="form-check-input" type="radio" style="display: none" name="flight_id"
+                            value="{{flight_id}}" checked>
+                        <div class="input-group mb-2 mr-sm-2">
+                            <label class=" mb-2 mr-sm-2" for="status">
+                                Change Flight Status:
+                            </label>
+                            <select name="status" id="status" class="form-control">
+                                <option value=0>On Time</option>
+                                <option value=1>Delayed</option>
+                            </select>
+                        </div>
+                        <button type="submit" value="Submit" class="btn btn-success btn-block mb-2"
+                            style="width:40%">Submit</button>
+                    </form>
+                </div>
+                <div class="col-lg-2"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-2"></div>
+</div>
+</div>
+<style>
+    .table-striped>tbody>tr:nth-child(odd)>td,
+    .table-striped>tbody>tr:nth-child(odd)>th {
+        background-color: #bfeef3;
+    }
+
+    #footer-back {
+        background-image: url('../../../static/footer.jpg') !important;
+    }
+</style>
+{%endblock%}

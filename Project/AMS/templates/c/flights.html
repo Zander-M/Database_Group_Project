@@ -1,24 +1,114 @@
-{% extends "index.html"%}
-{% block content%}
- <h1>My Flights</h1>
- {% if flights %}
- <table> <tr>
-     <th>Airline</th>
-     <th>Departure Time</th>
-     <th>Departure Airport</th>
-     <th>Arrive Time</th>
-     <th>Arrive Airport</th>
-     <th>Flight Status</th>
-    </tr>
-    {% for items in flights %}
-    <tr>
-        {% for item in items %}
-        <td>{{item}}</td>
-        {% endfor %}
-    </tr>
-    {% endfor %}
-    </table>
- {% else %}
- <h2>You haven't ordered any flight</h2>
- {% endif%}
- {% endblock %}
+{%extends "dashboard.html"%}
+{%block tab%}
+<li class="nav-item">
+    <a class="nav-link active" id="history-tab" href="/c/flights" role="tab" aria-controls="history"
+        aria-selected="true">History
+        Order</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" id="stats-tab" href="/c/bill" role="tab" aria-controls="stats"
+        aria-selected="false">Spending</a>
+</li>
+{%endblock%}
+{%block panel%}
+
+<div class="container-fluid" style="padding:0px">
+    <div class="row">
+        <!-- Filter: disabled -->
+        <!-- <div class="col-lg-3">
+            <div class="card" style="background-color:#30aab8; color: white; padding: 0px">
+                <h5 class="card-header">Search Booking History</h5>
+                <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="from">FROM</label>
+                            <input type="text" class="form-control" id="from" placeholder="Airport / City">
+                        </div>
+                        <div class="form-group">
+                            <label for="to">TO</label>
+                            <input type="text" class="form-control" id="to" placeholder="Airport / City">
+                        </div>
+                        <div class="form-group">
+                            <label for="dept">DEPART</label>
+                            <input type="text" class="form-control" id="dept" placeholder="MM/DD/YYYY">
+                        </div>
+                        <div class="form-group">
+                            <label for="arrv">ARRIVE</label>
+                            <input type="text" class="form-control" id="arrv" placeholder="MM/DD/YYYY">
+                        </div>
+                        <script>
+                            $('#dept').datepicker({
+                                autoclose: true,
+                                todayHighlight: true
+                            });
+                            $('#arrv').datepicker({
+                                autoclose: true,
+                                todayHighlight: true
+                            });
+                        </script>
+                        <button type="submit" id="searchhis" class="btn btn-outline-light btn-block"
+                            style="margin-top:35px"><i class="fas fa-search"></i> Search History</button>
+                    </form>
+                </div>
+            </div>
+            <br>
+        </div> -->
+        <div class="col-lg">
+            <div class="card" style="border-color:#30aab8; border-width: 2px; padding: 0px">
+                <div class="card-body" style="padding:0">
+                    {% if flights %}
+                    <div class="table-responsive">
+                        <table class="table table-hover" style="margin:0">
+                            <thead class="thead-light">
+                                <tr>
+                                    <th>Airline</th>
+                                    <th>Departure Time</th>
+                                    <th>Departure Airport</th>
+                                    <th>Arrive Time</th>
+                                    <th>Arrive Airport</th>
+                                    <th>Flight Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for items in flights %}
+                                <tr>
+                                    {% for item in items %}
+                                    <td>{{item}}</td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                        {% else %}
+                        <h2>You haven't ordered any flight</h2>
+                    </div>
+                    {% endif%}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    #searchhis:hover {
+        color: #30aab8 !important;
+    }
+
+    .table-hover tbody tr td,
+    .table-hover tbody tr th {
+        border-color: #a2e6ee
+    }
+
+    .table .thead-light th,
+    .table-hover tbody tr:hover td,
+    .table-hover tbody tr:hover th {
+        background-color: #a2e6ee;
+    }
+
+    .table .thead-light th {
+        border-top: 0;
+        border-color: white
+    }
+</style>
+{%endblock%}

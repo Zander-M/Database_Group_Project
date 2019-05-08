@@ -1,7 +1,49 @@
-{% extends "index.html"%}
-{% block content%}
- <h1>Customer Index</h1>
- <a href="/c/flights">My Flights</a>
- <a href="/c/search">Search Flights</a>
- <a href="/c/bill">My Spending</a>
- {% endblock %}
+{%extends "dashboard.html"%}
+{%block tab%}
+<li class="nav-item">
+    <a class="nav-link" id="history-tab" href="/c/flights" role="tab" aria-controls="history"
+        aria-selected="true">History
+        Order</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link active" id="stats-tab" href="/c/bill" role="tab" aria-controls="stats"
+        aria-selected="false">Spending</a>
+</li>
+{%endblock%}
+{%block panel%}
+
+<div class="container-fluid" style="padding:0px">
+    <div class="row">
+        <div class="col-lg">
+            <div class="card" style="border-color:#30aab8; border-width: 2px; padding: 0px">
+                <div class="card-body" style="padding:0">
+                    sdvsdvsvs
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    #searchhis:hover {
+        color: #30aab8 !important;
+    }
+
+    .table-hover tbody tr td,
+    .table-hover tbody tr th {
+        border-color: #a2e6ee
+    }
+
+    .table .thead-light th,
+    .table-hover tbody tr:hover td,
+    .table-hover tbody tr:hover th {
+        background-color: #a2e6ee;
+    }
+
+    .table .thead-light th {
+        border-top: 0;
+        border-color: white
+    }
+</style>
+{%endblock%}

@@ -1,112 +1,161 @@
-{% extends "index.html"%}
-{% block head %}
-<script>
-    $(function(){
-        $('#default').attr('checked',
-        true);
-        $('input[name=display_select]').on('change', function(){
-            var n = $(this).val();
-            switch(n){
-                case '1':
-                    $('#1').css('display','block');
-                    $('#2').css('display','none');
-                    $('#3').css('display','none');
-                    break;
-                case '2':
-                    $('#2').css('display','block');
-                    $('#1').css('display','none');
-                    $('#3').css('display','none');
-                    break;
-                case '3':
-                    $('#3').css('display','block');
-                    $('#1').css('display','none');
-                    $('#2').css('display','none');
-                    break;
-            }
-        })
-    })
-</script>
-{% endblock%}
-{% block content%}
-<h1>Booking Agents</h1>
-All<input type="radio" name="display_select" id="default" value="3" checked>
-Top 5 based on commission fee<input type="radio" name="display_select" value="1">
-Top 5 based on number<input type="radio" name="display_select" value="2">
-<div id="1" style="display:none">
-    Last 3 Months:<br>
-    <table>
-        <tr>
-            <th>Booking Agent ID</th>
-            <th>Last 3 Months Commission Fee</th>
-        </tr>
-        {% for agent in last_three_months_c %}
-        <tr>
-            {% for item in agent %}
-            <td>{{item}}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-    </table>
-    Last Year: <br>
-    <table>
-        <tr>
-            <th>Booking Agent ID</th>
-            <th>Last 3 Months Commission Fee</th>
-        </tr>
-        {% for agent in last_year_c %}
-        <tr>
-            {% for item in agent %}
-            <td>{{item}}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-    </table>
+{%extends "dashboard.html"%}
+{%block tab%}
+<li class="nav-item">
+    <a class="nav-link" id="history-tab" href="/a/flights" role="tab" aria-controls="history"
+        aria-selected="true">Current Flights</a>
+</li>
+<li class="nav-item">
+
+    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true"
+        aria-expanded="false">Add</a>
+    <div class="dropdown-menu">
+        <a class="dropdown-item" href="/a/addflights">Add Flights</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="/a/addplane">Add Plane</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="/a/addairport">Add Airport</a>
+    </div>
+</li>
+<li class="nav-item">
+    <a class="nav-link active" href="/a/ba" role="tab" aria-controls="stats" aria-selected="false">Booking
+        Agent</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/a/customer" role="tab" aria-controls="stats"
+        aria-selected="false">Frequent Customer</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/a/reports" role="tab" aria-controls="stats"
+        aria-selected="false">Sales Report</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/a/revenue" role="tab" aria-controls="stats"
+        aria-selected="false">Revenue</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" href="/a/topdest" role="tab" aria-controls="stats" aria-selected="false">Top
+        Destination</a>
+</li>
+{%endblock%}
+
+{%block panel%}
+
+<div class="container" style="padding:0px">
+    
+ 
+        <h1>Booking Agents</h1>
+        All<input type="radio" name="display_select" id="default" value="3" checked>
+        Top 5 based on commission fee<input type="radio" name="display_select" value="1">
+        Top 5 based on number<input type="radio" name="display_select" value="2">
+        <div id="1" style="display:none">
+            Last 3 Months:<br>
+            <table>
+                <tr>
+                    <th>Booking Agent ID</th>
+                    <th>Last 3 Months Commission Fee</th>
+                </tr>
+                {% for agent in last_three_months_c %}
+                <tr>
+                    {% for item in agent %}
+                    <td>{{item}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+            Last Year: <br>
+            <table>
+                <tr>
+                    <th>Booking Agent ID</th>
+                    <th>Last 3 Months Commission Fee</th>
+                </tr>
+                {% for agent in last_year_c %}
+                <tr>
+                    {% for item in agent %}
+                    <td>{{item}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        
+        </div>
+        <div id="2" style="display:none">
+            Last 3 Months:<br>
+            <table>
+                <tr>
+                    <th>Booking Agent ID</th>
+                    <th>Total Order Number</th>
+                </tr>
+                {% for agent in last_three_months_n %}
+                <tr>
+                    {% for item in agent %}
+                    <td>{{item}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+            Last Year: <br>
+            <table>
+                <tr>
+                    <th>Booking Agent ID</th>
+                    <th>Total Order Number</th>
+                </tr>
+                {% for agent in last_year_n %}
+                <tr>
+                    {% for item in agent %}
+                    <td>{{item}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+        <div id="3" style="display:block">
+            <table>
+                <tr>
+                    <th>Booking Agent ID</th>
+                    <th>Total Order Number</th>
+                </tr>
+                {% for agent in all_agents %}
+                <tr>
+                    {% for item in agent %}
+                    <td>{{item}}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+
 
 </div>
-<div id="2" style="display:none">
-    Last 3 Months:<br>
-    <table>
-        <tr>
-            <th>Booking Agent ID</th>
-            <th>Total Order Number</th>
-        </tr>
-        {% for agent in last_three_months_n %}
-        <tr>
-            {% for item in agent %}
-            <td>{{item}}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-    </table>
-    Last Year: <br>
-    <table>
-        <tr>
-            <th>Booking Agent ID</th>
-            <th>Total Order Number</th>
-        </tr>
-        {% for agent in last_year_n %}
-        <tr>
-            {% for item in agent %}
-            <td>{{item}}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-    </table>
-</div>
-<div id="3" style="display:block">
-    <table>
-        <tr>
-            <th>Booking Agent ID</th>
-            <th>Total Order Number</th>
-        </tr>
-        {% for agent in all_agents %}
-        <tr>
-            {% for item in agent %}
-            <td>{{item}}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-    </table>
-</div>
- {% endblock %}
-    
+<script>
+        $(function () {
+            $('#default').attr('checked',
+                true);
+            $('input[name=display_select]').on('change', function () {
+                var n = $(this).val();
+                switch (n) {
+                    case '1':
+                        $('#1').css('display', 'block');
+                        $('#2').css('display', 'none');
+                        $('#3').css('display', 'none');
+                        break;
+                    case '2':
+                        $('#2').css('display', 'block');
+                        $('#1').css('display', 'none');
+                        $('#3').css('display', 'none');
+                        break;
+                    case '3':
+                        $('#3').css('display', 'block');
+                        $('#1').css('display', 'none');
+                        $('#2').css('display', 'none');
+                        break;
+                }
+            })
+        })
+    </script>
+<style>
+    .table-striped>tbody>tr:nth-child(odd)>td,
+    .table-striped>tbody>tr:nth-child(odd)>th {
+        background-color: #bfeef3;
+    }
+</style>
+{%endblock%}

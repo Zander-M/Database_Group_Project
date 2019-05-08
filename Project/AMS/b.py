@@ -75,7 +75,7 @@ def flights():
         if row[-1] == 0: # 0 for on time
             row[-1] = 'On time'
         elif row[-1] == 1: # 1 for delay
-            row[-1] = 'Delay'
+            row[-1] = 'Delayed'
         n_flights.append(row)
     return render_template('b/flights.html', flights = n_flights)
 
@@ -149,7 +149,7 @@ def search():
                 b_flight = [b_flight[1], b_flight[5], b_flight[6], price, b_flight[0]] # airline, dept_time, arrv_time, price, flight_id
                 b_n_flights.append(flight)
     return render_template('b/search.html', dept_airport = dept_airport, arrv_airport = arrv_airport, result= n_flights, back = b_n_flights)
-    
+
 @bp.route('/confirm_order', methods=["POST"])
 @login_required
 def confirm_order():

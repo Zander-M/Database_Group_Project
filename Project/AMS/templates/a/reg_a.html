@@ -1,22 +1,57 @@
-{%extends 'reg.html'%}
-{%block header%}Airline Staff Registration{%endblock%}
-<br>
+{%extends "reg.html"%}
+{%block banner %} <div class="">
+    Airline Staff Register
+</div> {%endblock%}
 {%block content%}
-        Username: <input type="text" name="username"><br>
-        Password: <input type="password" name="password"><br>
-        Confirm password:<input type="password" name="password_c"><br>
-        First Name: <input type="text" name="fname"><br>
-        Last Name: <input type="text" name="lname"><br>
-        Date of Birth: <input type="date" name="bday"><br>
-        <div id="phone#"></div>
-        Phone Number: <input type="number" name="phone"><br>
-        <!-- for now only one. Can add more later -->
-        Airline: <select name="airline" id="airline">
+
+<div class="col-lg-4">
+    <p class="text-muted">Login Information</p>
+    <div class="form-group">
+        <label for="un">User Name</label>
+        <input type="text" id="un" name="username" required class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="pwd">Password</label>
+        <input type="password" id="pwd" name="password" required class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="confirm_pwd">Confirm Password</label>
+        <input type="password" id="confirm_pwd" name="password_c" required class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="airline">Airline</label>
+        <!-- <input type="text" id="airline" name="airline" required class="form-control"> -->
+        <select name="airline" id="airline" class="form-control">
             {%for i in airlines %}
             <option value="{{i[0]}}">{{i[0]}}</option>
             {%endfor%}
         </select>
-        <input type="submit" name="submit" value="Submit">
-        <a href="/auth/login/a"><button type="button" value="back">Back to Login</button></a>
-    </form>
+    </div>
+</div>
+<div class="col-lg-4">
+    <p class="text-muted">Personal Information</p>
+    <div class="form-group">
+        <label for="first">First Name</label>
+        <input type="text" id="first" name="fname" required class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="last">Last Name</label>
+        <input type="text" id="last" name="lname" required class="form-control">
+    </div>
+    <div class="form-group">
+        <label for="birthday">Date of Birth</label>
+        <input type="text" id="birthday" name="bday" required class="form-control">
+        <script>
+            $('#birthday').datepicker({
+                autoclose: true,
+            });
+        </script>
+    </div>
+    <div class="form-group">
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" required class="form-control">
+        <!-- <small id="phonehelp" class="form-text text-muted">Separate multiple phone numbers with comma</small> -->
+    </div>
+</div>
+<br>
 {%endblock%}
