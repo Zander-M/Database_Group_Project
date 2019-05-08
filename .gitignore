@@ -14,3 +14,4 @@ Project/AMS/__pycache__/b.cpython-36.pyc
 Project/AMS/__pycache__/auth.cpython-36.pyc
 Project/AMS/__pycache__/a.cpython-36.pyc
 Project/AMS/__pycache__/__init__.cpython-36.pyc
+*.pyc
