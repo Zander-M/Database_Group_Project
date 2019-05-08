@@ -209,7 +209,7 @@ def register(role):
 
     if role == 'a':  # fetch all airline names if visiting airline staff registration page
         cursor.execute("SELECT * from airline")
-        airlines = cursor.fetchall()[0]
+        airlines = cursor.fetchall()
         return render_template('a/reg_a.html', error=error, role=role, airlines=airlines)
     # Booking Agent & Customer Login
     return render_template('{}/reg_{}.html'.format(role, role), error=error, role=role)
@@ -366,7 +366,7 @@ def load_logged_in_user():
             cursor.execute(
                 "SELECT * FROM booking_agent WHERE BAID = %s", (BAID,))
             g.user = cursor.fetchone()
-            g.username = BAID  # Booking Agent ID
+            g.BAID = BAID  # Booking Agent ID
             g.role = role
     elif role == 'c':
         email = session.get('email')
