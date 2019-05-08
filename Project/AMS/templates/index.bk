@@ -33,6 +33,7 @@
             } else {
                 document.getElementById("retu").value = "";
                 document.getElementById("retu").removeAttribute('disabled');
+                document.getElementById("retu").setAttribute("required", "");
             }
         }
     </script>
