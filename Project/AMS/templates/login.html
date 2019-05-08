@@ -89,18 +89,21 @@
             <div class="col-lg-4">
                 {% with messages = get_flashed_messages() %}
                 {% if messages %}
-                    {% for message in messages %}
-                    <p class="text-danger">{{ message }}</p>
-                    {% endfor %}
+                {% for message in messages %}
+                <p class="text-danger">{{ message }}</p>
+                {% endfor %}
                 {% endif %}
                 {% endwith %}
                 {% block content%}{%endblock%}
             </div>
             <div class="col-lg-4"></div>
-
+        </div>
+        <!-- Footer -->
+        <div class="flex-grow-1" id="footer-back"
+            style="background-image: url('../../static/footer.jpg'); background-size: cover; background-repeat: 0; height: 20vh">
             <footer class="fixed-bottom">
                 <div class="row">
-                    <div class="col" style="text-align: center; color: #048998">
+                    <div class="col" style="text-align: center; color: white">
                         Copyright © 2019 Zander Mao & Helium Liu<br>
                         All rights reserved.
                         <br>
@@ -109,6 +112,7 @@
                 </div>
             </footer>
         </div>
+    </div>
 </body>
 
 </html>

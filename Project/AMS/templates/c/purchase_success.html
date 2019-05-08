@@ -69,24 +69,52 @@
             </div>
         </div>
         <br>
-        <br>
-        <br>
-        <div class="row">
-            <div class="col-lg-4"></div>
-            <div class="col-lg-4">
-                <div class="card" style="width: 18rem;">
-                    <div class="card-body">
-                        <h5 class="card-title">Purchase Success</h5>
-                        <p class="card-text">Click OK to view your current orders.</p>
-                        <a href="/c/flights" class="card-link">OK</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-4"></div>
+         <br>
+         <div class="row">
+             <div class="col-lg-4"></div>
+             <div class="col-lg-4">
+                 <div class="card shadow p-3 mb-5 bg-white rounded" style="width: 18rem;">
+                     <div class="card-body">
+                         <h5 class="card-title" style="text-align:center">Purchase Success</h5>
+                         <p class="card-text" style="text-align:center">You will be redirected to dashboard in <strong id="second_show">5</strong>
+                             seconds.</p>
+                     </div>
+                 </div>
+             </div>
+             <div class="col-lg-4"></div>
 
-        </div>
-    </div>
+         </div>
+         <br>
+         <!-- Footer -->
+         <div class="flex-grow-1" id="footer-back"
+             style="background-image: url('../../../static/footer.jpg'); background-size: cover; background-repeat: 0; height: 35vh">
+             <footer class="fixed-bottom">
+                 <div class="row">
+                     <div class="col" style="text-align: center; color: white">
+                         Copyright © 2019 Zander Mao & Helium Liu<br>
+                         All rights reserved.
+                         <br>
+                         <br>
+                     </div>
+                 </div>
+             </footer>
+         </div>
+     </div>
+     <script type="text/javascript">
+         var timeout = 5;
 
-</body>
+         function showError() {
+             document.getElementById("second_show").innerHTML = timeout;
+             timeout--;
+             if (timeout == 0) {
+                 window.location.href = "/c/flights";
+             } else {
+                 setTimeout("showError()", 1000);
+             }
+         }
 
-</html>
+         showError();
+     </script>
+ </body>
+
+ </html>

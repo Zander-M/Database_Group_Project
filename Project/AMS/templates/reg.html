@@ -92,7 +92,7 @@
             <div class="row">
                 {% block content%}{%endblock%}
                 <div class="col-lg-4">
-                    <p>Already have an account?<br><a href="/login/{{role}}">Back to Login</a>
+                    <p>Already have an account?<br><a href="/auth/login/{{role}}">Back to Login</a>
                     </p>
                     <br>
                     {% with messages = get_flashed_messages() %}
@@ -107,18 +107,20 @@
                 </div>
             </div>
         </form>
-        <p><br></p>
-        <p><br></p>
-        <footer class="fixed-bottom">
-            <div class="row">
-                <div class="col" style="text-align: center; color: #048998">
-                    Copyright © 2019 Zander Mao & Helium Liu<br>
-                    All rights reserved.
-                    <br>
-                    <br>
+        <!-- footer -->
+        <div class="flex-grow-1" id="footer-back"
+            style="background-image: url('../../static/footer.jpg'); background-size: cover; background-repeat: 0; height: 20vh">
+            <footer class="fixed-bottom">
+                <div class="row">
+                    <div class="col" style="text-align: center; color: white">
+                        Copyright © 2019 Zander Mao & Helium Liu<br>
+                        All rights reserved.
+                        <br>
+                        <br>
+                    </div>
                 </div>
-            </div>
-        </footer>
+            </footer>
+        </div>
     </div>
 </body>
 
