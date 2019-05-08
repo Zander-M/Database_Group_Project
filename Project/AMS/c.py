@@ -75,7 +75,7 @@ def flights():
         if row[-1] == 0: # 0 for on time
             row[-1] = 'On time'
         elif row[-1] == 1: # 1 for delay
-            row[-1] = 'Delayed'
+            row[-1] = 'Delay'
         n_flights.append(row)
     return render_template('c/flights.html', flights = n_flights)
 
