@@ -281,7 +281,7 @@ def booking_agent():
         )
 
 
-@bp.route('/customer')
+@bp.route('/customer', methods = ["GET", "POST"])
 @login_required
 def customer():
     """
@@ -294,11 +294,21 @@ def customer():
     Returns:
         Airline Staff customer page
     """
+    customer_info = None 
+    if request.method == "POST":
+        customer_email = request.form['customer_email'] 
+        cursor = get_cursor()
+        cursor.execute("SELECT flight.flight_id, dept_airport, dept_time, arrv_airport, arrv_time FROM flight LEFT JOIN ticket on ticket.flight_id = flight.flight_id WHERE ticket.customer_email = %s AND flight.airline = %s", (customer_email, g.user[5]))
+        customer_info = cursor.fetchall()
+        if not customer_info:
+            customer_info = "e" # Stands for empty. Front-end will display No data
+    cursor = get_cursor()
+    cursor.execute("SELECT name, email, COUNT(customer_email) FROM customer RIGHT JOIN ticket on customer.email = ticket.customer_email WHERE airline = %s GROUP BY email ORDER BY COUNT(customer_email) DESC LIMIT 1", (g.user[5],))
+    top_customer = cursor.fetchone()
+    return render_template('a/customer.html', top_customer = top_customer, customer_info = customer_info)
 
-    return render_template('a/customer.html')
 
-
-@bp.route('/reports')
+@bp.route('/reports', methods = ["GET", "POST"])
 @login_required
 def reports():
     """
@@ -309,8 +319,23 @@ def reports():
     Returns:
         Airline Staff report page
     """
+    cursor = get_cursor()
+    search_result = None
+    start_date = None
+    end_date = None
+    if request.method == "POST":
+        start_date = request.form["start_date"]
+        end_date = request.form["end_date"]
+        cursor.execute("SELECT COUNT(*) FROM ticket WHERE purchase_date_time BETWEEN %s AND %s AND airline = %s", (start_date, end_date, g.user[5]))
+        search_result = cursor.fetchone()
+    #fetch last one month date
+    cursor.execute("SELECT name, customer_email, purchase_date_time FROM ticket LEFT JOIN customer ON ticket.customer_email = customer.email WHERE purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND CURDATE() AND airline = %s", (g.user[5]))
+    last_month = cursor.fetchall()
 
-    return render_template('a/reports.html')
+    cursor.execute("SELECT MONTH(purchase_date_time), COUNT(*) FROM ticket WHERE purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE() AND airline = %s GROUP BY MONTH(purchase_date_time) ORDER BY MONTH(purchase_date_time) ASC", (g.user[5]))
+    last_year= cursor.fetchall()
+
+    return render_template('a/reports.html', last_month = last_month, last_year = last_year, search_result = search_result, start_date=start_date, end_date=end_date)
 
 
 @bp.route('/revenue')
@@ -324,8 +349,16 @@ def revenue():
     Returns:
         Airline Staff revenue page
     """
-
-    return render_template('a/revenue.html')
+    cursor = get_cursor()
+    cursor.execute("SELECT SUM(sold_price)*0.9 FROM ticket WHERE BAID IS NOT NULL AND airline = %s AND purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND CURDATE()", (g.user[5]))
+    indirect_sell_month = cursor.fetchone()
+    cursor.execute("SELECT SUM(sold_price) FROM ticket WHERE BAID IS NULL AND airline = %s AND purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND CURDATE()", (g.user[5]))
+    direct_sell_month = cursor.fetchone()
+    cursor.execute("SELECT SUM(sold_price)*0.9 FROM ticket WHERE BAID IS NOT NULL AND airline = %s AND purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE()", (g.user[5]))
+    indirect_sell_year = cursor.fetchone()
+    cursor.execute("SELECT SUM(sold_price) FROM ticket WHERE BAID IS NULL AND airline = %s AND purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE()", (g.user[5]))
+    direct_sell_year = cursor.fetchone()
+    return render_template('a/revenue.html', direct_sell_month = direct_sell_month, indirect_sell_month = indirect_sell_month, direct_sell_year = direct_sell_year, indirect_sell_year = indirect_sell_year)
 
 
 @bp.route('/topdest')

@@ -2,19 +2,19 @@
 {% block content%}
 <h1>Search</h1>
 <form action="" method="POST">
-     From:<select name="dept_airport" id="">
+     From:<select name="dept_airport" id="" required>
          {% for airport in dept_airport%}
             <option value="{{airport[0]}}">{{airport[0]}}</option>
          {% endfor %}
      </select>
-     To:<select name="arrv_airport" id="">
+     To:<select name="arrv_airport" id="" required>
          {% for airport in arrv_airport%}
             <option value="{{airport[0]}}">{{airport[0]}}</option>
          {% endfor %}
      </select>
-     At: <input type="date" name="dept_time">
-     <input type="radio" name="trip" value="oneway">One way
-     <input type="radio" name="trip" value="twoway">Two way
+     At: <input type="date" name="dept_time" required>
+     <input type="radio" name="trip" value="oneway"required>One way
+     <input type="radio" name="trip" value="twoway" required>Two way
      <input type="submit" value="Search">
 </form>
 {% if result == 'e'%}

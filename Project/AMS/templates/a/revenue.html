@@ -1,14 +1,10 @@
 {% extends "index.html"%}
 {% block content%}
- <h1> Airline Staff Index </h1>
- <a href="/a/flights">My Flights</a>
- <a href="/a/addflights">Add Flights</a>
- <a href="/a/addplane">Add Plane</a>
- <a href="/a/addairport">Add Airport</a>
- <a href="/a/ba">Booking Agents</a>
- <a href="/a/customer">Frequent Customer</a>
- <a href="/a/reports">Reports</a>
- <a href="/a/revenue">Revenues</a>
- <a href="/a/topdest">Top Destinations</a>
- {% endblock %}
-    
+<h1>Revenue</h1>
+<h2>Month</h2>
+Direct Sell: {{direct_sell_month[0]}} <br>
+Indirect Sell: {{indirect_sell_month[0]}}
+<h2>Year</h2>
+Direct Sell: {{direct_sell_year[0]}} <br>
+Indirect Sell: {{indirect_sell_year[0]}}
+{% endblock %}
