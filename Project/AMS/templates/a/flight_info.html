@@ -41,11 +41,13 @@
 {%block panel%}
 
 <div class="container-fluid" style="padding:0px">
+    <br>
+    <br>
     <div class="row">
         <div class="col-lg-2"></div>
 
         <div class="col-lg">
-            <div class="card shadow p-3 mb-5 bg-white rounded" style="padding:15px">
+            <div class="card shadow p-3 mb-5 bg-white rounded" style="border-color:#30aab8; border-width: 1px;padding:15px">
                 <h5 class="card-title" style="color:#30aab8">Info for Flight {{flight_id}}</h5><br>
                 <div class="row">
                     <div class="col-lg-2"></div>
@@ -124,10 +126,6 @@
     .table-striped>tbody>tr:nth-child(odd)>td,
     .table-striped>tbody>tr:nth-child(odd)>th {
         background-color: #bfeef3;
-    }
-
-    #footer-back {
-        background-image: url('../../../static/footer.jpg') !important;
     }
 </style>
 {%endblock%}

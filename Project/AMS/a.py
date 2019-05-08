@@ -305,7 +305,7 @@ def customer():
     cursor = get_cursor()
     cursor.execute("SELECT name, email, COUNT(customer_email) FROM customer RIGHT JOIN ticket on customer.email = ticket.customer_email WHERE airline = %s GROUP BY email ORDER BY COUNT(customer_email) DESC LIMIT 1", (g.user[5],))
     top_customer = cursor.fetchone()
-    return render_template('a/customer.html', top_customer = top_customer, customer_info = customer_info)
+    return render_template('a/customer.html', top_customer = top_customer, customer_info = customer_info, email = customer_email)
 
 
 @bp.route('/reports', methods = ["GET", "POST"])
