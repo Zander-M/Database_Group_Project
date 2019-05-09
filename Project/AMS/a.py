@@ -11,7 +11,6 @@ from flask import (
 )
 
 from AMS.db import get_db, get_cursor
-
 import datetime
 
 
@@ -314,14 +313,6 @@ def customer():
 @bp.route('/reports', methods = ["GET", "POST"])
 @login_required
 def reports():
-    """
-    Ticket info in the past month/year based on time range.    
-    Args:
-        None
-
-    Returns:
-        Airline Staff report page
-    """
     mon_convert = {	1: 'Janauary',
 		2:'February',
 		3:'March',
@@ -335,7 +326,14 @@ def reports():
 		11:'November',
 		12:'December'}
     current_month = int(datetime.datetime.now().strftime("%m"))
-    
+    """
+    Ticket info in the past month/year based on time range.    
+    Args:
+        None
+
+    Returns:
+        Airline Staff report page
+    """
     cursor = get_cursor()
     search_result = None
     start_date = None
@@ -348,7 +346,6 @@ def reports():
     #fetch last one month date
     cursor.execute("SELECT name, customer_email, purchase_date_time FROM ticket LEFT JOIN customer ON ticket.customer_email = customer.email WHERE purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND CURDATE() AND airline = %s", (g.user[5]))
     last_month = cursor.fetchall()
-
     #fetch last one year date
     cursor.execute("SELECT MONTH(purchase_date_time), COUNT(*) FROM ticket WHERE purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE() AND airline = %s GROUP BY MONTH(purchase_date_time) ORDER BY MONTH(purchase_date_time) ASC", (g.user[5]))
     last_year= cursor.fetchall()
@@ -370,8 +367,6 @@ def reports():
         else:
             last_year_convert[0].append(mon_convert[month])
             last_year_convert[1].append(0)
-    # assert last_year_convert is None, last_year_convert
-
     return render_template('a/reports.html', last_month = last_month, last_year = last_year_convert, search_result = search_result, start_date=start_date, end_date=end_date)
 
 
@@ -432,39 +427,3 @@ def confirm(action):
     """
 
     return render_template('a/confirm.html', action=action)
-
-@bp.route('/settings', methods=["GET", "POST"])
-@login_required
-def settings():
-    """
-    Airline Staff Settings Page. Airline staff can see his/her information, including Name, Email, Phone Number, etc. Airline Staff can also add phone numbers.
-    
-    Args:
-        None.
-    
-    Returns:
-        Airline Staff settings page
-    """
-    db = get_db()
-    cursor = db.cursor()
-    error = None
-    if request.method == "POST":
-        phone_number = request.form["phone_number"]
-        cursor.execute("SELECT * FROM staff_phone WHERE phone_number = %s", (phone_number))
-        if cursor.fetchone() is not None:
-            error = "Phone number already in system"
-        if error is None:
-            try:
-                cursor.execute("INSERT INTO staff_phone (phone_number, username) values (%s, %s)", (phone_number, g.user[0]))
-                db.commit()
-            except pymysql.Error as e:
-                db.rollback()
-        flash(error)
-    username = g.user[0]
-    fname = g.user[2]
-    lname = g.user[3]
-    bday = g.user[4]
-    airline = g.user[5]
-    cursor.execute("SELECT phone_number FROM staff_phone WHERE username = %s", (g.user[0]))
-    phones = cursor.fetchall()
-    return render_template("a/settings.html", username = username, fname = fname, lname = lname, bday = bday, airline = airline, phones = phones )
