@@ -6,7 +6,7 @@
 This file initialize most of the packages.
 '''
 
-from flask import Flask, render_template, redirect, g, session, url_for
+from flask import Flask, render_template, redirect, g, session, url_for, request
 import os
 import pymysql
 
@@ -64,13 +64,9 @@ def create_app(test_config=None):
     from . import b 
     app.register_blueprint(b.bp)
 
-    from . import search # for plane search
+    from . import utils
+    app.register_blueprint(utils.bp)
 
-    @app.route('/')
-    def index():
-        if session.get('role'):
-            return redirect(url_for('{}.index'.format(session['role'])))
-        return render_template('index.html')
     return app
     
     

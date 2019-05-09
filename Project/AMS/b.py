@@ -149,7 +149,7 @@ def search():
                 b_flight = [b_flight[1], b_flight[5], b_flight[6], price, b_flight[0]] # airline, dept_time, arrv_time, price, flight_id
                 b_n_flights.append(flight)
     return render_template('b/search.html', dept_airport = dept_airport, arrv_airport = arrv_airport, result= n_flights, back = b_n_flights)
-    
+
 @bp.route('/confirm_order', methods=["POST"])
 @login_required
 def confirm_order():
@@ -295,3 +295,17 @@ def customer():
     cursor.execute("SELECT name, email, SUM(sold_price)*0.1 FROM customer RIGHT JOIN ticket on customer.email = ticket.customer_email WHERE BAID = %s AND purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND NOW() GROUP BY(email) ORDER BY SUM(sold_price) DESC LIMIT 5 ", (g.BAID))
     one_year_commission = cursor.fetchall()
     return render_template('b/customer.html', six_months_cnt = six_months_cnt, one_year_commission = one_year_commission)
+
+@bp.route('/settings')
+@login_required
+def settings():
+    """
+    Booking Agent Settings Page. Booking Agent can see his/her information.
+    
+    Args:
+        None.
+    
+    Returns:
+        Booking agent settings page
+    """
+    return render_template("b/settings.html")

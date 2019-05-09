@@ -1,0 +1,30 @@
+{% extends "index.html"%}
+{% block content%}
+ <h1> Airline Staff Settings</h1>
+ Username:{{username}} <br>
+ First Name:{{fname}} <br>
+ Last Name:{{lname}} <br>
+ Date of Birth:{{bday}} <br>
+ Airline:{{airline}} <br>
+ Phones: <br>
+ {% for phone in phones %}
+ {{phone[0]}} <br>
+ {% endfor %}
+ Add phone:
+ <form action="#" method="POST">
+     Phone Number:<input type="number" name="phone_number">
+     <input type="submit" value="Add">
+ </form>
+ {% with messages = get_flashed_messages() %}
+    {% if messages %}
+    <ul class=flashes>
+    {% for message in messages %}
+        {% if message %}
+      <li>{{ message }}</li>
+        {% endif %}
+    {% endfor %}
+    </ul>
+  {% endif %}
+  {% endwith %}
+ {% endblock %}
+    
