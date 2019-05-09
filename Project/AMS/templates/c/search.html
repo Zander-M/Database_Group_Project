@@ -31,12 +31,13 @@
     <script>
         function getValue(obj) {
             var value = obj.value;
-            if (value != "return") {
+            if (value != "twoway") {
                 document.getElementById("retu").value = "Not Applicable";
                 document.getElementById("retu").disabled = "disabled";
             } else {
                 document.getElementById("retu").value = "";
                 document.getElementById("retu").removeAttribute('disabled');
+                document.getElementById("retu").setAttribute("required", "");
             }
         }
     </script>
