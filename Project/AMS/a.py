@@ -390,12 +390,7 @@ def revenue():
     indirect_sell_year = cursor.fetchone()
     cursor.execute("SELECT SUM(sold_price) FROM ticket WHERE BAID IS NULL AND airline = %s AND purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE()", (g.user[5]))
     direct_sell_year = cursor.fetchone()
-    return render_template('a/revenue.html', direct_sell_month = direct_sell_month, indirect_sell_month = indirect_sell_month, direct_sell_year = direct_sell_year, indirect_sell_year = indirect_sell_year)
 
-
-@bp.route('/topdest')
-@login_required
-def topdest():
     """
     Top destination    
     Args:
@@ -411,7 +406,29 @@ def topdest():
     cursor.execute(
         "SELECT arrv_airport FROM flight WHERE flight.airline = %s AND dept_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE() GROUP BY arrv_airport ORDER BY COUNT(arrv_airport) DESC LIMIT 3 ", g.user[5])
     last_year = cursor.fetchall()
-    return render_template('a/topdest.html', last_three_months=last_three_months, last_year=last_year)
+
+    return render_template('a/revenue.html', direct_sell_month = direct_sell_month, indirect_sell_month = indirect_sell_month, direct_sell_year = direct_sell_year, indirect_sell_year = indirect_sell_year, last_three_months=last_three_months, last_year=last_year)
+
+# Merged with revenue
+# @bp.route('/topdest')
+# @login_required
+# def topdest():
+#     """
+#     Top destination    
+#     Args:
+#         None
+
+#     Returns:
+#         Airline Staff top destination page
+#     """
+#     cursor = get_cursor()
+#     cursor.execute(
+#         "SELECT arrv_airport FROM flight WHERE airline = %s AND dept_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND CURDATE() GROUP BY arrv_airport ORDER BY COUNT(arrv_airport) DESC LIMIT 3 ", (g.user[5]))
+#     last_three_months = cursor.fetchall()
+#     cursor.execute(
+#         "SELECT arrv_airport FROM flight WHERE flight.airline = %s AND dept_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE() GROUP BY arrv_airport ORDER BY COUNT(arrv_airport) DESC LIMIT 3 ", g.user[5])
+#     last_year = cursor.fetchall()
+#     return render_template('a/topdest.html', last_three_months=last_three_months, last_year=last_year)
 
 
 @bp.route('/confirm/<action>')
@@ -428,7 +445,7 @@ def confirm(action):
 
     return render_template('a/confirm.html', action=action)
 
-    @bp.route('/settings', methods=["GET", "POST"])	
+@bp.route('/settings', methods=["GET", "POST"])	
 @login_required	
 def settings():	
     """	

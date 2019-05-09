@@ -30,11 +30,7 @@
     <a class="nav-link" href="/a/reports" role="tab" aria-controls="stats" aria-selected="false">Sales Report</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="/a/revenue" role="tab" aria-controls="stats" aria-selected="false">Revenue</a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href="/a/topdest" role="tab" aria-controls="stats" aria-selected="false">Top
-        Destination</a>
+    <a class="nav-link" href="/a/revenue" role="tab" aria-controls="stats" aria-selected="false">Revenue & Top Dest.</a>
 </li>
 {%endblock%}
 
@@ -75,16 +71,16 @@
                                             {% endfor%}
                                         </tbody>
                                     </table>
-                                    {% else %}
-                                    <h2 class="text-center" style="padding:2vw">No data, please specify time range</h2>
                                 </div>
+                                    {% else %}
+                                    <h2 class="text-center" style="padding:2vw">There is no valid purchase for this flight.</h2>
+                                
                                 {% endif%}
                             </div>
                         </div>
                     </div>
                     <div class="col-lg-2"></div>
                 </div>
-            </div>
             <br>
             <div class="row">
                 <div class="col-lg-2"></div>

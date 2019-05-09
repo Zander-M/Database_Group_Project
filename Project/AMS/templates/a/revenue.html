@@ -21,36 +21,56 @@
         Agent</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="/a/customer" role="tab" aria-controls="stats"
-        aria-selected="false">Frequent Customer</a>
+    <a class="nav-link" href="/a/customer" role="tab" aria-controls="stats" aria-selected="false">Frequent Customer</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="/a/reports" role="tab" aria-controls="stats"
-        aria-selected="false">Sales Report</a>
+    <a class="nav-link" href="/a/reports" role="tab" aria-controls="stats" aria-selected="false">Sales Report</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link active" href="/a/revenue" role="tab" aria-controls="stats"
-        aria-selected="false">Revenue</a>
-</li>
-<li class="nav-item">
-    <a class="nav-link" href="/a/topdest" role="tab" aria-controls="stats" aria-selected="false">Top
-        Destination</a>
+    <a class="nav-link active" href="/a/revenue" role="tab" aria-controls="stats" aria-selected="false">Revenue & Top
+        Dest.</a>
 </li>
 {%endblock%}
 
 {%block panel%}
 
 <div class="container" style="padding:0px">
-    
-
-        <h1>Revenue</h1>
-        <h2>Month</h2>
-        Direct Sell: {{direct_sell_month[0]}} <br>
-        Indirect Sell: {{indirect_sell_month[0]}}
-        <h2>Year</h2>
-        Direct Sell: {{direct_sell_year[0]}} <br>
-        Indirect Sell: {{indirect_sell_year[0]}}
-
+    <div class="row">
+        <div class="col">
+            <div class="card shadow p-3 mb-5 bg-white rounded"
+                style="border-color:#30aab8; border-width: 1px; padding: 0px !important; margin-bottom: 30px !important;">
+                <h5 class="card-header">Revenue</h5>
+                <div class="card-body">
+                        <h4 class="card-title" style="color:#30aab8">Month</h4>
+                        Direct Sell: {{direct_sell_month[0]}} <br>
+                        Indirect Sell: {{indirect_sell_month[0]}}<br><br>
+                        <h4 class="card-title" style="color:#30aab8">Year</h4>
+                        Direct Sell: {{direct_sell_year[0]}} <br>
+                        Indirect Sell: {{indirect_sell_year[0]}}
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card shadow p-3 mb-5 bg-white rounded"
+                style="border-color:#30aab8; border-width: 1px; padding: 0px !important; margin-bottom: 30px !important;">
+                <h5 class="card-header">Top Destination</h5>
+                <div class="card-body">
+                        <h4 class="card-title" style="color:#30aab8">Last Three Months</h4>
+                        {% for item in last_three_months%}
+                        <ul>
+                            <li>{{item[0]}}</li>
+                        </ul>
+                        {% endfor %}
+                        <h4 class="card-title" style="color:#30aab8">Last Year</h4>
+                        {% for item in last_year%}
+                        <ul>
+                            <li>{{item[0]}}</li>
+                        </ul>
+                        {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <style>
     .table-striped>tbody>tr:nth-child(odd)>td,

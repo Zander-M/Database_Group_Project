@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    {% if result == 'e'%}
     <title>Welcome | Contrails</title>
+    {% else %}
+    <title>Search Result | Contrails</title>
+    {% endif %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -27,7 +31,7 @@
     <script>
         function getValue(obj) {
             var value = obj.value;
-            if (value != "return") {
+            if (value != "twoway") {
                 document.getElementById("retu").value = "Not Applicable";
                 document.getElementById("retu").disabled = "disabled";
             } else {
@@ -44,16 +48,8 @@
 
         <!--Navigator Bar-->
         <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #048998;">
-            {% if g.role == 'c' %}
             <a class="navbar-brand" href="/c/search">con<strong>trails</strong>&nbsp;<i class="fas fa-plane"
                     data-fa-transform="rotate--45"></i></a>
-            {% elif g.role == 'b' %}
-            <a class="navbar-brand" href="/b/search">con<strong>trails</strong>&nbsp;<i class="fas fa-plane"
-                data-fa-transform="rotate--45"></i></a>
-            {% else %}
-            <a class="navbar-brand" href="/">con<strong>trails</strong>&nbsp;<i class="fas fa-plane"
-                data-fa-transform="rotate--45"></i></a>
-            {% endif %}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -61,13 +57,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        {% if g.role == 'c' %}
                         <a class="nav-link" href="/c/search">Home / Search&nbsp;<i class="fas fa-search"></i></a>
-                        {% elif g.role == 'b' %}
-                        <a class="nav-link" href="/b/search">Home / Search&nbsp;<i class="fas fa-search"></i></a>
-                        {% else %}
-                        <a class="nav-link" href="/">Home / Search&nbsp;<i class="fas fa-search"></i></a>
-                        {% endif %}
                     </li>
 
                 </ul>
@@ -80,6 +70,8 @@
                             Hi, {{g.username}}!
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                <a class="dropdown-item" href="/{{g.role}}/settings">Profile</a>
+                                <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/{{g.role}}/flights">My Dashboard</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{url_for('auth.logout')}}">Log out</a>
@@ -87,8 +79,8 @@
                     </li>
                     {% else %}
                     <li class="nav-item dropdown active" id="before1">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
                             Register
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -100,8 +92,8 @@
                         </div>
                     </li>
                     <li class="nav-item dropdown active" id="before2">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
-                            aria-haspopup="true" aria-expanded="false">
+                        <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true"
+                            aria-expanded="false">
                             Login
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
@@ -117,8 +109,7 @@
                 </ul>
             </div>
         </nav>
-
-        <!--Banner-->
+        {% if result == 'e'%}
         <div class="row">
 
             <div class="col">
@@ -129,37 +120,44 @@
                         data-fa-transform="rotate--45"></i><br></div>
             </div>
         </div>
-
-        <!--Flight Search-->
-        <form action="/search" method="POST">
-            <div class="row" style="padding-left: 15px; padding-right: 15px; color: white">
+        {% endif %}
+        <form action="" method="POST">
+            <div class="row" style="padding-left: 15px; padding-right: 15px; color: white; margin-bottom: 1vh">
 
                 <div class="col-lg-3" style="background-color:#7579ad">
                     <br>
                     <p style="color: white">FROM</p>
-                    <input type="text" class="form-control" id="from" placeholder="Airport / City">
+                    <select name="dept_airport" id="" class="form-control" required>
+                        {% for airport in dept_airport%}
+                        <option value="{{airport[0]}}">{{airport[0]}}</option>
+                        {% endfor %}
+                    </select>
                     <br>
                     <br>
                 </div>
                 <div class="col-lg-3" style="background-color: #295f9e">
                     <br>
                     <p style="color:white">TO</p>
-                    <input type="text" class="form-control" id="to" placeholder="Airport / City">
+                    <select name="arrv_airport" id="" class="form-control" required>
+                        {% for airport in arrv_airport%}
+                        <option value="{{airport[0]}}">{{airport[0]}}</option>
+                        {% endfor %}
+                    </select>
                     <br>
                 </div>
                 <div class="col-lg-3" style="background-color:#eb7756">
                     <br>
                     <p style="color:white">DEPART</p>
-                    <input ID="dept" class="form-control" placeholder="YYYY-MM-DD" />
+                    <input id="dept" class="form-control" name="dept_time" placeholder="YYYY-MM-DD" required />
                     <br>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="return" checked
+                            <input type="radio" name="trip" id="optionsRadios1" value="twoway" checked required
                                 onclick="getValue(this);"> Return
                             &nbsp;&nbsp;&nbsp;
                         </label>
                         <label>
-                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="oneway"
+                            <input type="radio" name="trip" id="optionsRadios2" value="oneway" required
                                 onclick="getValue(this);"> One Way
                         </label>
                     </div>
@@ -175,46 +173,127 @@
                 <div class="col-lg-3" style="background-color:#bf5859">
                     <br>
                     <p style="color:white">RETURN</p>
-                    <input ID="retu" class="form-control" placeholder="YYYY-MM-DD" />
+                    <input ID="retu" name='back_date' class="form-control" placeholder="YYYY-MM-DD" />
                     <br>
                     <script>
                         $('#retu').datepicker({
                             autoclose: true,
                             todayHighlight: true,
-                            format: 'yyyy-mm-dd'
+                            format: 'yyyy-mm-dd',
                         });
                     </script>
                 </div>
             </div>
-
+            {% if result == 'e'%}
             <br>
-
-            <!-- Search button & footer -->
             <div class="flex-grow-1"
                 style="background-image: url('../static/footer.jpg'); background-size: cover; background-repeat: 0; height: 34.5vh">
                 <!--Search Button-->
                 <div class="row" style="height: 15vh; padding-top: 3vh; padding-bottom: 3vh; margin: 0">
                     <div class="col-lg-9"></div>
                     <div class="col-lg-3" style="text-align:center">
-                        <button type="submit" class="btn btn-success" href="Searchdisplay();"
+                        <button type="submit" class="btn btn-success"
                             style="width: 80%; height: 80%; font-size: 120%">Search Flight &nbsp;<i
                                 class="fas fa-plane-departure"></i></button>
                     </div>
                 </div>
-                <!--Footer-->
-                <footer class="fixed-bottom">
-                    <div class="row">
-                        <div class="col" style="text-align: center; color: white">
-                            Copyright © 2019 Zander Mao & Helium Liu<br>
-                            All rights reserved.
-                            <br>
-                            <br>
-                        </div>
-                    </div>
-                </footer>
             </div>
+            {% else %}
+            <div class="row" style="padding-left: 15px; padding-right: 15px;">
+                <div class="col-lg-9" style="padding:0px"></div>
+                <div class="col-lg-3" style="text-align:center">
+                    <button type="submit" class="btn btn-outline-success btn-block" value="Search"
+                        style="height: 5vh; margin-bottom: 0;margin-top: 1vh">Search Flight &nbsp;<i
+                            class="fas fa-plane-departure"></i></button>
+                </div>
+            </div>
+            {% endif %}
         </form>
-    </div>
+        {% if result == 'e'%}
+
+        {% elif result %}
+        <div class="card" style="border-color:#30aab8; border-width: 2px; padding: 0px;">
+            <div class="card-body" style="padding:0">
+                <div class="table-responsive">
+                    <table class="table table-hover" style="margin:0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Airline</th>
+                                <th>Departure Time</th>
+                                <th>Arrive Time</th>
+                                <th>Price</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in result %}
+                            <tr>
+                                {% for i in item[:4] %}
+                                <td>{{i}}</td>
+                                {% endfor %}
+                                {% if item[3] != "Sold Out"%}
+                                <td>
+                                    <form action="{{url_for('c.confirm_order')}}" method="POST" style="margin:0">
+                                        <input type="radio" value="{{item[4]}}" name="flight_id" checked
+                                            style="visibility:hidden">
+                                        <input type="radio" value="search" name="type" checked
+                                            style="visibility:hidden">
+                                        <input type="submit" name="submit" value="Order"
+                                            class="btn btn-outline-success btn-sm"></form>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <h2 style="text-align:center; padding:10px;color: #048998">Sorry, no matching flights.</h2>
+                    {% endif %}
+                    {% if back %}
+                    <h2>Back</h2><br>
+                    {% for item in back%}
+                    <tr>
+                        {% for i in item[:4] %}
+                        <td>{{i}}</td>
+                        {% endfor %}
+                        {% if item[3] != "Sold Out"%}
+                        <td>
+                            <form action="{{url_for('c.confirm_order')}}" method="POST">
+                                <input type="radio" value="{{item[4]}}" name="flight_id" checked
+                                    style="visibility:hidden">
+                                <input type="radio" value="search" name="type" checked style="visibility:hidden">
+                                <input type="submit" name="submit" value="Order" class="btn btn-success"></form>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                    {% endif %}
+
+                </div>
+            </div>
+
+        </div>
+        <style>
+            #searchhis:hover {
+                color: #30aab8 !important;
+            }
+
+            .table-hover tbody tr td,
+            .table-hover tbody tr th {
+                border-color: #a2e6ee
+            }
+
+            .table .thead-light th,
+            .table-hover tbody tr:hover td,
+            .table-hover tbody tr:hover th {
+                background-color: #a2e6ee;
+            }
+
+            .table .thead-light th {
+                border-top: 0;
+                border-color: white
+            }
+        </style>
 </body>
 
 </html>
