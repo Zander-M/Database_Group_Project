@@ -21,16 +21,14 @@
         Agent</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link active" href="/a/customer" role="tab" aria-controls="stats"
-        aria-selected="false">Frequent Customer</a>
+    <a class="nav-link active" href="/a/customer" role="tab" aria-controls="stats" aria-selected="false">Frequent
+        Customer</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="/a/reports" role="tab" aria-controls="stats"
-        aria-selected="false">Sales Report</a>
+    <a class="nav-link" href="/a/reports" role="tab" aria-controls="stats" aria-selected="false">Sales Report</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="/a/revenue" role="tab" aria-controls="stats"
-        aria-selected="false">Revenue</a>
+    <a class="nav-link" href="/a/revenue" role="tab" aria-controls="stats" aria-selected="false">Revenue</a>
 </li>
 <li class="nav-item">
     <a class="nav-link" href="/a/topdest" role="tab" aria-controls="stats" aria-selected="false">Top
@@ -41,62 +39,134 @@
 {%block panel%}
 
 <div class="container" style="padding:0px">
-    
-        <h1>Customer Data:</h1>
-<h2>Search Customer History</h2>
-<form action="#" method="POST">
-    Customer Email:<input type="text" name="customer_email">
-    <input type="submit" value="Submit">
-</form>
-{% if customer_info %}
-   
-   {% if customer_info == "e" %}
-   <h3>No Data</h3>
-   {% else %}
-   <h3>Flight History</h3> 
-   <table>
-       <tr>
-           <th>Flight ID</th>
-           <th>Departure Airport</th>
-           <th>Departure Time</th>
-           <th>Arrive Airport</th>
-           <th>Arrive Time</th>
-       </tr>
-   {% for flight in customer_info %}
-       <tr>
-           {% for item in flight%}
-            <td>{{item}}</td>
-           {% endfor %}
-       </tr>
-   {% endfor %}
-   </table>
-   
-   {% endif %}
-{% endif %}
-<h2>Top Customer in One Year</h2> 
-{% if top_customer %}
-<table>
-    <tr>
-        <th>Username</th>
-        <th>User Email</th>
-        <th>Order Time</th>
-    </tr>
-    <tr>
-        {% for item in top_customer%}
-            <td>{{item}}</td>
-        {% endfor %}
-    </tr>
-</table>
-{% else %}
-<h2>No data</h2>
-{% endif %}
+    <div class="row">
+        <!-- Filter -->
+        <div class="col-lg-4">
+            <div class="card shadow p-3 mb-5 bg-white rounded"
+                style="border-color:#30aab8; border-width: 1px; padding: 0px !important">
+                <h5 class="card-header">Top Customer in One Year</h5>
+                <div class="card-body" style="padding:1px">
+                    {% if top_customer %}
+                    <table class="table table-striped" style="margin:0">
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>User Email</th>
+                                <th>Order Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                {% for item in top_customer%}
+                                <td>{{item}}</td>
+                                {% endfor %}
+                            </tr>
+                        </tbody>
+                    </table>
+                    {% else %}
+                    <h2 class="text-center" style="padding:2vw">No data</h2>
+                    {% endif %}
+                </div>
+            </div>
+            <br>
+        </div>
+        <div class="col-lg">
+            <div class="card shadow p-3 mb-5 bg-white rounded"
+                style="border-color:#30aab8; border-width: 1px; padding: 0px !important; margin-bottom: 30px !important;">
+                <h5 class="card-header">Search Customer History</h5>
+                <div class="card-body" style="padding:0">
+                    <form action="#" method="POST" class="form-inline" style="margin:0px !important; padding:10px;">
+                        <div class="form-row" style="width:100%">
+                            <div class="col">
+                                <label class="mr-sm-2" for="cus">Customer Email:</label>
+                            </div>
+                            <div class="col">
+                                <input class="form-control mb-2 mr-sm-2" id="cus" type="text" name="customer_email"
+                                    required>
+                            </div>
+                            <div class="col">
+                                <input class="btn btn-success btn-block" type="submit" value="Submit"
+                                    style="width: 80%;margin-left: 20px">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {% if customer_info %}
+            <div class="card shadow p-3 mb-5 bg-white rounded"
+                style="border-color:#30aab8; border-width: 1px; padding: 1px !important">
+                {% if customer_info == "e" %}
+                <h2 class="text-center" style="padding:2vw">No Data</h2>
+                {% else %}
+                <h5 class="card-header">Purchase History of {{email}}</h5>
+                <div class="card-body" style="padding:0">
+                    <div class="table-responsive">
+                        <table class="table table-striped" style="margin:0">
+                            <thead>
+                                <tr>
+                                    <th>Flight ID</th>
+                                    <th>Departure Airport</th>
+                                    <th>Departure Time</th>
+                                    <th>Arrive Airport</th>
+                                    <th>Arrive Time</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for flight in customer_info %}
+                                <tr>
+                                    {% for item in flight%}
+                                    <td>{{item}}</td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            {% endif %}
+        </div>
 
-</div>
-<style>
-    .table-striped>tbody>tr:nth-child(odd)>td,
-    .table-striped>tbody>tr:nth-child(odd)>th {
-        background-color: #bfeef3;
-    }
-</style>
-{%endblock%}
-    
+
+
+
+
+
+        <!-- <h1>Customer Data:</h1>
+    <h2>Search Customer History</h2>
+
+    {% if customer_info %}
+
+    {% if customer_info == "e" %}
+    <h3>No Data</h3>
+    {% else %}
+    <h3>Flight History</h3>
+    <table>
+        <tr>
+            <th>Flight ID</th>
+            <th>Departure Airport</th>
+            <th>Departure Time</th>
+            <th>Arrive Airport</th>
+            <th>Arrive Time</th>
+        </tr>
+        {% for flight in customer_info %}
+        <tr>
+            {% for item in flight%}
+            <td>{{item}}</td>
+            {% endfor %}
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% endif %}
+    {% endif %} -->
+
+    </div>
+    <style>
+        .table-striped>tbody>tr:nth-child(odd)>td,
+        .table-striped>tbody>tr:nth-child(odd)>th {
+            background-color: #bfeef3;
+        }
+    </style>
+    {%endblock%}
