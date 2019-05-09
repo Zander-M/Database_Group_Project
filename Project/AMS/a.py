@@ -427,3 +427,39 @@ def confirm(action):
     """
 
     return render_template('a/confirm.html', action=action)
+
+    @bp.route('/settings', methods=["GET", "POST"])	
+@login_required	
+def settings():	
+    """	
+    Airline Staff Settings Page. Airline staff can see his/her information, including Name, Email, Phone Number, etc. Airline Staff can also add phone numbers.	
+    	
+    Args:	
+        None.	
+    	
+    Returns:	
+        Airline Staff settings page	
+    """	
+    db = get_db()	
+    cursor = db.cursor()	
+    error = None	
+    if request.method == "POST":	
+        phone_number = request.form["phone_number"]	
+        cursor.execute("SELECT * FROM staff_phone WHERE phone_number = %s", (phone_number))	
+        if cursor.fetchone() is not None:	
+            error = "Phone number already in system"	
+        if error is None:	
+            try:	
+                cursor.execute("INSERT INTO staff_phone (phone_number, username) values (%s, %s)", (phone_number, g.user[0]))	
+                db.commit()	
+            except pymysql.Error as e:	
+                db.rollback()	
+        flash(error)	
+    username = g.user[0]	
+    fname = g.user[2]	
+    lname = g.user[3]	
+    bday = g.user[4]	
+    airline = g.user[5]	
+    cursor.execute("SELECT phone_number FROM staff_phone WHERE username = %s", (g.user[0]))	
+    phones = cursor.fetchall()	
+    return render_template("a/settings.html", username = username, fname = fname, lname = lname, bday = bday, airline = airline, phones = phones ) 
