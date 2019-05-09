@@ -20,3 +20,5 @@ TODO:
 4) Start building search/order/check functions
 
 2019-05-06-11-38-10: Customer functions almost finished. Chart.js under exploration (for customer bar chart, etc). Airline staff functions 80% done. Test required.
+
+2019-05-09-01-56-49: First merge completed. Designing front-end right now.
