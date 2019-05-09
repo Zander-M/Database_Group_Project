@@ -411,8 +411,6 @@ def topdest():
     cursor.execute(
         "SELECT arrv_airport FROM flight WHERE flight.airline = %s AND dept_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE() GROUP BY arrv_airport ORDER BY COUNT(arrv_airport) DESC LIMIT 3 ", g.user[5])
     last_year = cursor.fetchall()
-    print(last_three_months)
-    print(last_year)
     return render_template('a/topdest.html', last_three_months=last_three_months, last_year=last_year)
 
 
