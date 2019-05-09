@@ -93,7 +93,7 @@
                 </div>
             </div>
             {% if customer_info %}
-            <div class="card shadow p-3 mb-5 bg-white rounded"
+            <div class="card show shadow p-3 mb-5 bg-white rounded"
                 style="border-color:#30aab8; border-width: 1px; padding: 1px !important">
                 {% if customer_info == "e" %}
                 <h2 class="text-center" style="padding:2vw">No Data</h2>
@@ -127,40 +127,6 @@
             {% endif %}
             {% endif %}
         </div>
-
-
-
-
-
-
-        <!-- <h1>Customer Data:</h1>
-    <h2>Search Customer History</h2>
-
-    {% if customer_info %}
-
-    {% if customer_info == "e" %}
-    <h3>No Data</h3>
-    {% else %}
-    <h3>Flight History</h3>
-    <table>
-        <tr>
-            <th>Flight ID</th>
-            <th>Departure Airport</th>
-            <th>Departure Time</th>
-            <th>Arrive Airport</th>
-            <th>Arrive Time</th>
-        </tr>
-        {% for flight in customer_info %}
-        <tr>
-            {% for item in flight%}
-            <td>{{item}}</td>
-            {% endfor %}
-        </tr>
-        {% endfor %}
-    </table>
-
-    {% endif %}
-    {% endif %} -->
 
     </div>
     <style>

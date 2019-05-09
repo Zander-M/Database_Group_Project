@@ -33,6 +33,7 @@
             } else {
                 document.getElementById("retu").value = "";
                 document.getElementById("retu").removeAttribute('disabled');
+                document.getElementById("retu").setAttribute("required", "");
             }
         }
     </script>
@@ -136,37 +137,30 @@
                 <div class="col-lg-3" style="background-color:#7579ad">
                     <br>
                     <p style="color: white">FROM</p>
-                    <select name="dept_airport" class="form-control" >
-                        {% for airport in airports %}
-                        <option value="{{airport}}">{{airport[0]}}</option>
-                        {% endfor %}
-                    </select>
+                    <input type="text" class="form-control" id="from" placeholder="Airport / City">
                     <br>
                     <br>
                 </div>
                 <div class="col-lg-3" style="background-color: #295f9e">
                     <br>
                     <p style="color:white">TO</p>
-                    <select name="arrv_airport" class="form-control" >
-                        {% for airport in airports %}
-                        <option value="{{airport}}">{{airport[0]}}</option>
-                        {% endfor %}
-                    </select>
+                    <input type="text" class="form-control" id="to" placeholder="Airport / City">
                     <br>
                 </div>
                 <div class="col-lg-3" style="background-color:#eb7756">
                     <br>
                     <p style="color:white">DEPART</p>
-                    <input name = "dept_time" ID="dept" class="form-control" placeholder="YYYY-MM-DD" required/>
+                    <input ID="dept" class="form-control" placeholder="YYYY-MM-DD" />
                     <br>
                     <div class="radio">
                         <label>
-                            <input type="radio" name="trip" id="optionsRadios2" value="oneway"
-                                onclick="getValue(this);"> One Way
+                            <input type="radio" name="optionsRadios" id="optionsRadios1" value="return" checked
+                                onclick="getValue(this);"> Return
+                            &nbsp;&nbsp;&nbsp;
                         </label>
                         <label>
-                            <input type="radio" name="trip" id="optionsRadios1" value="twoway" checked
-                                onclick="getValue(this);"> Two Way
+                            <input type="radio" name="optionsRadios" id="optionsRadios2" value="oneway"
+                                onclick="getValue(this);"> One Way
                         </label>
                     </div>
                     <br>
@@ -181,7 +175,7 @@
                 <div class="col-lg-3" style="background-color:#bf5859">
                     <br>
                     <p style="color:white">RETURN</p>
-                    <input name="back_date" ID="retu" class="form-control" placeholder="YYYY-MM-DD"/>
+                    <input ID="retu" class="form-control" placeholder="YYYY-MM-DD" />
                     <br>
                     <script>
                         $('#retu').datepicker({

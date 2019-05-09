@@ -11,6 +11,7 @@ from flask import (
 )
 
 from AMS.db import get_db, get_cursor
+import datetime
 
 
 # import AMS.auth as auth # import authentication functions
@@ -295,6 +296,7 @@ def customer():
         Airline Staff customer page
     """
     customer_info = None 
+    customer_email = None
     if request.method == "POST":
         customer_email = request.form['customer_email'] 
         cursor = get_cursor()
@@ -311,6 +313,19 @@ def customer():
 @bp.route('/reports', methods = ["GET", "POST"])
 @login_required
 def reports():
+    mon_convert = {	1: 'Janauary',
+		2:'February',
+		3:'March',
+		4:'April',
+		5:'May',
+		6:'June',
+		7:'July',
+		8:'August',
+		9:'September',
+		10:'October',
+		11:'November',
+		12:'December'}
+    current_month = int(datetime.datetime.now().strftime("%m"))
     """
     Ticket info in the past month/year based on time range.    
     Args:
@@ -331,11 +346,30 @@ def reports():
     #fetch last one month date
     cursor.execute("SELECT name, customer_email, purchase_date_time FROM ticket LEFT JOIN customer ON ticket.customer_email = customer.email WHERE purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND CURDATE() AND airline = %s", (g.user[5]))
     last_month = cursor.fetchall()
-
+    #fetch last one year date
     cursor.execute("SELECT MONTH(purchase_date_time), COUNT(*) FROM ticket WHERE purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE() AND airline = %s GROUP BY MONTH(purchase_date_time) ORDER BY MONTH(purchase_date_time) ASC", (g.user[5]))
     last_year= cursor.fetchall()
+    #rearrange query result of last year
+    last_year_month = []
+    last_year_sale = []
+    for i in last_year:
+        last_year_month.append(i[0])
+        last_year_sale.append(i[1])
+    last_year_convert = [[],[]]
+    for i in range(1, 13):
+        month = i + current_month
+        if month > 12:
+            month = month - 12
+        if month in last_year_month:
+            idx = last_year_month.index(month)
+            last_year_convert[0].append(mon_convert[month])
+            last_year_convert[1].append(last_year_sale[idx])
+        else:
+            last_year_convert[0].append(mon_convert[month])
+            last_year_convert[1].append(0)
+    print(last_year_convert)
 
-    return render_template('a/reports.html', last_month = last_month, last_year = last_year, search_result = search_result, start_date=start_date, end_date=end_date)
+    return render_template('a/reports.html', last_month = last_month, last_year = last_year_convert, search_result = search_result, start_date=start_date, end_date=end_date)
 
 
 @bp.route('/revenue')
