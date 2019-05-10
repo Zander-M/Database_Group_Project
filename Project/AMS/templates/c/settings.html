@@ -1,37 +1,94 @@
 {% extends "dashboard.html"%}
-{% block content%}
- <h1> Airline Staff Settings</h1>
- Name:{{name}} <br>
- Email:{{email}} <br>
- <h2>Address</h2>
- Building #: {{building_number}} <br>
- Street: {{street}} <br>
- City: {{city}} <br>
- State: {{state}} <br>
- <h2>Passport</h2>
- Passport #:{{passport_number}} <br>
- Passport Expiration Date:{{passport_exp}} <br>
- Passport Country:{{passport_country}} <br>
- Date of Birth:{{bday}} <br>
-<h2>Phones</h2> 
- {% for phone in phones %}
- {{phone[0]}} <br>
- {% endfor %}
- Add phone:
- <form action="#" method="POST">
-     Phone Number:<input type="number" name="phone_number">
-     <input type="submit" value="Add">
- </form>
- {% with messages = get_flashed_messages() %}
-    {% if messages %}
-    <ul class=flashes>
-    {% for message in messages %}
-        {% if message %}
-      <li>{{ message }}</li>
-        {% endif %}
-    {% endfor %}
-    </ul>
-  {% endif %}
-  {% endwith %}
- {% endblock %}
-    
+{%block tab%}
+<script>
+document.title = 'Profile | Contrails';
+</script>
+<li class="nav-item" style="visibility:hidden">
+  <a class="nav-link" id="history-tab" href="//flights" role="tab" aria-controls="history" aria-selected="true">Current
+    Flights</a>
+</li>
+{%endblock%}
+
+{% block panel%}
+<div class="row">
+  <div class="col-lg-3"></div>
+  <div class="col-lg-6">
+    <div class="card shadow p-3 mb-5 bg-white rounded"
+      style="border-color:#30aab8; border-width: 1px;padding:35px !important; padding-left: 60px !important; padding-right: 60px !important">
+      <h5 class="card-title" style="color:#30aab8">Personal Profile</h5>
+      <table class="table table-sm table-borderless">
+        <tr>
+          <th style="width: 35%">Email</td>
+          <td>{{email}}</td>
+        </tr>
+        <tr>
+          <th>Name</td>
+          <td>{{name}}</td>
+        </tr>
+        <tr>
+          <th>Date of Birth</td>
+          <td>{{bday}}</td>
+        </tr>
+        <tr>
+          <th>Building Number</td>
+          <td>{{building_number}}</td>
+        </tr>
+        <tr>
+          <th>Street</td>
+          <td>{{street}}</td>
+        </tr>
+        <tr>
+          <th>City</td>
+          <td>{{city}}</td>
+        </tr>
+        <tr>
+          <th>State</td>
+          <td>{{state}}</td>
+        </tr>
+        <tr>
+          <th>Passport Number</td>
+          <td>{{passport_number}}</td>
+        </tr>
+        <tr>
+          <th>Passport Country</td>
+          <td>{{passport_country}}</td>
+        </tr>
+        <tr>
+          <th>Passport Expiration Date</td>
+          <td>{{passport_exp}}</td>
+        </tr>
+        <tr>
+          <th>Phones</td>
+          <td>{% for phone in phones %}
+            {{phone[0]}},
+            {% endfor %}</td>
+        </tr>
+      </table>
+      <div class="dropdown-divider"></div>
+      <h5 class="card-title" style="color:#30aab8">Add Phone Number</h5>
+      {% with messages = get_flashed_messages() %}
+      {% if messages %}
+      {% for message in messages %}
+      {% if message %}
+      <p class="text-danger">{{ message }}</p>
+      {%endif%}
+      {% endfor %}
+      {% endif %}
+      {% endwith %}
+      <form action="#" method="POST" style="margin:0px;">
+        <div class="form-group">
+          <label for="phone">Phone Number</label>
+          <input class="form-control" id="phone" type="number" name="phone_number" required>
+        </div>
+        <input class="btn btn-success" type="submit" value="Add">
+      </form>
+    </div>
+  </div>
+  <div class="col-lg-3"></div>
+</div>
+<script>
+  document.getElementById("banner_dash").innerHTML = "Profile & Adding Phone Number";
+</script>
+{% endblock %}
+
+

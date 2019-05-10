@@ -27,7 +27,6 @@
 </head>
 
 <body>
-  {% block success %}{%endblock%}
   <div class="container">
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #048998;">
@@ -73,7 +72,7 @@
 
     <br>
     <!-- Flight Information-->
-    <div class="card" style="border-color:#30aab8; border-width: 2px; padding: 0px;">
+    <div class="card shadow p-3 mb-5 bg-white rounded" style="border-color:#30aab8; border-width: 1px; padding: 0px !important; margin-bottom: 10px !important;">
       <div class="card-body" style="padding:0">
         <div class="table-responsive">
           <table class="table" style="margin:0">
@@ -167,18 +166,7 @@
     </form>
 
     <style>
-      #searchhis:hover {
-        color: #30aab8 !important;
-      }
-
-      .table-hover tbody tr td,
-      .table-hover tbody tr th {
-        border-color: #a2e6ee
-      }
-
-      .table .thead-light th,
-      .table-hover tbody tr:hover td,
-      .table-hover tbody tr:hover th {
+      .table .thead-light th{
         background-color: #a2e6ee;
       }
 

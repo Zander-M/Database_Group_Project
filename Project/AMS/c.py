@@ -273,8 +273,6 @@ def bill():
         past_six_month_spent.append(cursor.fetchone())
     return render_template('c/bill.html', past_year_spent = past_year_spent, past_six_month_spent = past_six_month_spent)
 
-# TODO: front end needs to handle the data
-
 @bp.route('/settings', methods=["GET", "POST"])
 @login_required
 def settings():
