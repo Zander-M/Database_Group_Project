@@ -94,10 +94,11 @@ def search():
     n_flights = 'e' 
     db = get_db()
     cursor = db.cursor()
-    cursor.execute("SELECT distinct dept_airport from flight")
-    dept_airport = cursor.fetchall()
-    cursor.execute("SELECT distinct arrv_airport from flight")
-    arrv_airport = cursor.fetchall()
+    # cursor.execute("SELECT distinct dept_airport from flight")
+    # dept_airport = cursor.fetchall()
+    # cursor.execute("SELECT distinct arrv_airport from flight")
+    cursor.execute("SELECT name FROM airport")
+    dept_airport = arrv_airport = cursor.fetchall()
     b_n_flights = None
     if request.method == "POST": # from search form submit
 
