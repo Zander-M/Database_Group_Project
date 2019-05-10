@@ -21,137 +21,135 @@
         Agent</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="/a/customer" role="tab" aria-controls="stats"
-        aria-selected="false">Frequent Customer</a>
+    <a class="nav-link" href="/a/customer" role="tab" aria-controls="stats" aria-selected="false">Frequent Customer</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="/a/reports" role="tab" aria-controls="stats"
-        aria-selected="false">Sales Report</a>
+    <a class="nav-link" href="/a/reports" role="tab" aria-controls="stats" aria-selected="false">Sales Report</a>
 </li>
 <li class="nav-item">
-    <a class="nav-link" href="/a/revenue" role="tab" aria-controls="stats"
-        aria-selected="false">Revenue & Top Dest.</a>
+    <a class="nav-link" href="/a/revenue" role="tab" aria-controls="stats" aria-selected="false">Revenue & Top Dest.</a>
 </li>
 {%endblock%}
 
 {%block panel%}
 
-<div class="container" style="padding:0px">
+<div class="row" style="padding:0px; width: 100%">
+    <div class="col-lg-2"></div>
+    <div class="col-lg-8">
+    <style>
+        .pill {
+            color: black;
+        }
+        .nav-pills .nav-link.active, .nav-pills .show>.nav-link{
+            background-color: #30aab8;
+        }
+    </style>
+    <div class="card shadow p-3 mb-5 bg-white rounded" style="padding:0px !important; border-width:1px; border-color: #30aab8 !important">
+        <div class="card-header">
+            <ul class="nav nav-pills card-header-pills" id="pills-tab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active pill" id="pills-home-tab" data-toggle="pill" href="#pills-home" role="tab"
+                        aria-controls="pills-home" aria-selected="true">All</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link pill" id="pills-profile-tab" data-toggle="pill" href="#pills-profile" role="tab"
+                        aria-controls="pills-profile" aria-selected="false">Top 5 based on commission fee</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link pill" id="pills-contact-tab" data-toggle="pill" href="#pills-contact" role="tab"
+                        aria-controls="pills-contact" aria-selected="false">Top 5 based on number of tickets</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <div id="3">
+                                <table class="table table-sm">
+                                    <tr>
+                                        <th>Booking Agent ID</th>
+                                        <th>Total Order Number</th>
+                                    </tr>
+                                    {% for agent in all_agents %}
+                                    <tr>
+                                        {% for item in agent %}
+                                        <td>{{item}}</td>
+                                        {% endfor %}
+                                    </tr>
+                                    {% endfor %}
+                                </table>
+                            </div>
+                </div>
+                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">
+                        <div id="1">
+                                <h4 class="card-title" style="color:#30aab8">Last 3 Months</h4>
+                            <table class="table table-sm">
+                                <tr>
+                                    <th>Booking Agent ID</th>
+                                    <th>Commission Fee</th>
+                                </tr>
+                                {% for agent in last_three_months_c %}
+                                <tr>
+                                    {% for item in agent %}
+                                    <td>{{item}}</td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </table><br>
+                            <h4 class="card-title" style="color:#30aab8">Last Year</h4>
+                            <table class="table table-sm">
+                                <tr>
+                                    <th>Booking Agent ID</th>
+                                    <th>Commission Fee</th>
+                                </tr>
+                                {% for agent in last_year_c %}
+                                <tr>
+                                    {% for item in agent %}
+                                    <td>{{item}}</td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </table>
     
- 
-        <h1>Booking Agents</h1>
-        All<input type="radio" name="display_select" id="default" value="3" checked>
-        Top 5 based on commission fee<input type="radio" name="display_select" value="1">
-        Top 5 based on number<input type="radio" name="display_select" value="2">
-        <div id="1" style="display:none">
-            Last 3 Months:<br>
-            <table>
-                <tr>
-                    <th>Booking Agent ID</th>
-                    <th>Last 3 Months Commission Fee</th>
-                </tr>
-                {% for agent in last_three_months_c %}
-                <tr>
-                    {% for item in agent %}
-                    <td>{{item}}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </table>
-            Last Year: <br>
-            <table>
-                <tr>
-                    <th>Booking Agent ID</th>
-                    <th>Last 3 Months Commission Fee</th>
-                </tr>
-                {% for agent in last_year_c %}
-                <tr>
-                    {% for item in agent %}
-                    <td>{{item}}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </table>
-        
-        </div>
-        <div id="2" style="display:none">
-            Last 3 Months:<br>
-            <table>
-                <tr>
-                    <th>Booking Agent ID</th>
-                    <th>Total Order Number</th>
-                </tr>
-                {% for agent in last_three_months_n %}
-                <tr>
-                    {% for item in agent %}
-                    <td>{{item}}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </table>
-            Last Year: <br>
-            <table>
-                <tr>
-                    <th>Booking Agent ID</th>
-                    <th>Total Order Number</th>
-                </tr>
-                {% for agent in last_year_n %}
-                <tr>
-                    {% for item in agent %}
-                    <td>{{item}}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
-        <div id="3" style="display:block">
-            <table>
-                <tr>
-                    <th>Booking Agent ID</th>
-                    <th>Total Order Number</th>
-                </tr>
-                {% for agent in all_agents %}
-                <tr>
-                    {% for item in agent %}
-                    <td>{{item}}</td>
-                    {% endfor %}
-                </tr>
-                {% endfor %}
-            </table>
-        </div>
+                        </div>
 
-
+                </div>
+                <div class="tab-pane fade" id="pills-contact" role="tabpanel" aria-labelledby="pills-contact-tab">
+                        <div id="2">
+                                <h4 class="card-title" style="color:#30aab8">Last 3 Months</h4>
+                                <table class="table table-sm">
+                                <tr>
+                                    <th>Booking Agent ID</th>
+                                    <th>Total Order Number</th>
+                                </tr>
+                                {% for agent in last_three_months_n %}
+                                <tr>
+                                    {% for item in agent %}
+                                    <td>{{item}}</td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </table><br>
+                            <h4 class="card-title" style="color:#30aab8">Last Year</h4>
+                            <table class="table table-sm">
+                                <tr>
+                                    <th>Booking Agent ID</th>
+                                    <th>Total Order Number</th>
+                                </tr>
+                                {% for agent in last_year_n %}
+                                <tr>
+                                    {% for item in agent %}
+                                    <td>{{item}}</td>
+                                    {% endfor %}
+                                </tr>
+                                {% endfor %}
+                            </table>
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <div class="col-lg-2"></div>
 </div>
-<script>
-        $(function () {
-            $('#default').attr('checked',
-                true);
-            $('input[name=display_select]').on('change', function () {
-                var n = $(this).val();
-                switch (n) {
-                    case '1':
-                        $('#1').css('display', 'block');
-                        $('#2').css('display', 'none');
-                        $('#3').css('display', 'none');
-                        break;
-                    case '2':
-                        $('#2').css('display', 'block');
-                        $('#1').css('display', 'none');
-                        $('#3').css('display', 'none');
-                        break;
-                    case '3':
-                        $('#3').css('display', 'block');
-                        $('#1').css('display', 'none');
-                        $('#2').css('display', 'none');
-                        break;
-                }
-            })
-        })
-    </script>
-<style>
-    .table-striped>tbody>tr:nth-child(odd)>td,
-    .table-striped>tbody>tr:nth-child(odd)>th {
-        background-color: #bfeef3;
-    }
-</style>
 {%endblock%}

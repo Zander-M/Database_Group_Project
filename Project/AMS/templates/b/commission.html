@@ -1,20 +1,78 @@
-{% extends "index.html"%}
-{% block content%}
-<h1>Commission Status</h1>
-<h2>Search</h2>
-<form action="#" method="POST">
-    Start Date:<input type="date">
-    End Date:<input type="date">
-    <input type="submit" value="Search">
-</form>
-{% if search_commission %}
-    Commission: {{search_commission[0]}}
-{% endif %}
-{% if search_cnt %}
-    Total ticket purchased: {{search_cnt[0]}}
-{% endif %}
-<h2>Last 30 Day Data</h2>
-Commission :{{thirty_day_commission[0]}} <br>
-Average :{{thirty_day_avg[0]}} <br>
-Number of tickets sold:{{thirty_day_cnt[0]}} <br>
+{% extends "dashboard.html"%}
+{%block tab%}
+<li class="nav-item">
+    <a class="nav-link" id="history-tab" href="/b/flights" role="tab" aria-controls="history"
+        aria-selected="true">History
+        Order</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link active" id="stats-tab" href="/b/commission" role="tab" aria-controls="stats"
+        aria-selected="false">Commission</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" id="stats-tab" href="/b/customer" role="tab" aria-controls="stats" aria-selected="false">Top
+        Customer</a>
+</li>
+{%endblock%}
+{% block panel%}
+<div class="row">
+    <div class="col">
+        <div class="card shadow p-3 mb-5 bg-white rounded"
+            style="border-color:#30aab8; border-width: 1px; padding: 0px !important; margin-bottom: 30px !important;">
+            <h5 class="card-header">Commission Count</h5>
+            <div class="card-body">
+                {% if search_commission %}
+                Commission: <h5><strong style="color:#30aab8">{{search_commission[0]}}</strong></h5>
+                {% endif %}
+                {% if search_cnt %}
+                Total ticket purchased: <h5><strong style="color:#30aab8">{{search_cnt[0]}}</strong></h5>
+                <div class="dropdown-divider"></div>
+                {% endif %}
+                <form action="#" method="POST">
+                    <div class="form-row">
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="sd">Start Date</label>
+                                <input class="form-control" type="text" id="sd" name="start_date">
+                                <script>
+                                    $('#sd').datepicker({
+                                        autoclose: true,
+                                        todayHighlight: true,
+                                        format: 'yyyy-mm-dd'
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group">
+                                <label for="ed">End Date</label>
+                                <input class="form-control" type="text" id="ed" name="end_date">
+                                <script>
+                                    $('#ed').datepicker({
+                                        autoclose: true,
+                                        todayHighlight: true,
+                                        format: 'yyyy-mm-dd',
+                                    });
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                    <input id="btn" class="btn btn-success" type="submit" value="Search">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col">
+        <div class="card shadow p-3 mb-5 bg-white rounded"
+            style="border-color:#30aab8; border-width: 1px; padding: 0px !important; margin-bottom: 30px !important;">
+            <h5 class="card-header">Statistics</h5>
+            <div class="card-body">
+                <h4 class="card-title" style="color:#30aab8">Last 30 Day Data</h4>
+                Commission: {{thirty_day_commission[0]}} <br>
+                Average: {{thirty_day_avg[0]}} <br>
+                Number of tickets sold: {{thirty_day_cnt[0]}}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

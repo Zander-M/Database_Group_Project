@@ -27,20 +27,11 @@
 </head>
 
 <body>
-    {% block success %}{%endblock%}
     <div class="container">
         <!-- NAVBAR -->
         <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #048998;">
-            {% if g.role == 'c' %}
-            <a class="navbar-brand" href="/c/search">con<strong>trails</strong>&nbsp;<i class="fas fa-plane"
-                    data-fa-transform="rotate--45"></i></a>
-            {% elif g.role == 'b' %}
-            <a class="navbar-brand" href="/b/search">con<strong>trails</strong>&nbsp;<i class="fas fa-plane"
-                    data-fa-transform="rotate--45"></i></a>
-            {% else %}
             <a class="navbar-brand" href="/">con<strong>trails</strong>&nbsp;<i class="fas fa-plane"
                     data-fa-transform="rotate--45"></i></a>
-            {% endif %}
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -48,13 +39,7 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        {% if g.role == 'c' %}
-                        <a class="nav-link" href="/c/search">Home / Search&nbsp;<i class="fas fa-search"></i></a>
-                        {% elif g.role == 'b' %}
-                        <a class="nav-link" href="/b/search">Home / Search&nbsp;<i class="fas fa-search"></i></a>
-                        {% else %}
                         <a class="nav-link" href="/">Home / Search&nbsp;<i class="fas fa-search"></i></a>
-                        {% endif %}
                     </li>
 
                 </ul>

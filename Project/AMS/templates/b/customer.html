@@ -1,42 +1,180 @@
-{% extends "index.html"%}
-{% block content%}
- <h1>Customer Data</h1>
- <h2>Traveled Most Last 6 Month</h2>
- {% if six_months_cnt %}
- <table>
-     <tr>
-         <th>Customer Name</th>
-         <th>Customer Email</th>
-         <th>Ticket Purchased</th>
-     </tr>
- {% for customer in six_months_cnt %}
-     <tr>
-         {% for item in customer %}
-         <td>{{item}}</td>
-         {% endfor %}
-     </tr>
- {% endfor %}
- </table>
- {% else %}
- <h2>No data</h2>
- {% endif %}
- <h2>Past Year Commission</h2>
- {% if one_year_commission %}
- <table>
-     <tr>
-         <th>Customer Name</th>
-         <th>Customer Email</th>
-         <th>Commissions</th>
-     </tr>
- {% for customer in one_year_commission %}
-     <tr>
-         {% for item in customer %}
-         <td>{{item}}</td>
-         {% endfor %}
-     </tr>
- {% endfor %}
- </table>
- {% else %}
- <h2>No data</h2>
- {% endif %}
- {% endblock %}
+{% extends "dashboard.html"%}
+{%block tab%}
+<li class="nav-item">
+    <a class="nav-link" id="history-tab" href="/b/flights" role="tab" aria-controls="history"
+        aria-selected="true">History
+        Order</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link" id="stats-tab" href="/b/commission" role="tab" aria-controls="stats"
+        aria-selected="false">Commission</a>
+</li>
+<li class="nav-item">
+    <a class="nav-link active" id="stats-tab" href="/b/customer" role="tab" aria-controls="stats"
+        aria-selected="false">Top
+        Customer</a>
+</li>
+{%endblock%}
+{% block panel%}
+<div class="row" style="padding:0px; width: 100%">
+    <div class="col-lg-6">
+        <style>
+            .pill {
+                color: black;
+            }
+
+            .nav-pills .nav-link.active,
+            .nav-pills .show>.nav-link {
+                background-color: #30aab8;
+            }
+        </style>
+        <div class="card shadow p-3 mb-5 bg-white rounded"
+            style="padding:0px !important; border-width:1px; border-color: #30aab8 !important">
+            <div class="card-body">
+                <h4 class="card-title" style="color:#30aab8">Traveled Most Last 6 Month</h4>
+                {% if six_months_cnt %}
+                <table class="table table-sm">
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>Customer Email</th>
+                        <th>Ticket Purchased</th>
+                    </tr>
+                    {% for customer in six_months_cnt %}
+                    <tr>
+                        {% for item in customer %}
+                        <td>{{item}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                <h2>No data</h2>
+                {% endif %}
+                <br>
+                <canvas id="ticket_based" style="width:100%"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="card shadow p-3 mb-5 bg-white rounded"
+            style="padding:0px !important; border-width:1px; border-color: #30aab8 !important">
+            <div class="card-body">
+                <h4 class="card-title" style="color:#30aab8">Commission of the Last Year</h4>
+                {% if one_year_commission %}
+                <table class="table table-sm">
+                    <tr>
+                        <th>Customer Name</th>
+                        <th>Customer Email</th>
+                        <th>Commissions</th>
+                    </tr>
+                    {% for customer in one_year_commission %}
+                    <tr>
+                        {% for item in customer %}
+                        <td>{{item}}</td>
+                        {% endfor %}
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% else %}
+                <h2>No data</h2>
+                {% endif %}
+                <br>
+                <canvas id="comm_based" style="width:100%"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .table-striped>tbody>tr:nth-child(odd)>td,
+    .table-striped>tbody>tr:nth-child(odd)>th {
+        background-color: #bfeef3;
+    }
+</style>
+<script>
+    var ticket = document.getElementById('ticket_based');
+    var commission = document.getElementById('comm_based');
+    var ticketBar = new Chart(ticket, {
+        type: 'bar',
+        data: {
+            labels: {{ ticket_based[0]| tojson }},
+    datasets: [{
+        label: 'Tickets Sold',
+        data: {{ ticket_based[1]}},
+        backgroundColor: ["rgba(255, 99, 132, 0.2)",
+        "rgba(255, 159, 64, 0.2)",
+        "rgba(255, 205, 86, 0.2)",
+        "rgba(75, 192, 192, 0.2)",
+        "rgba(54, 162, 235, 0.2)",
+    ],
+        borderColor: ["rgb(255, 99, 132)",
+        "rgb(255, 159, 64)",
+        "rgb(255, 205, 86)",
+        "rgb(75, 192, 192)",
+        "rgb(54, 162, 235)",
+    ],
+        borderWidth: 1
+                        }]
+                },
+    options: {
+        legend: {
+            display: false
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    autoSkip: true,
+                    beginAtZero: true,
+                    stepSize: 1,
+                }
+            }],
+                xAxes: [{
+                    gridLines: {
+                        display: false
+                    }
+                }]
+        }
+    }
+        });
+    var commBar = new Chart(commission, {
+        type: 'bar',
+        data: {
+            labels: {{ comm_based[0]| tojson }},
+    datasets: [{
+        label: 'Commission',
+        data: {{ comm_based[1]}},
+        backgroundColor: ["rgba(227, 186, 124, 0.2)",
+        "rgba(174, 229, 63, 0.2)",
+        "rgba(67, 145, 224, 0.2)",
+        "rgba(242, 135, 234, 0.2)",
+        "rgba(59, 47, 244, 0.2)",
+    ],
+        borderColor: ["rgb(227, 186, 124)",
+        "rgb(174, 229, 63)",
+        "rgb(67, 145, 224)",
+        "rgb(242, 135, 234)",
+        "rgb(59, 47, 244)",
+    ],
+        borderWidth: 1
+                        }]
+                },
+    options: {
+        legend: {
+            display: false
+        },
+        scales: {
+            yAxes: [{
+                ticks: {
+                    autoSkip: true,
+                    beginAtZero: true,
+                }
+            }],
+                xAxes: [{
+                    gridLines: {
+                        display: false
+                    }
+                }]
+        }
+    }
+        });
+</script>
+{% endblock %}

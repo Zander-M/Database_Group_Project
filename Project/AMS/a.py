@@ -317,18 +317,18 @@ def customer():
 @bp.route('/reports', methods = ["GET", "POST"])
 @login_required
 def reports():
-    mon_convert = {	1: 'Janauary',
-		2:'February',
-		3:'March',
-		4:'April',
+    mon_convert = {	1: 'Jan',
+		2:'Feb',
+		3:'Mar',
+		4:'Apr',
 		5:'May',
 		6:'June',
 		7:'July',
-		8:'August',
-		9:'September',
-		10:'October',
-		11:'November',
-		12:'December'}
+		8:'Aug',
+		9:'Sep',
+		10:'Oct',
+		11:'Nov',
+		12:'Dec'}
     current_month = int(datetime.datetime.now().strftime("%m"))
     """
     Ticket info in the past month/year based on time range.    
@@ -370,7 +370,7 @@ def reports():
             last_year_convert[1].append(last_year_sale[idx])
         else:
             last_year_convert[0].append(mon_convert[month])
-            last_year_convert[1].append(0)
+            last_year_convert[1].append(0)      
     return render_template('a/reports.html', last_month = last_month, last_year = last_year_convert, search_result = search_result, start_date=start_date, end_date=end_date)
 
 
@@ -465,17 +465,18 @@ def settings():
     cursor = db.cursor()	
     error = None	
     if request.method == "POST":	
-        phone_number = request.form["phone_number"]	
-        cursor.execute("SELECT * FROM staff_phone WHERE phone_number = %s", (phone_number))	
-        if cursor.fetchone() is not None:	
-            error = "Phone number already in system"	
-        if error is None:	
-            try:	
-                cursor.execute("INSERT INTO staff_phone (phone_number, username) values (%s, %s)", (phone_number, g.user[0]))	
-                db.commit()	
-            except pymysql.Error as e:	
-                db.rollback()	
-        flash(error)	
+        phone_number = request.form["phone_number"]
+        if phone_number != "":
+            cursor.execute("SELECT * FROM staff_phone WHERE phone_number = %s", (phone_number))	
+            if cursor.fetchone() is not None:	
+                error = "Phone number already in system"	
+            if error is None:	
+                try:	
+                    cursor.execute("INSERT INTO staff_phone (phone_number, username) values (%s, %s)", (phone_number, g.user[0]))	
+                    db.commit()	
+                except pymysql.Error as e:	
+                    db.rollback()	
+            flash(error)	
     username = g.user[0]	
     fname = g.user[2]	
     lname = g.user[3]	
