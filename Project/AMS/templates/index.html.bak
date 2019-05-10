@@ -1,6 +1,27 @@
 <html lang="en">
 
 <head>
+    <style>
+        #searchhis:hover {
+            color: #30aab8 !important;
+        }
+
+        .table-hover tbody tr td,
+        .table-hover tbody tr th {
+            border-color: #a2e6ee
+        }
+
+        .table .thead-light th,
+        .table-hover tbody tr:hover td,
+        .table-hover tbody tr:hover th {
+            background-color: #a2e6ee;
+        }
+
+        .table .thead-light th {
+            border-top: 0;
+            border-color: white
+        }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
@@ -11,37 +32,44 @@
     {% endif %}
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-    </script>
+    <script
+			  src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+			  integrity="sha256-pasqAKBDmFT4eHoN2ndd6lN370kFiGUFyTiUHWhU7k8="
+			  crossorigin="anonymous"></script> 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-    </script>
+        </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-    </script>
+        </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js">
     </script>
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" />
-    <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js"
-        integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous">
-    </script>
+    <script defer src="https://use.fontawesome.com/releases/v5.8.2/js/all.js" integrity="sha384-DJ25uNYET2XCl5ZF++U8eNxPWqcKohUUBUpKGlNLMchM7q4Wjg2CUpjHLaL8yYPH" crossorigin="anonymous"></script>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <script>
         function getValue(obj) {
             var value = obj.value;
-            if (value != "return") {
-                document.getElementById("retu").value = "Not Applicable";
-                document.getElementById("retu").disabled = "disabled";
+            if (value != "twoway") {
+                document.getElementById("rtn").value = "Not Applicable";
+                document.getElementById("rtn").disabled = "disabled";
             } else {
-                document.getElementById("retu").value = "";
-                document.getElementById("retu").removeAttribute('disabled');
+                document.getElementById("rtn").value = "";
+                document.getElementById("rtn").removeAttribute('disabled');
+                document.getElementById("rtn").setAttribute("required", "");
             }
         }
-   </script>
-    {% block head%}
-    {% endblock %}
+    </script>
+    <script>
+        $(function(){
+            $(".date").datepicker({
+            autoclose: true,
+            todayHighlight: true,
+            format: 'yyyy-mm-dd'
+            })
+        });
+    </script>
 </head>
 
 <body>
@@ -68,9 +96,15 @@
                     <li class="nav-item dropdown active" id="cookie">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
+                            {% if g.role == "b" %}
+                            Hi, {{g.BAID}}!
+                            {% else%}
                             Hi, {{g.username}}!
+                            {% endif %}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="/{{g.role}}/settings">Profile</a>
+                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/{{g.role}}/flights">My Dashboard</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{url_for('auth.logout')}}">Log out</a>
@@ -115,11 +149,11 @@
                 <div
                     style="color: white; background-image: url('../static/journey.jpg'); background-size: 100%; font-size: 3vw; padding-left: 2vw;padding-bottom: 1vh">
                     start your journey<br>
-                    with<br>con<strong>trails</strong>&nbsp;<i class="fas fa-plane"
-                        data-fa-transform="rotate--45"></i><br></div>
+                    with<br>con<strong>trails</strong>&nbsp;<i class="fas fa-plane" data-fa-transform="rotate--30"></i><br></div>
             </div>
         </div>
         {% endif %}
+        <!-- Search Form -->
         <form action="" method="POST">
             <div class="row" style="padding-left: 15px; padding-right: 15px; color: white; margin-bottom: 1vh">
 
@@ -147,12 +181,12 @@
                 <div class="col-lg-3" style="background-color:#eb7756">
                     <br>
                     <p style="color:white">DEPART</p>
-                    <input id="dept" class="form-control" name="dept_time" placeholder="YYYY-MM-DD" required />
+                    <input class="date form-control" name="dept_time" placeholder="YYYY-MM-DD" required />
                     <br>
                     <div class="radio">
                         <label>
                             <input type="radio" name="trip" id="optionsRadios1" value="twoway" checked required
-                                onclick="getValue(this);"> Return
+                                onclick="getValue(this);"> Round trip
                             &nbsp;&nbsp;&nbsp;
                         </label>
                         <label>
@@ -161,26 +195,13 @@
                         </label>
                     </div>
                     <br>
-                    <script>
-                        $('#dept').datepicker({
-                            autoclose: true,
-                            todayHighlight: true,
-                            format: 'yyyy-mm-dd'
-                        });
-                    </script>
+                    
                 </div>
                 <div class="col-lg-3" style="background-color:#bf5859">
                     <br>
                     <p style="color:white">RETURN</p>
-                    <input ID="retu" class="form-control" placeholder="YYYY-MM-DD" />
+                    <input name='back_time' id="rtn" class="date form-control" placeholder="YYYY-MM-DD" />
                     <br>
-                    <script>
-                        $('#retu').datepicker({
-                            autoclose: true,
-                            todayHighlight: true,
-                            format: 'yyyy-mm-dd',
-                        });
-                    </script>
                 </div>
             </div>
             {% if result == 'e'%}
@@ -208,11 +229,13 @@
             </div>
             {% endif %}
         </form>
+        <h2>Depart</h2><br>
         {% if result == 'e'%}
-
-        {% elif result %}
+        <h2 style="text-align:center; padding:10px;color: #048998">Sorry, no matching flights.</h2>
+        {% else %}
         <div class="card" style="border-color:#30aab8; border-width: 2px; padding: 0px;">
             <div class="card-body" style="padding:0">
+
                 <div class="table-responsive">
                     <table class="table table-hover" style="margin:0">
                         <thead class="thead-light">
@@ -245,54 +268,69 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                    {% else %}
-                    <h2 style="text-align:center; padding:10px;color: #048998">Sorry, no matching flights.</h2>
                     {% endif %}
-                    {% if back %}
                     <h2>Back</h2><br>
-                    {% for item in back%}
-                    <tr>
-                        {% for i in item[:4] %}
-                        <td>{{i}}</td>
-                        {% endfor %}
-                        {% if item[3] != "Sold Out"%}
-                        <td>
-                            <form action="{{url_for('c.confirm_order')}}" method="POST">
+                    {% if back != 'e' %}
+                    <div class="card" style="border-color:#30aab8; border-width: 2px; padding: 0px;">
+                        <div class="card-body" style="padding:0">
+
+                            <div class="table-responsive">
+                                <table class="table table-hover" style="margin:0">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Airline</th>
+                                            <th>Departure Time</th>
+                                            <th>Arrive Time</th>
+                                            <th>Price</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for item in result %}
+                                        <tr>
+                                            {% for i in item[:4] %}
+                                            <td>{{i}}</td>
+                                            {% endfor %}
+                                            {% if item[3] != "Sold Out"%}
+                                            <td>
+                                                <form action="{{url_for('c.confirm_order')}}" method="POST"
+                                                    style="margin:0">
+                                                    <input type="radio" value="{{item[4]}}" name="flight_id" checked
+                                                        style="visibility:hidden">
+                                                    <input type="radio" value="search" name="type" checked
+                                                        style="visibility:hidden">
+                                                    <input type="submit" name="submit" value="Order"
+                                                        class="btn btn-outline-success btn-sm"></form>
+                                            </td>
+                                            {% endif %}
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                                {% else %}
+                                <h2 style="text-align:center; padding:10px;color: #048998">Sorry, no matching flights.
+                                </h2 {% for item in back%} <tr>
+                                {% for i in item[:4] %}
+                                <td>{{i}}</td>
+                                {% endfor %}
+                                {% if item[3] != "Sold Out"%}
+                                <td>
+                                    <!-- <form action="{{url_for('c.confirm_order')}}" method="POST">
                                 <input type="radio" value="{{item[4]}}" name="flight_id" checked
                                     style="visibility:hidden">
                                 <input type="radio" value="search" name="type" checked style="visibility:hidden">
-                                <input type="submit" name="submit" value="Order" class="btn btn-success"></form>
-                        </td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-                    {% endif %}
+                                <input type="submit" name="submit" value="Order" class="btn btn-success"></form> -->
+                                </td>
+                                {% endif %}
+                                </tr>
+                                {% endfor %}
+                                {% endif %}
 
-                </div>
-            </div>
+                            </div>
+                        </div>
 
-        </div>
-        <style>
-            #searchhis:hover {
-                color: #30aab8 !important;
-            }
-
-            .table-hover tbody tr td,
-            .table-hover tbody tr th {
-                border-color: #a2e6ee
-            }
-
-            .table .thead-light th,
-            .table-hover tbody tr:hover td,
-            .table-hover tbody tr:hover th {
-                background-color: #a2e6ee;
-            }
-
-            .table .thead-light th {
-                border-top: 0;
-                border-color: white
-            }
-        </style>
+                    </div>
+                    
 </body>
 
 </html>

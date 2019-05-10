@@ -80,7 +80,7 @@ def index():
                     cursor.execute("SELECT * FROM ticket WHERE flight_id = %s", b_flight[0])
                     ticket_sold = len(cursor.fetchall())
                     # find out how many seats are available
-                    cursor.execute("SELECT seat FROM airplane where airplane_id = %s",(flight[2]))
+                    cursor.execute("SELECT seat FROM airplane where airplane_id = %s",(b_flight[2]))
                     seat = cursor.fetchone()[0]
                     if ticket_sold == seat:
                         price = 'Sold Out'
@@ -89,7 +89,7 @@ def index():
                     else:
                         price = base_price
                     b_flight = [b_flight[1], b_flight[5], b_flight[6], price, b_flight[0]] # airline, dept_time, arrv_time, price, flight_id
-                    b_n_flights.append(flight)
+                    b_n_flights.append(b_flight)
             else:
-                b = 'e'
+                b_n_flights = 'e'
     return render_template('index.html', dept_airport = dept_airport, arrv_airport = arrv_airport, result= n_flights, back = b_n_flights)
