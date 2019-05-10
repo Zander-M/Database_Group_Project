@@ -194,17 +194,21 @@ def addplane():
         Airline Staff add flights page
     """
     if request.method == "POST":
+        error = None
         seat = request.form['seat']
         db = get_db()
         cursor = get_cursor()
-        try:
-            cursor.execute(
-                "INSERT INTO airplane (airline, seat) values (%s, %s)", (g.user[5], seat))
-            db.commit()
-            return redirect(url_for('a.confirm', action="Add airplane"))
-        except pymysql.Error as e:
-            db.rollback()
-            flash(e)
+        if int(seat) <= 0:
+            error = "Number should be greater than 0."
+        if error is None:
+            try:
+                cursor.execute(
+                    "INSERT INTO airplane (airline, seat) values (%s, %s)", (g.user[5], seat))
+                db.commit()
+                return redirect(url_for('a.confirm', action="Add airplane"))
+            except pymysql.Error as e:
+                db.rollback()
+        flash(error)
     return render_template('a/addplane.html')
 
 
