@@ -13,20 +13,20 @@
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-    </script>
+        </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
         integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-    </script>
+        </script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-    </script>
+        </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js">
     </script>
     <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.min.css" />
     <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js"
         integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous">
-    </script>
+        </script>
     <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
     <script>
         function getValue(obj) {
@@ -41,11 +41,31 @@
             }
         }
     </script>
+    <style>
+        #searchhis:hover {
+            color: #30aab8 !important;
+        }
+
+        .table-hover tbody tr td,
+        .table-hover tbody tr th {
+            border-color: #a2e6ee
+        }
+
+        .table .thead-light th,
+        .table-hover tbody tr:hover td,
+        .table-hover tbody tr:hover th {
+            background-color: #a2e6ee;
+        }
+
+        .table .thead-light th {
+            border-top: 0;
+            border-color: white
+        }
+    </style>
 </head>
 
 <body>
     <div class="container">
-
         <!--Navigator Bar-->
         <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #048998;">
             <a class="navbar-brand" href="/c/search">con<strong>trails</strong>&nbsp;<i class="fas fa-plane"
@@ -70,8 +90,8 @@
                             Hi, {{g.username}}!
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                                <a class="dropdown-item" href="/{{g.role}}/settings">Profile</a>
-                                <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/{{g.role}}/settings">Profile</a>
+                            <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="/{{g.role}}/flights">My Dashboard</a>
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item" href="{{url_for('auth.logout')}}">Log out</a>
@@ -109,9 +129,8 @@
                 </ul>
             </div>
         </nav>
-        {% if result == 'e'%}
+        {% if result == 'n' %}
         <div class="row">
-
             <div class="col">
                 <div
                     style="color: white; background-image: url('../static/journey.jpg'); background-size: 100%; font-size: 3vw; padding-left: 2vw;padding-bottom: 1vh">
@@ -139,7 +158,7 @@
                     <br>
                     <p style="color:white">TO</p>
                     <select name="arrv_airport" id="" class="form-control" required>
-                        {% for airport in arrv_airport%}
+                        {% for airport in arrv_airport %}
                         <option value="{{airport[0]}}">{{airport[0]}}</option>
                         {% endfor %}
                     </select>
@@ -173,7 +192,7 @@
                 <div class="col-lg-3" style="background-color:#bf5859">
                     <br>
                     <p style="color:white">RETURN</p>
-                    <input ID="retu" class="form-control" placeholder="YYYY-MM-DD" />
+                    <input ID="retu" class="form-control" placeholder="YYYY-MM-DD" name="back_date" />
                     <br>
                     <script>
                         $('#retu').datepicker({
@@ -184,7 +203,7 @@
                     </script>
                 </div>
             </div>
-            {% if result == 'e'%}
+            {% if result == 'n'%}
             <br>
             <div class="flex-grow-1"
                 style="background-image: url('../static/footer.jpg'); background-size: cover; background-repeat: 0; height: 34.5vh">
@@ -209,9 +228,15 @@
             </div>
             {% endif %}
         </form>
-        {% if result == 'e'%}
-
-        {% elif result %}
+        {% if result == 'n' %}
+        <!-- display nothing when not searched -->
+        {% elif result == 'e' %}
+        {% if back != 'o' %}
+        <h2>Depart</h2>
+        {% endif %}
+        <h2 style="text-align:center; padding:10px;color: #048998">Sorry, no matching flights.</h2>
+        {% else %}
+        <h2>Depart</h2>
         <div class="card" style="border-color:#30aab8; border-width: 2px; padding: 0px;">
             <div class="card-body" style="padding:0">
                 <div class="table-responsive">
@@ -246,54 +271,56 @@
                             {% endfor %}
                         </tbody>
                     </table>
-                    {% else %}
-                    <h2 style="text-align:center; padding:10px;color: #048998">Sorry, no matching flights.</h2>
-                    {% endif %}
-                    {% if back %}
-                    <h2>Back</h2><br>
-                    {% for item in back%}
-                    <tr>
-                        {% for i in item[:4] %}
-                        <td>{{i}}</td>
-                        {% endfor %}
-                        {% if item[3] != "Sold Out"%}
-                        <td>
-                            <form action="{{url_for('c.confirm_order')}}" method="POST">
-                                <input type="radio" value="{{item[4]}}" name="flight_id" checked
-                                    style="visibility:hidden">
-                                <input type="radio" value="search" name="type" checked style="visibility:hidden">
-                                <input type="submit" name="submit" value="Order" class="btn btn-success"></form>
-                        </td>
-                        {% endif %}
-                    </tr>
-                    {% endfor %}
-                    {% endif %}
-
                 </div>
             </div>
-
         </div>
-        <style>
-            #searchhis:hover {
-                color: #30aab8 !important;
-            }
-
-            .table-hover tbody tr td,
-            .table-hover tbody tr th {
-                border-color: #a2e6ee
-            }
-
-            .table .thead-light th,
-            .table-hover tbody tr:hover td,
-            .table-hover tbody tr:hover th {
-                background-color: #a2e6ee;
-            }
-
-            .table .thead-light th {
-                border-top: 0;
-                border-color: white
-            }
-        </style>
+        {% endif %}
+        {% if back == 'o' %}
+        <!-- search for one way, display nothing -->
+        {% elif back == 'e' %}
+        <h2>Back</h2>
+        <h2 style="text-align:center; padding:10px;color: #048998">Sorry, no matching flights.</h2>
+        {% else %}
+        <h2>Back</h2>
+        <div class="card" style="border-color:#30aab8; border-width: 2px; padding: 0px;">
+            <div class="card-body" style="padding:0">
+                <div class="table-responsive">
+                    <table class="table table-hover" style="margin:0">
+                        <thead class="thead-light">
+                            <tr>
+                                <th>Airline</th>
+                                <th>Departure Time</th>
+                                <th>Arrive Time</th>
+                                <th>Price</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in back %}
+                            <tr>
+                                {% for i in item[:4] %}
+                                <td>{{i}}</td>
+                                {% endfor %}
+                                {% if item[3] != "Sold Out"%}
+                                <td>
+                                    <form action="{{url_for('c.confirm_order')}}" method="POST" style="margin:0">
+                                        <input type="radio" value="{{item[4]}}" name="flight_id" checked
+                                            style="visibility:hidden">
+                                        <input type="radio" value="search" name="type" checked
+                                            style="visibility:hidden">
+                                        <input type="submit" name="submit" value="Order"
+                                            class="btn btn-outline-success btn-sm"></form>
+                                </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
 </body>
 
 </html>

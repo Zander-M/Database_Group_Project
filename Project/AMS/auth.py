@@ -117,34 +117,38 @@ def register(role):
 
         # Booking Agent Register
         elif role == 'b':  # b for Booking Agent
-            email = request.form['email']
+            f_email = request.form['email']
             password = request.form['password']
             password_c = request.form['password_c']
+            f_BAID = request.form["BAID"]
             cursor.execute(
-                'SELECT email FROM booking_agent WHERE email = %s', (email,))
-            if not email:
+                'SELECT email FROM booking_agent WHERE email = %s', (f_email,))
+            email = cursor.fetchone()
+            cursor.execute("SELECT * FROM booking_agent WHERE BAID = %s", (f_BAID,))
+            BAID = cursor.fetchone()
+            if not f_email:
                 error = "Email is required."
             elif not password:
                 error = "Password is required."
             elif password_c != password:
-                error = "Passwords do not match"
-            elif cursor.fetchone() is not None:
+                error = "Passwords do not match."
+            elif email is not None:
                 error = "Email is already used."
+            elif len(f_BAID) > 8:
+                error = "Booking Agent ID too long."
+            elif BAID is not None:
+                error = "Booking Agent ID is used."
             elif error is None:
-                BAID = str(uuid.uuid4())[:8]  # generate Booking Agent ID
-                cursor.execute(
-                    "SELECT * FROM booking_agent where BAID = %s", (BAID,))
-                if cursor.fetchone() is not None:
-                    BAID = str(uuid.uuid4())[:8]  # generate Booking Agent ID
                 try:
                     cursor.execute("INSERT INTO booking_agent (email, pwd, BAID) values (%s,%s,%s)", (
-                        email, generate_password_hash(password), BAID))
+                        f_email, generate_password_hash(password), f_BAID))
                     db.commit()
-                    return redirect(url_for('auth.register_confirm', role=role, BAID=BAID))
+                    return redirect(url_for('auth.register_confirm', role=role, BAID=f_BAID))
 
-                except:
+                except pymysql.Error as e:
                     db.rollback()
                     error = 'DBError'
+                    flash(e)
             flash(error)
 
         # Customer Register.
