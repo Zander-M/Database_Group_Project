@@ -41,12 +41,12 @@
                 style="border-color:#30aab8; border-width: 1px; padding: 0px !important; margin-bottom: 30px !important;">
                 <h5 class="card-header">Revenue</h5>
                 <div class="card-body">
-                        <h4 class="card-title" style="color:#30aab8">Month</h4>
-                        Direct Sell: {{direct_sell_month[0]}} <br>
-                        Indirect Sell: {{indirect_sell_month[0]}}<br><br>
-                        <h4 class="card-title" style="color:#30aab8">Year</h4>
-                        Direct Sell: {{direct_sell_year[0]}} <br>
-                        Indirect Sell: {{indirect_sell_year[0]}}
+                    <h4 class="card-title" style="color:#30aab8">Month</h4>
+                    Direct Sell: {{direct_sell_month[0]}} <br>
+                    Indirect Sell: {{indirect_sell_month[0]}}<br><br>
+                    <h4 class="card-title" style="color:#30aab8">Year</h4>
+                    Direct Sell: {{direct_sell_year[0]}} <br>
+                    Indirect Sell: {{indirect_sell_year[0]}}
                 </div>
             </div>
         </div>
@@ -55,18 +55,18 @@
                 style="border-color:#30aab8; border-width: 1px; padding: 0px !important; margin-bottom: 30px !important;">
                 <h5 class="card-header">Top Destination</h5>
                 <div class="card-body">
-                        <h4 class="card-title" style="color:#30aab8">Last Three Months</h4>
-                        {% for item in last_three_months%}
-                        <ul>
-                            <li>{{item[0]}}</li>
-                        </ul>
-                        {% endfor %}
-                        <h4 class="card-title" style="color:#30aab8">Last Year</h4>
-                        {% for item in last_year%}
-                        <ul>
-                            <li>{{item[0]}}</li>
-                        </ul>
-                        {% endfor %}
+                    <h4 class="card-title" style="color:#30aab8">Last Three Months</h4>
+                    {% for item in last_three_months%}
+                    <ul>
+                        <li>{{item[0]}}</li>
+                    </ul>
+                    {% endfor %}
+                    <h4 class="card-title" style="color:#30aab8">Last Year</h4>
+                    {% for item in last_year%}
+                    <ul>
+                        <li>{{item[0]}}</li>
+                    </ul>
+                    {% endfor %}
                 </div>
             </div>
         </div>

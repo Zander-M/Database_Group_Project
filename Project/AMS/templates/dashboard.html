@@ -16,9 +16,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
     </script>
-    <script defer src="https://use.fontawesome.com/releases/v5.8.1/js/all.js"
-        integrity="sha384-g5uSoOSBd7KkhAMlnQILrecXvzst9TdC09/VM+pjDTCM+1il8RHz5fKANTFFb+gQ" crossorigin="anonymous">
-    </script>
+    <script defer src="https://use.fontawesome.com/releases/v5.8.2/js/all.js" integrity="sha384-DJ25uNYET2XCl5ZF++U8eNxPWqcKohUUBUpKGlNLMchM7q4Wjg2CUpjHLaL8yYPH" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/js/bootstrap-datepicker.min.js">
     </script>
     <link rel="stylesheet"
@@ -86,7 +84,7 @@
         </nav>
         <!-- tabs -->
         <div class="container-fluid" id="banner"
-            style="color: white; background-image: url('../static/journey.jpg'); background-size: 100%; padding-left: 0px; border-bottom: 20px; border-color: black">
+            style="color: white; background-image:  url({{url_for('static', filename = 'journey.jpg')}}); background-size: 100%; padding-left: 0px; border-bottom: 20px; border-color: black">
 
             <div style="padding-left:2vw">
                 <div style="font-size: 3vw; padding-bottom: 1vh" id="banner_dash">

@@ -265,6 +265,7 @@ def commission():
         end_date = request.form["end_date"]
         cursor.execute("SELECT SUM(sold_price)*0.1 FROM ticket WHERE BAID = %s AND purchase_date_time BETWEEN %s AND %s", (g.BAID,start_date, end_date,))
         search_commission = cursor.fetchall()
+        search_commission = search_commission[0]
         cursor.execute("SELECT COUNT(*) FROM ticket WHERE BAID = %s AND purchase_date_time BETWEEN %s AND %s", (g.BAID,start_date, end_date))
         search_cnt = cursor.fetchone()
     # fetch past 30 days commission
@@ -291,10 +292,19 @@ def customer():
     # 6 months number
     cursor.execute("SELECT name, email, COUNT(email) FROM customer RIGHT JOIN ticket on customer.email = ticket.customer_email WHERE BAID=%s  AND purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 6 MONTH) AND NOW() GROUP BY(email) ORDER BY COUNT(email) DESC LIMIT 5 ", (g.BAID))
     six_months_cnt = cursor.fetchall()
+    print(six_months_cnt)
+    ticket_based = [[],[]]
+    for a,b,c in six_months_cnt:
+        ticket_based[0].append(a)
+        ticket_based[1].append(c)
     # one year commission
     cursor.execute("SELECT name, email, SUM(sold_price)*0.1 FROM customer RIGHT JOIN ticket on customer.email = ticket.customer_email WHERE BAID = %s AND purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND NOW() GROUP BY(email) ORDER BY SUM(sold_price) DESC LIMIT 5 ", (g.BAID))
     one_year_commission = cursor.fetchall()
-    return render_template('b/customer.html', six_months_cnt = six_months_cnt, one_year_commission = one_year_commission)
+    comm_based = [[],[]]
+    for a,b,c in one_year_commission:
+        comm_based[0].append(a)
+        comm_based[1].append(float(c))
+    return render_template('b/customer.html', six_months_cnt = six_months_cnt, one_year_commission = one_year_commission, ticket_based = ticket_based, comm_based = comm_based)
 
 @bp.route('/settings')
 @login_required
