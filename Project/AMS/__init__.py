@@ -67,6 +67,10 @@ def create_app(test_config=None):
     from . import utils
     app.register_blueprint(utils.bp)
 
+    app.register_error_handler(404, page_not_found)
+
     return app
     
+def page_not_found(e):
+    return render_template('404.html'), 404
     

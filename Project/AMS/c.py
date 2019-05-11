@@ -279,7 +279,7 @@ def bill():
         past_year_spent = 'e' # e stands for empty
     past_six_month_spent = []
     for i in range(6, -1, -1):
-        cursor.execute("SELECT SUM(sold_price) from ticket where MONTH(purchase_date_time) = MONTH(NOW()) - %s AND customer_email = %s GROUP BY customer_email", (i, g.user[0],))
+        cursor.execute("SELECT DATE_FORMAT(purchase_date_time, '%%Y-%%m'), SUM(sold_price) from ticket where MONTH(purchase_date_time) = MONTH(NOW()) - %s AND customer_email = %s GROUP BY customer_email", (i, g.user[0],))
         past_six_month_spent.append(cursor.fetchone())
     if len(past_six_month_spent) == 0:
         past_six_month_spent = 'e' # e stands for empty
