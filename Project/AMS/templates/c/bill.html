@@ -49,13 +49,33 @@
                         </div>
                         <br>
                     </div>
+<!-- Modified. Display Search result here -->
         <div class="col-lg">
             <div class="card shadow p-3 mb-5 bg-white rounded"
                 style="border-color:#30aab8; border-width: 1px; padding: 1px !important; margin-bottom: 10px !important;">
                 <div class="card-body" style="padding:0">
-
+                Past Year Spending:
+                    {% if past_year_spent == 'e' %}
+                        No data <br>
+                    {% else %}
+                        {{past_year_spent}} <br>
+                    {% endif %}
+                Past Six Months Spending:
+                    {% if past_six_month_spent == 'e' %}
+                        No data <br>
+                    {% else %}
+                        {{past_six_month_spent}} <br> 
+                    {% endif %}
                 </div>
             </div>
+            {% if search_result == "n" %}
+            <!-- display nothing if not searched -->
+            {% elif search_result == "e" %}
+            <h2>No Data</h2>
+            {% else %}
+            <!-- search result here -->
+            {{search_result}}
+            {% endif %}
         </div>
         <br>
         <br>

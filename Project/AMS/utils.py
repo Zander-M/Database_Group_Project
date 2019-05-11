@@ -99,7 +99,7 @@ def index():
             f_flight_id = request.form['flight_id']
             f_dept_date = request.form['dept_date']
             f_arrv_date = request.form['arrv_date']
-            cursor.execute("SELECT * from `flight` WHERE flight_id = %s AND DATE(dept_time)= %s AND DATE(arrv_date)= %s and airline = %s",(f_flight_id, f_dept_date, f_arrv_date,f_airline))     
+            cursor.execute("SELECT * from `flight` WHERE flight_id = %s AND DATE(dept_time)= %s AND DATE(arrv_time)= %s and airline = %s",(f_flight_id, f_dept_date, f_arrv_date,f_airline))     
             flights = cursor.fetchall() # all the planes that matches the result
             n_flights = []
             if flights:

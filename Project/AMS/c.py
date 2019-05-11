@@ -261,17 +261,29 @@ def bill():
     Returns:
         Customer index page
     """
+    search_result = 'n' # n stands for not searching 
     if request.method == "POST":
-        pass
+        error = None
+        start_date = request.form["start_date"]
+        end_date = request.form["end_date"]
+        cursor = get_cursor()    
+        cursor.execute("SELECT SUM(sold_price) from ticket where DATE(purchase_date_time) BETWEEN %s AND %s AND customer_email = %s GROUP BY customer_email", (start_date, end_date, g.user[0],))
+        search_result = cursor.fetchall()
+        if not search_result:
+            search_result = 'e' # e stands for empty
     
     cursor = get_cursor()    
-    cursor.execute("SELECT SUM(sold_price) from ticket where YEAR(purchase_date_time) = YEAR(CURDATE()) - 1 AND customer_email = %s GROUP BY customer_email", (g.user[0],))
+    cursor.execute("SELECT SUM(sold_price) from ticket where purchase_date_time BETWEEN DATE_SUB(NOW(), INTERVAL 1 YEAR) AND NOW() AND customer_email = %s GROUP BY customer_email", (g.user[0],))
     past_year_spent = cursor.fetchone()
+    if not past_year_spent:
+        past_year_spent = 'e' # e stands for empty
     past_six_month_spent = []
-    for i in range(6, -1):
-        cursor.execute("SELECT SUM(sold_price) from ticket where MONTH(purchase_date_time) = MONTH(CURDATE()) %s - 1 AND customer_email = %s GROUP BY customer_email", (i, g.user[0],))
+    for i in range(6, -1, -1):
+        cursor.execute("SELECT SUM(sold_price) from ticket where MONTH(purchase_date_time) = MONTH(NOW()) - %s AND customer_email = %s GROUP BY customer_email", (i, g.user[0],))
         past_six_month_spent.append(cursor.fetchone())
-    return render_template('c/bill.html', past_year_spent = past_year_spent, past_six_month_spent = past_six_month_spent)
+    if len(past_six_month_spent) == 0:
+        past_six_month_spent = 'e' # e stands for empty
+    return render_template('c/bill.html', past_year_spent = past_year_spent, past_six_month_spent = past_six_month_spent, search_result = search_result)
 
 @bp.route('/settings', methods=["GET", "POST"])
 @login_required
