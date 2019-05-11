@@ -68,8 +68,27 @@ def init_db():
         None.
     """
     cursor = get_cursor()
-    with current_app.open_resource('static/init.sql') as f:
-        cursor.execute(f.read().decode('utf8'))
+    with current_app.open_resource('db/ams_schema.sql') as f:
+        queries = str(f.read(), 'utf-8').split(';')[:-1]
+        for query in queries:
+            cursor.execute(query)
+
+def execute_sql(filename):
+    """
+    This funcition execute the SQL file using pymysql as a whole.
+    
+    Args:
+        filename: filename.
+    
+    Returns:
+        retval: indicates whether the execution is successful. If it is, return 
+        True, else False.
+    """
+    cursor = get_cursor()
+    with open(filename, 'rb') as f:
+        queries = str(f.read(), 'utf-8').split(';')[:-1]
+        for query in queries:
+            cursor.execute(query)
 
 @click.command('init-db')
 @with_appcontext

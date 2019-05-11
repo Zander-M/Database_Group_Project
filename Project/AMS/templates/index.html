@@ -142,6 +142,7 @@
         </div>
         {% endif %}
         <form action="" method="POST">
+            Trip:<input type="radio" name = "content" value="trip">
             <div class="row" style="padding-left: 15px; padding-right: 15px; color: white; margin-bottom: 1vh">
 
                 <div class="col-lg-3" style="background-color:#7579ad">
@@ -204,6 +205,16 @@
                     </script>
                 </div>
             </div>
+            <!-- new search form -->
+            Flight:<input type="radio" name = "content" value="flight"><br>
+            Flight ID:<input type="text" name = "flight_id"><br>
+            Airline:<select name="airline" id="">
+                {% for airline in airlines %}
+                    <option value="{{airline[0]}}">{{airline[0]}}</option>
+                {% endfor %}
+            </select><br>
+            Departure Date:<input type="date" name="dept_date"><br>
+            Arrive Date: <input type="date" name="arrv_date"><br>
             {% if result == 'n'%}
             <br>
             <div class="flex-grow-1"
