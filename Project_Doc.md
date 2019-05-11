@@ -30,4 +30,5 @@ Directory Tree:
     ├─tests
     └─venv
 
-db: all the database related files, including SQL required to initialize the 
+db: all the database related files, including SQL required to initialize the database and the data for test cases.
+
