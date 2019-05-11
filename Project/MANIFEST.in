@@ -1,0 +1,4 @@
+include AMS/db/AMS_ddl.sql
+graft AMS/static
+graft AMS/templates
+global-exclude *.pyc
