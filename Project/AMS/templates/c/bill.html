@@ -14,67 +14,222 @@
 
 <div class="container-fluid" style="padding:0px">
     <div class="row">
-                <!-- Filter -->
-                <div class="col-lg-3">
-                        <div class="card shadow-lg" style="background-color:#30aab8; color: white; padding: 0px">
-                            <h5 class="card-header">Time Filter</h5>
-                            <div class="card-body">
-                                <form action="#" method="POST">
-                                    <div class="form-group">
-                                        <label for="start">Start Date</label>
-                                        <input type="text" class="form-control" id="start" name="start_date"
-                                            placeholder="YYYY-MM-DD" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="end">End Date</label>
-                                        <input type="text" class="form-control" id="end" name="end_date" placeholder="YYYY-MM-DD"
-                                            required>
-                                    </div>
-                                    <script>
-                                        $('#start').datepicker({
-                                            autoclose: true,
-                                            todayHighlight: true,
-                                            format: 'yyyy-mm-dd'
-                                        });
-                                        $('#end').datepicker({
-                                            autoclose: true,
-                                            todayHighlight: true,
-                                            format: 'yyyy-mm-dd'
-                                        });
-                                    </script>
-                                    <button type="submit" value="Submit" id="searchhis" class="btn btn-outline-light btn-block"
-                                        style="margin-top:35px"><i class="fas fa-search"></i> Search Flights</button>
-                                </form>
-                            </div>
+        <!-- Filter -->
+        <div class="col-lg-3">
+            <div class="card shadow-lg" style="background-color:#30aab8; color: white; padding: 0px">
+                <h5 class="card-header">Time Filter</h5>
+                <div class="card-body">
+                    <form action="#" method="POST">
+                        <div class="form-group">
+                            <label for="start">Start Date</label>
+                            <input type="text" class="form-control" id="start" name="start_date" placeholder="YYYY-MM"
+                                required>
                         </div>
-                        <br>
-                    </div>
-<!-- Modified. Display Search result here -->
+                        <div class="form-group">
+                            <label for="end">End Date</label>
+                            <input type="text" class="form-control" id="end" name="end_date" placeholder="YYYY-MM"
+                                required>
+                        </div>
+                        <script>
+                            $('#start').datepicker({
+                                autoclose: true,
+                                todayHighlight: true,
+                                format: 'yyyy-mm',
+                                maxViewMode: "centuries",
+                                minViewMode: "months"
+                            });
+                            $('#end').datepicker({
+                                autoclose: true,
+                                todayHighlight: true,
+                                format: 'yyyy-mm',
+                                maxViewMode: "centuries",
+                                minViewMode: "months"
+                            });
+                        </script>
+                        <button type="submit" value="Submit" id="searchhis" class="btn btn-outline-light btn-block"
+                            style="margin-top:35px"><i class="fas fa-search"></i> Search Flights</button>
+                    </form>
+                </div>
+            </div>
+            <br>
+        </div>
+        <!-- Modified. Display Search result here -->
         <div class="col-lg">
+            {% if search_total != "n" %}
+            <div class="card shadow p-3 mb-5 bg-white rounded"
+                style="border-color:#30aab8; border-width: 1px; padding: 1px !important; margin-bottom: 30px !important;">
+                <h5 class="card-header">From {{start_date}} to {{end_date}}</h5>
+                <div class="card-body">
+                    <h4 class="card-title" style="color:#30aab8">Total Spendings</h4>
+                    {% if search_total == "e" %}
+                    No Data<br><br>
+                    {%else%}
+                    {{search_total}}<br><br>
+                    {%endif%}
+                    <h4 class="card-title" style="color:#30aab8">Monthly Spendings</h4>
+                    <canvas id="user_spec"></canvas>
+                    <script>
+                            var user = document.getElementById('user_spec');
+                            var userChart = new Chart(user, {
+                                type: 'bar',
+                                data: {
+                                    labels: {{ search_monthly[0]| tojson }},
+                            datasets: [{
+                                label: 'Monthly Spending',
+                                data: {{ search_monthly[1]| tojson }},
+                                backgroundColor: ["rgba(255, 99, 132, 0.2)",
+                                "rgba(255, 159, 64, 0.2)",
+                                "rgba(255, 205, 86, 0.2)",
+                                "rgba(75, 192, 192, 0.2)",
+                                "rgba(54, 162, 235, 0.2)",
+                                "rgba(153, 102, 255, 0.2)",
+                                "rgba(63, 188, 255, 0.2)",
+                                "rgba(227, 186, 124, 0.2)",
+                                "rgba(174, 229, 63, 0.2)",
+                                "rgba(67, 145, 224, 0.2)",
+                                "rgba(242, 135, 234, 0.2)",
+                                "rgba(59, 47, 244, 0.2)",
+                                "rgba(255, 99, 132, 0.2)",
+                                "rgba(255, 159, 64, 0.2)",
+                                "rgba(255, 205, 86, 0.2)",
+                                "rgba(75, 192, 192, 0.2)",
+                                "rgba(54, 162, 235, 0.2)",
+                                "rgba(153, 102, 255, 0.2)",
+                                "rgba(63, 188, 255, 0.2)",
+                                "rgba(227, 186, 124, 0.2)",
+                                "rgba(174, 229, 63, 0.2)",
+                                "rgba(67, 145, 224, 0.2)",
+                                "rgba(242, 135, 234, 0.2)",
+                                "rgba(59, 47, 244, 0.2)",
+                            ],
+                                borderColor: ["rgb(255, 99, 132)",
+                                "rgb(255, 159, 64)",
+                                "rgb(255, 205, 86)",
+                                "rgb(75, 192, 192)",
+                                "rgb(54, 162, 235)",
+                                "rgb(153, 102, 255)",
+                                "rgb(63, 188, 255)",
+                                "rgb(227, 186, 124)",
+                                "rgb(174, 229, 63)",
+                                "rgb(67, 145, 224)",
+                                "rgb(242, 135, 234)",
+                                "rgb(59, 47, 244)",
+                                "rgb(255, 99, 132)",
+                                "rgb(255, 159, 64)",
+                                "rgb(255, 205, 86)",
+                                "rgb(75, 192, 192)",
+                                "rgb(54, 162, 235)",
+                                "rgb(153, 102, 255)",
+                                "rgb(63, 188, 255)",
+                                "rgb(227, 186, 124)",
+                                "rgb(174, 229, 63)",
+                                "rgb(67, 145, 224)",
+                                "rgb(242, 135, 234)",
+                                "rgb(59, 47, 244)",
+                            ],
+                                borderWidth: 1
+                                                }]
+                                        },
+                            options: {
+                                legend: {
+                                    display: false
+                                },
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            autoSkip: true,
+                                            beginAtZero: true,
+                                        }
+                                    }],
+                                        xAxes: [{
+                                            gridLines: {
+                                                display: false
+                                            }
+                                        }]
+                                }
+                            }
+                                });
+                        </script>
+                </div>
+            </div>
+            {%else%}
             <div class="card shadow p-3 mb-5 bg-white rounded"
                 style="border-color:#30aab8; border-width: 1px; padding: 1px !important; margin-bottom: 10px !important;">
-                <div class="card-body" style="padding:0">
-                Past Year Spending:
+                <h5 class="card-header">Past Year</h5>
+                <div class="card-body">
+                    <h4 class="card-title" style="color:#30aab8">Total Spendings</h4>
                     {% if past_year_spent == 'e' %}
-                        No data <br>
+                    No data <br>
                     {% else %}
-                        {{past_year_spent}} <br>
+                    {{past_year_spent}} <br><br>
                     {% endif %}
-                Past Six Months Spending:
+                    <h4 class="card-title" style="color:#30aab8">Monthly Spendings</h4>
                     {% if past_six_month_spent == 'e' %}
-                        No data <br>
+                    No data
                     {% else %}
-                        {{past_six_month_spent}} <br> 
+                    <canvas id="past_six">
+                    </canvas>
+                    <script>
+                            var ctx = document.getElementById('past_six');
+                            var myChart = new Chart(ctx, {
+                                type: 'bar',
+                                data: {
+                                    labels: {{ past_six_month[0]| tojson }},
+                            datasets: [{
+                                label: 'Monthly Spending',
+                                data: {{ past_six_month[1]| tojson }},
+                                backgroundColor: ["rgba(255, 99, 132, 0.2)",
+                                "rgba(255, 159, 64, 0.2)",
+                                "rgba(255, 205, 86, 0.2)",
+                                "rgba(75, 192, 192, 0.2)",
+                                "rgba(54, 162, 235, 0.2)",
+                                "rgba(153, 102, 255, 0.2)",
+                                "rgba(63, 188, 255, 0.2)",
+                                "rgba(227, 186, 124, 0.2)",
+                                "rgba(174, 229, 63, 0.2)",
+                                "rgba(67, 145, 224, 0.2)",
+                                "rgba(242, 135, 234, 0.2)",
+                                "rgba(59, 47, 244, 0.2)",
+                            ],
+                                borderColor: ["rgb(255, 99, 132)",
+                                "rgb(255, 159, 64)",
+                                "rgb(255, 205, 86)",
+                                "rgb(75, 192, 192)",
+                                "rgb(54, 162, 235)",
+                                "rgb(153, 102, 255)",
+                                "rgb(63, 188, 255)",
+                                "rgb(227, 186, 124)",
+                                "rgb(174, 229, 63)",
+                                "rgb(67, 145, 224)",
+                                "rgb(242, 135, 234)",
+                                "rgb(59, 47, 244)",
+                            ],
+                                borderWidth: 1
+                                                }]
+                                        },
+                            options: {
+                                legend: {
+                                    display: false
+                                },
+                                scales: {
+                                    yAxes: [{
+                                        ticks: {
+                                            autoSkip: true,
+                                            beginAtZero: true,
+                                        }
+                                    }],
+                                        xAxes: [{
+                                            gridLines: {
+                                                display: false
+                                            }
+                                        }]
+                                }
+                            }
+                                });
+                        </script>
                     {% endif %}
                 </div>
             </div>
-            {% if search_result == "n" %}
-            <!-- display nothing if not searched -->
-            {% elif search_result == "e" %}
-            <h2>No Data</h2>
-            {% else %}
-            <!-- search result here -->
-            {{search_result}}
             {% endif %}
         </div>
         <br>
