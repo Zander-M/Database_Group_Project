@@ -34,27 +34,67 @@
             if (value != "twoway") {
                 document.getElementById("retu").value = "Not Applicable";
                 document.getElementById("retu").disabled = "disabled";
-                document.getElementById("retu").removeAttribute("required");
             } else {
                 document.getElementById("retu").value = "";
                 document.getElementById("retu").removeAttribute('disabled');
-                document.getElementById("retu").setAttribute("required", "");
             }
         }
+
+        function setContent() {
+            var content = document.getElementById("collapseOne").className;
+
+            var radio1 = document.getElementById("flight");
+            var radio2 = document.getElementById("trip");
+
+            var title = document.getElementById("collapse_title");
+
+            var da = document.getElementById("da");
+            var aa = document.getElementById("aa");
+            var dept = document.getElementById("dept");
+            var retu = document.getElementById("retu");
+
+            var id = document.getElementById("flight_id");
+            var airline = document.getElementById("airline");
+            var dd = document.getElementById("dd");
+            var ad = document.getElementById("ad");
+
+            if (content == 'collapse') {
+                radio2.removeAttribute("checked");
+                radio1.setAttribute("checked", true);
+                title.innerHTML = "Click again to search for flights by airports and dates";
+                da.setAttribute("disabled", "disabled");
+                aa.setAttribute("disabled", "disabled");
+                dept.setAttribute("disabled", "disabled");
+                retu.setAttribute("disabled", "disabled");
+
+                id.removeAttribute("disabled");
+                airline.removeAttribute("disabled");
+                dd.removeAttribute("disabled");
+                ad.removeAttribute("disabled");
+            }
+            else if (content == 'collasping') {
+                clearTimeout();
+                setTimeout(setContent(), 1000);
+            }
+            else {
+                radio1.removeAttribute("checked");
+                radio2.setAttribute("checked", true);
+                title.innerHTML = "Or, search flight information by flight ID";
+                id.setAttribute("disabled", "disabled");
+                airline.setAttribute("disabled", "disabled");
+                dd.setAttribute("disabled", "disabled");
+                ad.setAttribute("disabled", "disabled");
+                da.removeAttribute("disabled");
+                aa.removeAttribute("disabled");
+                dept.removeAttribute("disabled");
+                if ($("#optionsRadios1").is(':checked')) {
+                    retu.removeAttribute("disabled");
+                }
+            }
+        }        
     </script>
     <style>
-        #searchhis:hover {
-            color: #30aab8 !important;
-        }
-
-        .table-hover tbody tr td,
-        .table-hover tbody tr th {
-            border-color: #a2e6ee
-        }
-
-        .table .thead-light th,
-        .table-hover tbody tr:hover td,
-        .table-hover tbody tr:hover th {
+        .table .thead-light th {
             background-color: #a2e6ee;
         }
 
@@ -88,7 +128,7 @@
                     <li class="nav-item dropdown active" id="cookie">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
-                            Hi, {% if g.role == "b" %}{{g.BAID}}{% else %} {{g.username}} {% endif %}!
+                            Hi, {{g.username}}!
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="/{{g.role}}/settings">Profile</a>
@@ -142,13 +182,14 @@
         </div>
         {% endif %}
         <form action="" method="POST">
-            Trip:<input type="radio" name = "content" value="trip">
+            <input id="flight" type="radio" name="content" value="flight" style="display:none">
+            <input id="trip" type="radio" name="content" value="trip" checked style="display:none">
             <div class="row" style="padding-left: 15px; padding-right: 15px; color: white; margin-bottom: 1vh">
 
                 <div class="col-lg-3" style="background-color:#7579ad">
                     <br>
                     <p style="color: white">FROM</p>
-                    <select name="dept_airport" id="" class="form-control" required>
+                    <select name="dept_airport" id="da" class="form-control" required>
                         {% for airport in dept_airport%}
                         <option value="{{airport[0]}}">{{airport[0]}}</option>
                         {% endfor %}
@@ -159,7 +200,7 @@
                 <div class="col-lg-3" style="background-color: #295f9e">
                     <br>
                     <p style="color:white">TO</p>
-                    <select name="arrv_airport" id="" class="form-control" required>
+                    <select name="arrv_airport" id="aa" class="form-control" required>
                         {% for airport in arrv_airport %}
                         <option value="{{airport[0]}}">{{airport[0]}}</option>
                         {% endfor %}
@@ -194,7 +235,7 @@
                 <div class="col-lg-3" style="background-color:#bf5859">
                     <br>
                     <p style="color:white">RETURN</p>
-                    <input ID="retu" class="form-control" placeholder="YYYY-MM-DD" name="back_date" required />
+                    <input id="retu" class="form-control" placeholder="YYYY-MM-DD" name="back_date" required />
                     <br>
                     <script>
                         $('#retu').datepicker({
@@ -205,18 +246,50 @@
                     </script>
                 </div>
             </div>
-            <!-- new search form -->
-            Flight:<input type="radio" name = "content" value="flight"><br>
-            Flight ID:<input type="text" name = "flight_id"><br>
-            Airline:<select name="airline" id="">
-                {% for airline in airlines %}
-                    <option value="{{airline[0]}}">{{airline[0]}}</option>
-                {% endfor %}
-            </select><br>
-            Departure Date:<input type="date" name="dept_date"><br>
-            Arrive Date: <input type="date" name="arrv_date"><br>
+            <div id="accordion" style="margin-bottom:8px;">
+                <div class="card">
+                    <div class="card-header">
+                        <a class="card-link text-muted" id="collapse_title" onclick="setContent()"
+                            data-toggle="collapse" href="#collapseOne">
+                            Or, search flight information by flight ID
+                        </a>
+                    </div>
+                    <div id="collapseOne" class="collapse" data-parent="#accordion">
+                        <div class="card-body">
+                            <!-- new search form -->
+                            <div class="form-row">
+                                <div class="col">
+                                    <label for="flight_id">Flight ID</label>
+                                    <input type="text" class="form-control" id="flight_id" name="flight_id" required
+                                        disabled="disabled">
+                                </div>
+                                <div class="col">
+                                    <label for="airline">Airline</label>
+                                    <select class="form-control" name="airline" id="airline" required
+                                        disabled="disabled">
+                                        {% for airline in airlines %}
+                                        <option value="{{airline[0]}}">{{airline[0]}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col">
+                                    <label for="dd">Depature Date</label>
+                                    <input type="text" class="form-control" id="dd" name="dept_date" required
+                                        disabled="disabled">
+                                </div>
+                                <div class="col">
+                                    <label for="ad">
+                                        Arrive Date
+                                    </label>
+                                    <input type="text" class="form-control" id="ad" name="arrv_date" required
+                                        disabled="disabled">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {% if result == 'n'%}
-            <br>
             <div class="flex-grow-1"
                 style="background-image: url('../static/footer.jpg'); background-size: cover; background-repeat: 0; height: 34.5vh">
                 <!--Search Button-->
@@ -254,7 +327,7 @@
         {% else %}
         <div class="card shadow p-3 mb-5 bg-white rounded"
             style="border-color:#30aab8; border-width: 1px; padding: 0px !important; margin-bottom: 10px !important;">
-            <div class="card-header" style="padding:12px;">
+            <div class="card-header">
                 <h3 style="margin:0px">Depart</h3>
             </div>
             <div class="card-body" style="padding:0">
