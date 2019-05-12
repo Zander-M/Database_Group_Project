@@ -54,6 +54,22 @@
                             <input type="text" class="form-control" id="end" name="end_date" placeholder="YYYY-MM-DD"
                                 required>
                         </div>
+                        <div class="form-group">
+                            <label for="dept_airport">Departure Airport</label> <br>
+                            <select name="dept_airport" class="form-control" required>
+                                {% for airport in airports %}
+                                <option value="{{airport[0]}}">{{airport[0]}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="arrv_airport">Departure Airport</label> <br>
+                            <select name="arrv_airport" class="form-control" required>
+                                {% for airport in airports %}
+                                <option value="{{airport[0]}}">{{airport[0]}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
                         <script>
                             $('#start').datepicker({
                                 autoclose: true,

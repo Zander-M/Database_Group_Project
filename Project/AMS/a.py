@@ -74,11 +74,15 @@ def flights():
         Airline Staff flights page
     """
     cursor = get_cursor()
+    cursor.execute("SELECT name FROM airport")
+    airports = cursor.fetchall()
     if request.method == "POST":
         start_date = request.form['start_date']
         end_date = request.form['end_date']
-        cursor.execute('SELECT dept_airport, arrv_airport, DATE_FORMAT(dept_time, "%%Y %%M %%D %%T"), DATE_FORMAT(dept_time, "%%Y %%M %%D %%T"), flight_status, base_price, flight_id FROM flight WHERE airline = %s AND DATE(dept_time) BETWEEN DATE(%s) AND DATE(%s)',
-                       (g.user[5], start_date, end_date))
+        dept_airport = request.form['dept_airport']
+        arrv_airport = request.form['arrv_airport']
+        cursor.execute('SELECT dept_airport, arrv_airport, DATE_FORMAT(dept_time, "%%Y %%M %%D %%T"), DATE_FORMAT(dept_time, "%%Y %%M %%D %%T"), flight_status, base_price, flight_id FROM flight WHERE airline = %s AND DATE(dept_time) BETWEEN DATE(%s) AND DATE(%s) AND dept_airport = %s AND arrv_airport = %s',
+                       (g.user[5], start_date, end_date, dept_airport, arrv_airport))
         flights = cursor.fetchall()
         n_flights = []
         for flight in flights:
@@ -101,7 +105,7 @@ def flights():
             elif flight[4] == 1:
                 flight[4] = "Delayed"
             n_flights.append(flight)
-    return render_template('a/flights.html', flights=n_flights)
+    return render_template('a/flights.html', airports = airports, flights=n_flights)
 
 
 @bp.route('/flights/info/<flight_id>', methods=["GET", "POST"])
@@ -193,6 +197,9 @@ def addplane():
     Returns:
         Airline Staff add flights page
     """
+    cursor = get_cursor()
+    cursor.execute("SELECT airplane_id, seat FROM airplane WHERE airline = %s ",(g.user[5]))
+    airplanes = cursor.fetchall()
     if request.method == "POST":
         error = None
         seat = request.form['seat']
@@ -209,7 +216,7 @@ def addplane():
             except pymysql.Error as e:
                 db.rollback()
         flash(error)
-    return render_template('a/addplane.html')
+    return render_template('a/addplane.html', airplanes = airplanes)
 
 
 @bp.route('/addairport', methods=["GET", "POST"])

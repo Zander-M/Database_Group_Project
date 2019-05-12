@@ -80,11 +80,7 @@
                     <li class="nav-item dropdown active" id="cookie">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
                             aria-haspopup="true" aria-expanded="false">
-                            {% if g.role == 'b' %}
-                            Hi, {{g.BAID}}!
-                            {% else %}
                             Hi, {{g.username}}!
-                            {% endif %}
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
                             <a class="dropdown-item" href="/{{g.role}}/settings">Profile</a>
@@ -103,7 +99,7 @@
 
             <div style="padding-left:2vw">
                 <div style="font-size: 3vw; padding-bottom: 1vh" id="banner_dash">
-                    Nice to see you, {% if g.role == "b" %}{{g.BAID}} {% else %} {{g.username}} {% endif %}
+                    Nice to see you, {{g.username}}
                 </div>
             </div>
             <br>
