@@ -28,10 +28,6 @@
     <a class="nav-link active" href="/a/reports" role="tab" aria-controls="stats" aria-selected="false">Sales
         Report</a>
 </li>
-<li class="nav-item">
-    <a class="nav-link" href="/a/revenue" role="tab" aria-controls="stats" aria-selected="false">Revenue & Top
-        Dest.</a>
-</li>
 {%endblock%}
 
 {%block panel%}
@@ -40,8 +36,8 @@
     <div class="row">
         <!-- Filter -->
         <div class="col-lg-4">
-            <div class="card shadow p-3 mb-5 bg-white rounded"
-                style="border-color:#30aab8; border-width: 1px; padding: 0px !important">
+                <div class="card shadow p-3 mb-5 bg-white rounded"
+                    style="border-color:#30aab8; border-width: 1px; padding: 0px !important; margin-bottom: 30px !important;">
                 <h5 class="card-header">Sales Count</h5>
                 <div class="card-body">
                     {% if search_result %}
@@ -77,11 +73,55 @@
                     </form>
                 </div>
             </div>
+            <div class="card shadow p-3 mb-5 bg-white rounded"
+                style="border-color:#30aab8; border-width: 1px; padding: 0px !important; margin-bottom: 30px !important;">
+                <h5 class="card-header">Comparison over the last month</h5>
+                <div class="card-body" style="padding-bottom:1px !important">
+                    <h4 class="card-title" style="color:#30aab8">Direct Sell</h4>
+                    {{direct_sell_month[0]}}<br><br>
+                    <h4 class="card-title" style="color:#30aab8">Indirect Sell</h4>
+                    {{indirect_sell_month[0]}}<br><br>
+                    <canvas id="comparison_month">
+                    </canvas>
+                    <br>
+                </div>
+            </div>
+            <div class="card shadow p-3 mb-5 bg-white rounded"
+                style="border-color:#30aab8; border-width: 1px; padding: 0px !important; margin-bottom: 30px !important;">
+                <h5 class="card-header">Comparison over the last year</h5>
+                <div class="card-body" style="padding-bottom:1px !important">
+                        <h4 class="card-title" style="color:#30aab8">Direct Sell</h4>
+                    {{direct_sell_year[0]}} <br><br>
+                    <h4 class="card-title" style="color:#30aab8">Indirect Sell</h4>
+                    {{indirect_sell_year[0]}}<br><br>
+                    <canvas id="comparison_year">
+                    </canvas>
+                    <br>
+                </div>
+            </div>
+            <div class="card shadow p-3 mb-5 bg-white rounded"
+                style="border-color:#30aab8; border-width: 1px; padding: 0px !important; margin-bottom: 30px !important;">
+                <h5 class="card-header">Top Destination</h5>
+                <div class="card-body">
+                    <h4 class="card-title" style="color:#30aab8">Last Three Months</h4>
+                    {% for item in last_three_months_dest%}
+                    <ul>
+                        <li>{{item[0]}}</li>
+                    </ul>
+                    {% endfor %}
+                    <h4 class="card-title" style="color:#30aab8">Last Year</h4>
+                    {% for item in last_year_dest%}
+                    <ul>
+                        <li>{{item[0]}}</li>
+                    </ul>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
         <div class="col-lg">
             <div class="card shadow p-3 mb-5 bg-white rounded"
                 style="border-color:#30aab8; border-width: 1px; padding: 0px !important; margin-bottom: 30px !important;">
-                <h5 class="card-header">Sales Statistics Over the Last Year</h5>
+                <h5 class="card-header">Sales statistics over the last year</h5>
                 <div class="card-body" style="padding-bottom:1px !important">
                     <canvas id="myBarChart">
                     </canvas>
@@ -89,7 +129,7 @@
             </div>
             <div class="card shadow p-3 mb-5 bg-white rounded"
                 style="border-color:#30aab8; border-width: 1px; padding: 0px !important; margin-bottom: 30px !important;">
-                <h5 class="card-header">Purchase Over The Last Month</h5>
+                <h5 class="card-header">Purchase over the last month</h5>
                 <div class="card-body" style="padding:1px !important">
                     <div class="table-responsive">
                         <table class="table table-striped" style="margin:0; padding: 200px !important;">
@@ -129,7 +169,6 @@
     datasets: [{
         label: 'Tickets Sold',
         data: {{ last_year[1]| tojson }},
-        // data: [1,2,3,4,5,6,7,8,9,10,11,12],
         backgroundColor: ["rgba(255, 99, 132, 0.2)",
         "rgba(255, 159, 64, 0.2)",
         "rgba(255, 205, 86, 0.2)",
@@ -160,7 +199,8 @@
                         }]
                 },
     options: {
-        legend: {
+        responsive: true,
+            legend: {
             display: false
         },
         scales: {
@@ -179,5 +219,39 @@
         }
     }
         });
+    var month = document.getElementById('comparison_month').getContext('2d');
+    var config1 = {
+        type: 'pie',
+        data: {
+            datasets: [{
+                data: [{{ direct_sell_month[0]}}, {{ indirect_sell_month[0]}}],
+        backgroundColor: ["rgb(255, 99, 132)",
+            "rgb(255, 159, 64)",
+        ],
+        label: 'Revenue'
+    }],
+        labels: ['Direct', 'Indirect']},
+    options: {
+        responsive: true
+    }
+    };
+    window.month = new Chart(month, config1);
+    var year = document.getElementById('comparison_year').getContext('2d');
+    var config2 = {
+        type: 'pie',
+        data: {
+            datasets: [{
+                data: [{{ direct_sell_year[0]}}, {{ indirect_sell_year[0]}}],
+        backgroundColor: ["rgb(54, 162, 235)",
+            "rgb(75, 192, 192)",
+        ],
+        label: 'Revenue'
+    }],
+        labels: ['Direct', 'Indirect']},
+    options: {
+        responsive: true
+    }
+    };
+    window.year = new Chart(year, config2);
 </script>
 {%endblock%}
