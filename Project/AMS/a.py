@@ -391,7 +391,7 @@ def reports():
     direct_sell_year = cursor.fetchone()
 
     # Top destination
-    ursor = get_cursor()
+    cursor = get_cursor()
     cursor.execute("SELECT arrv_airport FROM flight WHERE airline = %s AND dept_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND CURDATE() GROUP BY arrv_airport ORDER BY COUNT(arrv_airport) DESC LIMIT 3 ", (g.user[5]))
     last_three_months_dest = cursor.fetchall()
     cursor.execute("SELECT arrv_airport FROM flight WHERE flight.airline = %s AND dept_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE() GROUP BY arrv_airport ORDER BY COUNT(arrv_airport) DESC LIMIT 3 ", g.user[5])
