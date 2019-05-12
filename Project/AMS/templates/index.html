@@ -275,6 +275,13 @@
                                     <label for="dd">Depature Date</label>
                                     <input type="text" class="form-control" id="dd" name="dept_date" required
                                         disabled="disabled">
+                                <script>
+                                    $('#dd').datepicker({
+                                        autoclose: true,
+                                        todayHighlight: true,
+                                        format: 'yyyy-mm-dd'
+                                    });
+                                </script>
                                 </div>
                                 <div class="col">
                                     <label for="ad">
@@ -282,6 +289,13 @@
                                     </label>
                                     <input type="text" class="form-control" id="ad" name="arrv_date" required
                                         disabled="disabled">
+                                <script>
+                                    $('#ad').datepicker({
+                                        autoclose: true,
+                                        todayHighlight: true,
+                                        format: 'yyyy-mm-dd'
+                                    });
+                                </script>
                                 </div>
                             </div>
                         </div>
