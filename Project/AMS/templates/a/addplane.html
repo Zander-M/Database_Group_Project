@@ -1,15 +1,11 @@
 {% extends "a/add.html"%}
 {% block content%}
 <div class="container-fluid" style="padding:0px">
-  {{airplanes}}
   <div class="row">
-    <div class="col-lg-3"></div>
-    <div class="col-lg">
-      <br>
-      <br>
+    <div class="col-lg-4">
       <div class="card shadow p-3 mb-5 bg-white rounded"
-        style="border-color:#30aab8; border-width: 1px;padding:50px !important; padding-left: 100px !important; padding-right: 100px !important">
-        <h5 class="card-title" style="color:#30aab8">Add plane for {{g.user[5]}}</h5><br>
+        style="border-color:#30aab8; border-width: 1px; margin-bottom: 30px !important;">
+        <h5 class="card-title" style="color:#30aab8">Add plane for {{g.user[5]}}</h5>
         {% with messages = get_flashed_messages() %}
         {% if messages %}
         <div style="text-align:center !important; width: 100%;">
@@ -19,15 +15,40 @@
         </div>
         {% endif %}
         {% endwith %}
-        <form action="#" method="POST">
+        <form action="#" method="POST" class="form" style="margin:0px !important; padding:10px;">
           <div class="form-group">
-            <label for="sn">Seat Number</label>
-            <input class="form-control" id="sn" type="number" name="seat" required>
+            <label class="mr-sm-2" for="seat">Number of Seats</label>
+            <input class="form-control mb-2 mr-sm-2" id="seat" type="number" name="seat" required>
           </div>
-          <input class="btn btn-success" type="submit" value="Submit" style="width: 30%">
+          <input class="btn btn-success" type="submit" value="Submit">
         </form>
       </div>
     </div>
-    <div class="col-lg-3"></div>
+    <div class="col-lg-8">
+      <div class="card shadow p-3 mb-5 bg-white rounded"
+        style="border-color:#30aab8; border-width: 1px; padding: 0px !important">
+        <h5 class="card-header">Current Airplanes</h5>
+        <div class="card-body" style="padding:1px">
+          <div class="table-responsive">
+            <table class="table table-striped" style="margin:0">
+              <thead>
+                <tr>
+                  <th class="text-center">Airplane ID</th>
+                  <th class="text-center">Number of Seats</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for id, seat in airplanes %}
+                <tr>
+                  <td class="text-center">{{id}}</td>
+                  <td class="text-center">{{seat}}</td>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   {% endblock %}
