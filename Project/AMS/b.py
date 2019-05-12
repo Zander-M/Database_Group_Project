@@ -292,7 +292,6 @@ def customer():
     # 6 months number
     cursor.execute("SELECT name, email, COUNT(email) FROM customer RIGHT JOIN ticket on customer.email = ticket.customer_email WHERE BAID=%s  AND purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 6 MONTH) AND NOW() GROUP BY(email) ORDER BY COUNT(email) DESC LIMIT 5 ", (g.BAID))
     six_months_cnt = cursor.fetchall()
-    print(six_months_cnt)
     ticket_based = [[],[]]
     for a,b,c in six_months_cnt:
         ticket_based[0].append(a)
