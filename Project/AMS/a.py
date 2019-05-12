@@ -377,8 +377,26 @@ def reports():
             last_year_convert[1].append(last_year_sale[idx])
         else:
             last_year_convert[0].append(mon_convert[month])
-            last_year_convert[1].append(0)      
-    return render_template('a/reports.html', last_month = last_month, last_year = last_year_convert, search_result = search_result, start_date=start_date, end_date=end_date)
+            last_year_convert[1].append(0)
+
+    # Revenue Comparison
+    cursor = get_cursor()
+    cursor.execute("SELECT SUM(sold_price)*0.9 FROM ticket WHERE BAID IS NOT NULL AND airline = %s AND purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND CURDATE()", (g.user[5]))
+    indirect_sell_month = cursor.fetchone()
+    cursor.execute("SELECT SUM(sold_price) FROM ticket WHERE BAID IS NULL AND airline = %s AND purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 MONTH) AND CURDATE()", (g.user[5]))
+    direct_sell_month = cursor.fetchone()
+    cursor.execute("SELECT SUM(sold_price)*0.9 FROM ticket WHERE BAID IS NOT NULL AND airline = %s AND purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE()", (g.user[5]))
+    indirect_sell_year = cursor.fetchone()
+    cursor.execute("SELECT SUM(sold_price) FROM ticket WHERE BAID IS NULL AND airline = %s AND purchase_date_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE()", (g.user[5]))
+    direct_sell_year = cursor.fetchone()
+
+    # Top destination
+    ursor = get_cursor()
+    cursor.execute("SELECT arrv_airport FROM flight WHERE airline = %s AND dept_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND CURDATE() GROUP BY arrv_airport ORDER BY COUNT(arrv_airport) DESC LIMIT 3 ", (g.user[5]))
+    last_three_months_dest = cursor.fetchall()
+    cursor.execute("SELECT arrv_airport FROM flight WHERE flight.airline = %s AND dept_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE() GROUP BY arrv_airport ORDER BY COUNT(arrv_airport) DESC LIMIT 3 ", g.user[5])
+    last_year_dest = cursor.fetchall()   
+    return render_template('a/reports.html', last_month = last_month, last_year = last_year_convert, search_result = search_result, start_date=start_date, end_date=end_date, direct_sell_month = direct_sell_month, indirect_sell_month = indirect_sell_month, direct_sell_year = direct_sell_year, indirect_sell_year = indirect_sell_year, last_three_months_dest=last_three_months_dest, last_year_dest=last_year_dest)
 
 
 @bp.route('/revenue')
@@ -413,12 +431,12 @@ def revenue():
     cursor = get_cursor()
     cursor.execute(
         "SELECT arrv_airport FROM flight WHERE airline = %s AND dept_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 3 MONTH) AND CURDATE() GROUP BY arrv_airport ORDER BY COUNT(arrv_airport) DESC LIMIT 3 ", (g.user[5]))
-    last_three_months = cursor.fetchall()
+    last_three_months_dest = cursor.fetchall()
     cursor.execute(
         "SELECT arrv_airport FROM flight WHERE flight.airline = %s AND dept_time BETWEEN DATE_SUB(CURDATE(), INTERVAL 1 YEAR) AND CURDATE() GROUP BY arrv_airport ORDER BY COUNT(arrv_airport) DESC LIMIT 3 ", g.user[5])
-    last_year = cursor.fetchall()
+    last_year_dest = cursor.fetchall()
 
-    return render_template('a/revenue.html', direct_sell_month = direct_sell_month, indirect_sell_month = indirect_sell_month, direct_sell_year = direct_sell_year, indirect_sell_year = indirect_sell_year, last_three_months=last_three_months, last_year=last_year)
+    return render_template('a/revenue.html', direct_sell_month = direct_sell_month, indirect_sell_month = indirect_sell_month, direct_sell_year = direct_sell_year, indirect_sell_year = indirect_sell_year, last_three_months_dest=last_three_months_dest, last_year_dest=last_year_dest)
 
 # Merged with revenue
 # @bp.route('/topdest')
