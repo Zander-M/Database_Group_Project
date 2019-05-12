@@ -17,11 +17,12 @@
 {% block panel%}
 <div class="row">
     <div class="col-lg">
-        <div class="card shadow p-3 mb-5 bg-white rounded" style="border-color:#30aab8; border-width: 1px; padding: 0px !important; margin-bottom: 40px;">
+        <div class="card shadow p-3 mb-5 bg-white rounded"
+            style="border-color:#30aab8; border-width: 1px; padding: 1px !important; margin-bottom: 40px;">
             <div class="card-body" style="padding:0">
                 {% if flights %}
                 <div class="table-responsive">
-                    <table class="table table-hover" style="margin:0">
+                    <table class="table table-striped" style="margin:0">
                         <thead class="thead-light">
                             <tr>
                                 <th>Customer Name</th>
@@ -52,27 +53,4 @@
         </div>
     </div>
 </div>
-
-
-<style>
-    #searchhis:hover {
-        color: #30aab8 !important;
-    }
-
-    .table-hover tbody tr td,
-    .table-hover tbody tr th {
-        border-color: #a2e6ee
-    }
-
-    .table .thead-light th,
-    .table-hover tbody tr:hover td,
-    .table-hover tbody tr:hover th {
-        background-color: #a2e6ee;
-    }
-
-    .table .thead-light th {
-        border-top: 0;
-        border-color: white
-    }
-</style>
 {% endblock %}

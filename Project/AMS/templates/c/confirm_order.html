@@ -30,7 +30,7 @@
   <div class="container">
     <!-- NAVBAR -->
     <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #048998;">
-      <a class="navbar-brand" href="/c/search">con<strong>trails</strong>&nbsp;<i class="fas fa-plane"
+      <a class="navbar-brand" href="/">con<strong>trails</strong>&nbsp;<i class="fas fa-plane"
           data-fa-transform="rotate--45"></i></a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
         aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,7 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav">
           <li class="nav-item active">
-            <a class="nav-link" href="/c/search">Home / Search&nbsp;<i class="fas fa-search"></i></a>
+            <a class="nav-link" href="/">Home / Search&nbsp;<i class="fas fa-search"></i></a>
           </li>
 
         </ul>
@@ -65,7 +65,7 @@
     <div class="row">
       <div class="col">
         <div
-          style="color: white; background-image: url('../static/journey.jpg'); background-size: 100%; font-size: 3vw; padding-left: 2vw;padding-bottom: 1vh">
+          style="color: white; background-image: url({{url_for('static',filename='journey.jpg')}}); background-size: 100%; font-size: 3vw; padding-left: 2vw;padding-bottom: 1vh">
           Confirm Your Order<br><br></div>
       </div>
     </div>
