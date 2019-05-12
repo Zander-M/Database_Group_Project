@@ -36,20 +36,6 @@ def auth_index():
     return render_template('auth_index.html')
 
 
-@bp.route('/register/')
-def reg_index():
-    """
-    Return Registration index page.
-
-    Args:
-        None.
-    Returns:
-        Registration index page
-    """
-
-    return render_template('reg_index.html')
-
-
 @bp.route('/register/<role>', methods=('GET', 'POST'))
 def register(role):
     """

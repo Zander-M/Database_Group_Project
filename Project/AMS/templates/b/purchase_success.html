@@ -27,7 +27,6 @@
 </head>
 
 <body>
-    {% block success %}{%endblock%}
     <div class="container">
         <!-- NAVBAR -->
         <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #048998;">
@@ -66,7 +65,7 @@
         <div class="row">
             <div class="col">
                 <div
-                    style="color: white; background-image: url('../static/journey.jpg'); background-size: 100%; font-size: 3vw; padding-left: 2vw;padding-bottom: 1vh">
+                    style="color: white; background-image: url({{url_for('static',filename='journey.jpg')}}); background-size: 100%; font-size: 3vw; padding-left: 2vw;padding-bottom: 1vh">
                     Your order has been placed.<br><br></div>
             </div>
         </div>

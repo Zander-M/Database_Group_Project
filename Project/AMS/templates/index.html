@@ -173,7 +173,7 @@
         <div class="row">
             <div class="col">
                 <div
-                    style="color: white; background-image: url('../static/journey.jpg'); background-size: 100%; font-size: 3vw; padding-left: 2vw;padding-bottom: 1vh">
+                    style="color: white; background-image: url({{url_for('static',filename='journey.jpg')}}); background-size: 100%; font-size: 3vw; padding-left: 2vw;padding-bottom: 1vh">
                     start your journey<br>
                     with<br>con<strong>trails</strong>&nbsp;<i class="fas fa-plane"
                         data-fa-transform="rotate--45"></i><br></div>
@@ -304,7 +304,7 @@
             </div>
             {% if result == 'n'%}
             <div class="flex-grow-1"
-                style="background-image: url('../static/footer.jpg'); background-size: cover; background-repeat: 0; height: 34.5vh">
+                style="background-image: url({{url_for('static',filename='footer.jpg')}}); background-size: cover; background-repeat: 0; height: 34.5vh">
                 <!--Search Button-->
                 <div class="row" style="height: 15vh; padding-top: 3vh; padding-bottom: 3vh; margin: 0">
                     <div class="col-lg-9"></div>

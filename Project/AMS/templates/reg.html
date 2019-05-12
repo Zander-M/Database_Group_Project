@@ -81,7 +81,7 @@
 
             <div class="col">
                 <div
-                    style="color: white; background-image: url('../../static/journey.jpg'); background-size: 100%; font-size: 3vw; padding-left: 2vw;padding-bottom: 1vh">
+                    style="color: white; background-image: url({{ url_for('static', filename='journey.jpg') }}); background-size: 100%; font-size: 3vw; padding-left: 2vw;padding-bottom: 1vh">
                     {% block banner %}{%endblock%}
                     <br></div>
             </div>
@@ -109,7 +109,7 @@
         </form>
         <!-- footer -->
         <div class="flex-grow-1" id="footer-back"
-            style="background-image: url('../../static/footer.jpg'); background-size: cover; background-repeat: 0; height: 20vh">
+            style="background-image: url({{ url_for('static', filename='footer.jpg') }}); background-size: cover; background-repeat: 0; height: 20vh">
             <footer class="fixed-bottom">
                 <div class="row">
                     <div class="col" style="text-align: center; color: white">
