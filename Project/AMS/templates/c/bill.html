@@ -52,12 +52,14 @@
                 </div>
             </div>
             <br>
+            <br>
+            <br>
         </div>
         <!-- Modified. Display Search result here -->
         <div class="col-lg">
             {% if search_total != "n" %}
             <div class="card shadow p-3 mb-5 bg-white rounded"
-                style="border-color:#30aab8; border-width: 1px; padding: 1px !important; margin-bottom: 30px !important;">
+                style="border-color:#30aab8; border-width: 1px; padding: 1px !important; margin-bottom: 50px !important;">
                 <h5 class="card-header">From {{start_date}} to {{end_date}}</h5>
                 <div class="card-body">
                     <h4 class="card-title" style="color:#30aab8">Total Spendings</h4>
@@ -69,92 +71,92 @@
                     <h4 class="card-title" style="color:#30aab8">Monthly Spendings</h4>
                     <canvas id="user_spec"></canvas>
                     <script>
-                            var user = document.getElementById('user_spec');
-                            var userChart = new Chart(user, {
-                                type: 'bar',
-                                data: {
-                                    labels: {{ search_monthly[0]| tojson }},
-                            datasets: [{
-                                label: 'Monthly Spending',
-                                data: {{ search_monthly[1]| tojson }},
-                                backgroundColor: ["rgba(255, 99, 132, 0.2)",
-                                "rgba(255, 159, 64, 0.2)",
-                                "rgba(255, 205, 86, 0.2)",
-                                "rgba(75, 192, 192, 0.2)",
-                                "rgba(54, 162, 235, 0.2)",
-                                "rgba(153, 102, 255, 0.2)",
-                                "rgba(63, 188, 255, 0.2)",
-                                "rgba(227, 186, 124, 0.2)",
-                                "rgba(174, 229, 63, 0.2)",
-                                "rgba(67, 145, 224, 0.2)",
-                                "rgba(242, 135, 234, 0.2)",
-                                "rgba(59, 47, 244, 0.2)",
-                                "rgba(255, 99, 132, 0.2)",
-                                "rgba(255, 159, 64, 0.2)",
-                                "rgba(255, 205, 86, 0.2)",
-                                "rgba(75, 192, 192, 0.2)",
-                                "rgba(54, 162, 235, 0.2)",
-                                "rgba(153, 102, 255, 0.2)",
-                                "rgba(63, 188, 255, 0.2)",
-                                "rgba(227, 186, 124, 0.2)",
-                                "rgba(174, 229, 63, 0.2)",
-                                "rgba(67, 145, 224, 0.2)",
-                                "rgba(242, 135, 234, 0.2)",
-                                "rgba(59, 47, 244, 0.2)",
-                            ],
-                                borderColor: ["rgb(255, 99, 132)",
-                                "rgb(255, 159, 64)",
-                                "rgb(255, 205, 86)",
-                                "rgb(75, 192, 192)",
-                                "rgb(54, 162, 235)",
-                                "rgb(153, 102, 255)",
-                                "rgb(63, 188, 255)",
-                                "rgb(227, 186, 124)",
-                                "rgb(174, 229, 63)",
-                                "rgb(67, 145, 224)",
-                                "rgb(242, 135, 234)",
-                                "rgb(59, 47, 244)",
-                                "rgb(255, 99, 132)",
-                                "rgb(255, 159, 64)",
-                                "rgb(255, 205, 86)",
-                                "rgb(75, 192, 192)",
-                                "rgb(54, 162, 235)",
-                                "rgb(153, 102, 255)",
-                                "rgb(63, 188, 255)",
-                                "rgb(227, 186, 124)",
-                                "rgb(174, 229, 63)",
-                                "rgb(67, 145, 224)",
-                                "rgb(242, 135, 234)",
-                                "rgb(59, 47, 244)",
-                            ],
-                                borderWidth: 1
+                        var user = document.getElementById('user_spec');
+                        var userChart = new Chart(user, {
+                            type: 'bar',
+                            data: {
+                                labels: {{ search_monthly[0]| tojson }},
+                        datasets: [{
+                            label: 'Monthly Spending',
+                            data: {{ search_monthly[1]| tojson }},
+                            backgroundColor: ["rgba(255, 99, 132, 0.2)",
+                            "rgba(255, 159, 64, 0.2)",
+                            "rgba(255, 205, 86, 0.2)",
+                            "rgba(75, 192, 192, 0.2)",
+                            "rgba(54, 162, 235, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(63, 188, 255, 0.2)",
+                            "rgba(227, 186, 124, 0.2)",
+                            "rgba(174, 229, 63, 0.2)",
+                            "rgba(67, 145, 224, 0.2)",
+                            "rgba(242, 135, 234, 0.2)",
+                            "rgba(59, 47, 244, 0.2)",
+                            "rgba(255, 99, 132, 0.2)",
+                            "rgba(255, 159, 64, 0.2)",
+                            "rgba(255, 205, 86, 0.2)",
+                            "rgba(75, 192, 192, 0.2)",
+                            "rgba(54, 162, 235, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(63, 188, 255, 0.2)",
+                            "rgba(227, 186, 124, 0.2)",
+                            "rgba(174, 229, 63, 0.2)",
+                            "rgba(67, 145, 224, 0.2)",
+                            "rgba(242, 135, 234, 0.2)",
+                            "rgba(59, 47, 244, 0.2)",
+                        ],
+                            borderColor: ["rgb(255, 99, 132)",
+                            "rgb(255, 159, 64)",
+                            "rgb(255, 205, 86)",
+                            "rgb(75, 192, 192)",
+                            "rgb(54, 162, 235)",
+                            "rgb(153, 102, 255)",
+                            "rgb(63, 188, 255)",
+                            "rgb(227, 186, 124)",
+                            "rgb(174, 229, 63)",
+                            "rgb(67, 145, 224)",
+                            "rgb(242, 135, 234)",
+                            "rgb(59, 47, 244)",
+                            "rgb(255, 99, 132)",
+                            "rgb(255, 159, 64)",
+                            "rgb(255, 205, 86)",
+                            "rgb(75, 192, 192)",
+                            "rgb(54, 162, 235)",
+                            "rgb(153, 102, 255)",
+                            "rgb(63, 188, 255)",
+                            "rgb(227, 186, 124)",
+                            "rgb(174, 229, 63)",
+                            "rgb(67, 145, 224)",
+                            "rgb(242, 135, 234)",
+                            "rgb(59, 47, 244)",
+                        ],
+                            borderWidth: 1
                                                 }]
                                         },
-                            options: {
-                                legend: {
-                                    display: false
-                                },
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            autoSkip: true,
-                                            beginAtZero: true,
+                        options: {
+                            legend: {
+                                display: false
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        autoSkip: true,
+                                        beginAtZero: true,
+                                    }
+                                }],
+                                    xAxes: [{
+                                        gridLines: {
+                                            display: false
                                         }
-                                    }],
-                                        xAxes: [{
-                                            gridLines: {
-                                                display: false
-                                            }
-                                        }]
-                                }
+                                    }]
                             }
+                        }
                                 });
-                        </script>
+                    </script>
                 </div>
             </div>
             {%else%}
             <div class="card shadow p-3 mb-5 bg-white rounded"
-                style="border-color:#30aab8; border-width: 1px; padding: 1px !important; margin-bottom: 10px !important;">
+                style="border-color:#30aab8; border-width: 1px; padding: 1px !important; margin-bottom: 50px !important;">
                 <h5 class="card-header">Past Year</h5>
                 <div class="card-body">
                     <h4 class="card-title" style="color:#30aab8">Total Spendings</h4>
@@ -170,70 +172,71 @@
                     <canvas id="past_six">
                     </canvas>
                     <script>
-                            var ctx = document.getElementById('past_six');
-                            var myChart = new Chart(ctx, {
-                                type: 'bar',
-                                data: {
-                                    labels: {{ past_six_month[0]| tojson }},
-                            datasets: [{
-                                label: 'Monthly Spending',
-                                data: {{ past_six_month[1]| tojson }},
-                                backgroundColor: ["rgba(255, 99, 132, 0.2)",
-                                "rgba(255, 159, 64, 0.2)",
-                                "rgba(255, 205, 86, 0.2)",
-                                "rgba(75, 192, 192, 0.2)",
-                                "rgba(54, 162, 235, 0.2)",
-                                "rgba(153, 102, 255, 0.2)",
-                                "rgba(63, 188, 255, 0.2)",
-                                "rgba(227, 186, 124, 0.2)",
-                                "rgba(174, 229, 63, 0.2)",
-                                "rgba(67, 145, 224, 0.2)",
-                                "rgba(242, 135, 234, 0.2)",
-                                "rgba(59, 47, 244, 0.2)",
-                            ],
-                                borderColor: ["rgb(255, 99, 132)",
-                                "rgb(255, 159, 64)",
-                                "rgb(255, 205, 86)",
-                                "rgb(75, 192, 192)",
-                                "rgb(54, 162, 235)",
-                                "rgb(153, 102, 255)",
-                                "rgb(63, 188, 255)",
-                                "rgb(227, 186, 124)",
-                                "rgb(174, 229, 63)",
-                                "rgb(67, 145, 224)",
-                                "rgb(242, 135, 234)",
-                                "rgb(59, 47, 244)",
-                            ],
-                                borderWidth: 1
+                        var ctx = document.getElementById('past_six');
+                        var myChart = new Chart(ctx, {
+                            type: 'bar',
+                            data: {
+                                labels: {{ past_six_month[0]| tojson }},
+                        datasets: [{
+                            label: 'Monthly Spending',
+                            data: {{ past_six_month[1]| tojson }},
+                            backgroundColor: ["rgba(255, 99, 132, 0.2)",
+                            "rgba(255, 159, 64, 0.2)",
+                            "rgba(255, 205, 86, 0.2)",
+                            "rgba(75, 192, 192, 0.2)",
+                            "rgba(54, 162, 235, 0.2)",
+                            "rgba(153, 102, 255, 0.2)",
+                            "rgba(63, 188, 255, 0.2)",
+                            "rgba(227, 186, 124, 0.2)",
+                            "rgba(174, 229, 63, 0.2)",
+                            "rgba(67, 145, 224, 0.2)",
+                            "rgba(242, 135, 234, 0.2)",
+                            "rgba(59, 47, 244, 0.2)",
+                        ],
+                            borderColor: ["rgb(255, 99, 132)",
+                            "rgb(255, 159, 64)",
+                            "rgb(255, 205, 86)",
+                            "rgb(75, 192, 192)",
+                            "rgb(54, 162, 235)",
+                            "rgb(153, 102, 255)",
+                            "rgb(63, 188, 255)",
+                            "rgb(227, 186, 124)",
+                            "rgb(174, 229, 63)",
+                            "rgb(67, 145, 224)",
+                            "rgb(242, 135, 234)",
+                            "rgb(59, 47, 244)",
+                        ],
+                            borderWidth: 1
                                                 }]
                                         },
-                            options: {
-                                legend: {
-                                    display: false
-                                },
-                                scales: {
-                                    yAxes: [{
-                                        ticks: {
-                                            autoSkip: true,
-                                            beginAtZero: true,
+                        options: {
+                            legend: {
+                                display: false
+                            },
+                            scales: {
+                                yAxes: [{
+                                    ticks: {
+                                        autoSkip: true,
+                                        beginAtZero: true,
+                                    }
+                                }],
+                                    xAxes: [{
+                                        gridLines: {
+                                            display: false
                                         }
-                                    }],
-                                        xAxes: [{
-                                            gridLines: {
-                                                display: false
-                                            }
-                                        }]
-                                }
+                                    }]
                             }
+                        }
                                 });
-                        </script>
+                    </script>
                     {% endif %}
                 </div>
+                <br>
+                <br>
+                <br>
             </div>
             {% endif %}
         </div>
-        <br>
-        <br>
     </div>
 </div>
 {%endblock%}

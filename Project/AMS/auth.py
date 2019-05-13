@@ -21,19 +21,19 @@ from AMS.db import get_db, get_cursor
 bp = Blueprint('auth', __name__, url_prefix="/auth")
 
 
-@bp.route('/')
-def auth_index():
-    """
-    Authentication index page. User can register, login, logout from this page
+# @bp.route('/')
+# def auth_index():
+#     """
+#     Authentication index page. User can register, login, logout from this page
 
-    Args:
-        param: param description.
+#     Args:
+#         param: param description.
 
-    Returns:
-        The return value.
-    """
+#     Returns:
+#         The return value.
+#     """
 
-    return render_template('auth_index.html')
+#     return render_template('auth_index.html')
 
 
 @bp.route('/register/<role>', methods=('GET', 'POST'))
@@ -381,24 +381,24 @@ def logout():
     return redirect(url_for('utils.index'))
 
 
-def login_required(view):
-    """
-    For index pages for users, login is required. If not logged in, redirect to 
-    login index page. Also, check if the page matches the user's role. Every page
-    must first start with the 
+# def login_required(view):
+#     """
+#     For index pages for users, login is required. If not logged in, redirect to 
+#     login index page. Also, check if the page matches the user's role. Every page
+#     must first start with the 
 
-    Args:
-        view: View that requires login.
+#     Args:
+#         view: View that requires login.
 
-    Returns:
-        wrapped_view: view that wrapped with login check.
-    """
+#     Returns:
+#         wrapped_view: view that wrapped with login check.
+#     """
 
-    @functools.wraps(view)
-    def wrapped_view(**kwargs):
+#     @functools.wraps(view)
+#     def wrapped_view(**kwargs):
 
-        if g.user is None:
-            return redirect(url_for('auth.login_index'))
-        return view(**kwargs)
+#         if g.user is None:
+#             return redirect(url_for('auth.login_index'))
+#         return view(**kwargs)
 
-    return wrapped_view
+#     return wrapped_view
