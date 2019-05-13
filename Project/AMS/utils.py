@@ -53,8 +53,8 @@ def index():
                     flight = list(flight)
                     base_price = flight[3]
                     # find out how many tickets are sold
-                    cursor.execute("SELECT * FROM ticket WHERE flight_id = %s", flight[0])
-                    ticket_sold = len(cursor.fetchall())
+                    cursor.execute("SELECT COUNT(flight_id) FROM ticket WHERE flight_id = %s GROUP BY flight_id", flight[0])
+                    ticket_sold = cursor.fetchone()[0]
                     # find out how many seats are available
                     cursor.execute("SELECT seat FROM airplane where airplane_id = %s",(flight[2]))
                     seat = cursor.fetchone()[0]
